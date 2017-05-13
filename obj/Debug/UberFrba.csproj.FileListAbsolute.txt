@@ -1,0 +1,9 @@
+E:\src\UberFrba\UberFrba\bin\Debug\UberFrba.exe.config
+C:\Users\vaio\Documents\Visual Studio 2012\Projects\UberFrba\bin\Debug\UberFrba.exe.config
+C:\Users\vaio\Documents\Visual Studio 2012\Projects\UberFrba\bin\Debug\UberFrba.exe
+C:\Users\vaio\Documents\Visual Studio 2012\Projects\UberFrba\bin\Debug\UberFrba.pdb
+C:\Users\vaio\Documents\Visual Studio 2012\Projects\UberFrba\obj\Debug\UberFrba.csprojResolveAssemblyReference.cache
+C:\Users\vaio\Documents\Visual Studio 2012\Projects\UberFrba\obj\Debug\UberFrba.Properties.Resources.resources
+C:\Users\vaio\Documents\Visual Studio 2012\Projects\UberFrba\obj\Debug\UberFrba.csproj.GenerateResource.Cache
+C:\Users\vaio\Documents\Visual Studio 2012\Projects\UberFrba\obj\Debug\UberFrba.exe
+C:\Users\vaio\Documents\Visual Studio 2012\Projects\UberFrba\obj\Debug\UberFrba.pdb
