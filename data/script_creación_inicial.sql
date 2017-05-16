@@ -55,7 +55,7 @@ BEGIN
 	);
 
 	CREATE TABLE SQLGROUP.Choferes (
-		Chofer_Id INTEGER PRIMARY KEY,
+		Chofer_Id INTEGER IDENTITY(1,1) PRIMARY KEY,
 		Chofer_Nombre VARCHAR(255) NOT NULL,
 		Chofer_Apellido VARCHAR(255) NOT NULL,
 		Chofer_Direccion VARCHAR(255) NOT NULL,
@@ -84,7 +84,7 @@ BEGIN
 		Auto_Modelo VARCHAR(255) NOT NULL,
 		Auto_Licencia VARCHAR(26),
 		Auto_Rodado VARCHAR(10),
-		Auto_Estado VARCHAR(20),
+		Auto_Estado VARCHAR(20) DEFAULT 'Habilitado',
 		Auto_Chofer INTEGER
 	);
 
@@ -215,8 +215,38 @@ BEGIN
 END
 GO
 
+IF(OBJECT_ID('SQLGROUP.migrar_choferes') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_choferes
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_choferes
+AS
+BEGIN
+	INSERT INTO SQLGROUP.Choferes (Chofer_Nombre,Chofer_Apellido,Chofer_Direccion,Chofer_Dni,Chofer_Telefono,Chofer_Mail,Chofer_Fecha_Nac)
+	SELECT m.Chofer_Nombre,m.Chofer_Apellido,m.Chofer_Direccion,m.Chofer_Dni,m.Chofer_Telefono,m.Chofer_Mail,m.Chofer_Fecha_Nac
+	FROM gd_esquema.Maestra as m
+	GROUP BY m.Chofer_Nombre,m.Chofer_Apellido,m.Chofer_Direccion,m.Chofer_Dni,m.Chofer_Telefono,m.Chofer_Mail,m.Chofer_Fecha_Nac
+END
+GO
+
+IF(OBJECT_ID('SQLGROUP.migrar_automoviles') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_automoviles
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_automoviles
+AS
+BEGIN
+	INSERT INTO SQLGROUP.Automoviles (Auto_Marca,Auto_Modelo,Auto_Patente,Auto_Licencia,Auto_Rodado,Auto_Chofer)
+	SELECT m.Auto_Marca, m.Auto_Modelo, m.Auto_Patente, m.Auto_Licencia, m.Auto_Rodado, (SELECT c.Chofer_Id FROM SQLGROUP.Choferes as c WHERE c.Chofer_Dni = m.Chofer_Dni)
+	FROM gd_esquema.Maestra as m
+	GROUP BY m.Auto_Marca, m.Auto_Modelo, m.Auto_Patente, m.Auto_Licencia, m.Auto_Rodado,m.Chofer_Dni
+END
+GO
+
 
 /*-----Aca se ejecutan todos los procedures de migracion de arriba------*/
 BEGIN
 	EXEC SQLGROUP.crear_tablas;
+	EXEC SQLGROUP.migrar_choferes;
+	EXEC SQLGROUP.migrar_automoviles;
 END
