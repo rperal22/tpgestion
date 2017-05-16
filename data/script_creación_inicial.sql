@@ -45,7 +45,7 @@ BEGIN
 	
 	 
 	CREATE TABLE SQLGROUP.Administradores (
-		Admin_Id INTEGER PRIMARY KEY,
+		Admin_Id INTEGER IDENTITY(1,1) PRIMARY KEY,
 		Admin_Dni NUMERIC(18,0) UNIQUE,
 		Admin_Nombre VARCHAR(255) NOT NULL,
 		Admin_Apellido VARCHAR(255) NOT NULL,
@@ -144,7 +144,7 @@ BEGIN
 		Usuario_Password VARCHAR(64) NOT NULL,
 		Usuario_DNI NUMERIC(18,0) UNIQUE NOT NULL,
 		Usuario_Intentos INTEGER NOT NULL DEFAULT 0,
-		Usuario_Estado INTEGER NOT NULL DEFAULT 'Habilitado'
+		Usuario_Estado VARCHAR(20) NOT NULL DEFAULT 'Habilitado'
 	);
 
 	CREATE TABLE SQLGROUP.Rol_Funcionalidad(
@@ -257,10 +257,64 @@ BEGIN
 END
 GO
 
+IF(OBJECT_ID('SQLGROUP.crear_administradores') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.crear_administradores
+GO
+
+CREATE PROCEDURE SQLGROUP.crear_administradores
+AS
+BEGIN
+	INSERT INTO SQLGROUP.Administradores (Admin_Dni,Admin_Nombre,Admin_Apellido,Admin_Telefono,Admin_Direccion,Admin_Mail)
+	VALUES(1569877,'admin','admin',1512345678,'admin','admin@admin.com')
+END
+GO
+
+IF(OBJECT_ID('SQLGROUP.crear_roles') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.crear_roles
+GO
+
+CREATE PROCEDURE SQLGROUP.crear_roles
+AS
+BEGIN
+	INSERT INTO SQLGROUP.Roles
+	VALUES ('Administrador','Rol administrativo del sistema');
+	INSERT INTO SQLGROUP.Roles
+	VALUES ('Cliente','Rol cliente del sistema');
+	INSERT INTO SQLGROUP.Roles
+	VALUES ('Chofer','Rol chofer del sistema');
+END
+GO
+
+IF(OBJECT_ID('SQLGROUP.crear_usuarios') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.crear_usuarios
+GO
+
+/*Usuario: Nombre Password: Nombre, Falta hacer el trigger que cifra las pass*/
+CREATE PROCEDURE SQLGROUP.crear_usuarios
+AS
+BEGIN
+	INSERT INTO SQLGROUP.Usuarios (Usuario_Id, Usuario_Password,Usuario_DNI) 
+	SELECT Chofer_Nombre + '_' + Chofer_Apellido,Chofer_Nombre,Chofer_Dni 
+	FROM SQLGROUP.Choferes
+
+	INSERT INTO SQLGROUP.Usuarios (Usuario_Id, Usuario_Password,Usuario_DNI)
+	SELECT Cliente_Nombre + '_' + Cliente_Apellido,Cliente_Nombre,Cliente_Dni
+	FROM SQLGROUP.Clientes,SQLGROUP.Usuarios
+	WHERE Cliente_Dni != Usuario_DNI
+	GROUP BY Cliente_Nombre,Cliente_Nombre,Cliente_Dni,Cliente_Apellido
+
+END
+GO
+
+
+
 /*-----Aca se ejecutan todos los procedures de migracion de arriba------*/
 BEGIN
 	EXEC SQLGROUP.crear_tablas;
+	EXEC SQLGROUP.crear_roles;
+	EXEC SQLGROUP.crear_administradores;
 	EXEC SQLGROUP.migrar_choferes;
-	EXEC SQLGROUP.migrar_automoviles;
 	EXEC SQLGROUP.migrar_clientes;
+	EXEC SQLGROUP.migrar_automoviles;
+	EXEC SQLGROUP.crear_usuarios;
 END
