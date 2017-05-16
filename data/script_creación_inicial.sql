@@ -66,7 +66,7 @@ BEGIN
 	);
 
 	CREATE TABLE SQLGROUP.Clientes (
-		Cliente_Id INTEGER PRIMARY KEY,
+		Cliente_Id INTEGER IDENTITY(1,1) PRIMARY KEY,
 		Cliente_Dni NUMERIC(18,0) NOT NULL UNIQUE,
 		Cliente_Nombre VARCHAR(255) NOT NULL,
 		Cliente_Apellido VARCHAR(255) NOT NULL,
@@ -74,7 +74,7 @@ BEGIN
 		Cliente_Direccion VARCHAR(255) NOT NULL,
 		Cliente_Mail VARCHAR(255),
 		Cliente_Fecha_Nac DATETIME NOT NULL,
-		Cliente_Estado VARCHAR(20) NOT NULL
+		Cliente_Estado VARCHAR(20) NOT NULL DEFAULT 'Habilitado'
 	);
 
 
@@ -243,10 +243,24 @@ BEGIN
 END
 GO
 
+IF(OBJECT_ID('SQLGROUP.migrar_clientes') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_clientes
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_clientes
+AS
+BEGIN
+	INSERT INTO SQLGROUP.Clientes (Cliente_Nombre,Cliente_Apellido,Cliente_Dni,Cliente_Telefono,Cliente_Direccion,Cliente_Mail,Cliente_Fecha_Nac)
+	SELECT m.Cliente_Nombre, m.Cliente_Apellido, m.Cliente_Dni, m.Cliente_Telefono,m.Cliente_Direccion, m.Cliente_Mail, m.Cliente_Fecha_Nac
+	FROM gd_esquema.Maestra as m
+	GROUP BY m.Cliente_Nombre, m.Cliente_Apellido, m.Cliente_Dni, m.Cliente_Telefono, m.Cliente_Mail, m.Cliente_Fecha_Nac,m.Cliente_Direccion
+END
+GO
 
 /*-----Aca se ejecutan todos los procedures de migracion de arriba------*/
 BEGIN
 	EXEC SQLGROUP.crear_tablas;
 	EXEC SQLGROUP.migrar_choferes;
 	EXEC SQLGROUP.migrar_automoviles;
+	EXEC SQLGROUP.migrar_clientes;
 END
