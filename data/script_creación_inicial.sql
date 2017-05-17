@@ -375,10 +375,11 @@ BEGIN
 END
 GO
 
+/*ESTAN MAL XQ HAY Q MIGRAR VIAJES BIEN, HAY Q INVENTARLES BIEN EL TEMA DE HORA INICIO Y FIN
+
 IF (OBJECT_ID('SQLGROUP.migrar_viajes') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_viajes
 GO
-
 
 CREATE PROCEDURE SQLGROUP.migrar_viajes
 AS
@@ -387,10 +388,43 @@ BEGIN
 	SELECT Viaje_Cant_Kilometros, Viaje_Fecha, Viaje_Fecha, Viaje_Fecha, c.Chofer_Id, Auto_Patente, cli.Cliente_Id, t.Turno_Id
 	FROM gd_esquema.Maestra as m, SQLGROUP.Choferes as c, SQLGROUP.Clientes as cli, SQLGROUP.Turno as t
 	WHERE m.Chofer_Dni = c.Chofer_Dni AND m.Cliente_Dni = cli.Cliente_Dni AND t.Turno_Hora_Inicio = m.Turno_Hora_Inicio AND t.Turno_Hora_Fin = m.Turno_Hora_Fin
-	GROUP BY Viaje_Cant_Kilometros, Viaje_Fecha, Viaje_Fecha, Viaje_Fecha, c.Chofer_Id, Auto_Patente, cli.Cliente_Id, t.Turno_Id
+	GROUP BY Viaje_Cant_Kilometros, Viaje_Fecha, c.Chofer_Id, Auto_Patente, cli.Cliente_Id, t.Turno_Id
 END
 GO
 
+If (OBJECT_ID('SQLGROUP.migrar_facturas') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_facturas
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_facturas
+AS
+BEGIN
+	INSERT SQLGROUP.Facturas
+	SELECT m.Factura_Nro, m.Factura_Fecha_Inicio, m.Factura_Fecha_Fin, m.Factura_Fecha, 
+						(SELECT SUM(m2.Viaje_Cant_Kilometros * m2.Turno_Valor_Kilometro) + SUM(m2.Turno_Precio_Base) 
+						FROM gd_esquema.Maestra as m2 WHERE m2.Factura_Nro = m.Factura_Nro),COUNT(*), cli.Cliente_Id
+	FROM gd_esquema.Maestra as m, SQLGROUP.Clientes as cli
+	WHERE m.Factura_Nro IS NOT NULL AND m.Cliente_Dni = cli.Cliente_Dni
+	GROUP BY m.Factura_Nro, m.Factura_Fecha_Inicio, m.Factura_Fecha_Fin, m.Factura_Fecha,cli.Cliente_Id
+
+END
+GO
+
+IF (OBJECT_ID('SQLGROUP.migrar_viajesxfactura') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_viajesxfactura
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_viajesxfactura
+AS
+BEGIN
+	INSERT SQLGROUP.Factura_Viaje
+	SELECT f.Factura_Nro, v.Viaje_Id
+	FROM SQLGROUP.Facturas as f, SQLGROUP.Viajes as v, gd_esquema.Maestra as m
+	WHERE m.Factura_Nro IS NOT NULL AND m.Auto_Patente = v.Viaje_Auto_Patente AND m.Viaje_Fecha = v.Viaje_Fecha 
+	GROUP BY f.Factura_Nro, v.Viaje_Id
+END
+GO
+*/
 
 /*-----Aca se ejecutan todos los procedures de migracion de arriba------*/
 BEGIN
@@ -404,5 +438,7 @@ BEGIN
 	EXEC SQLGROUP.crear_usuarios;
 	EXEC SQLGROUP.migrar_choferesxturno;
 	EXEC SQLGROUP.migrar_autoxturno;
-	EXEC SQLGROUP.migrar_viajes;
+	/*EXEC SQLGROUP.migrar_viajes;
+	EXEC SQLGROUP.migrar_facturas;
+	EXEC SQLGROUP.migrar_viajesxfactura;*/
 END
