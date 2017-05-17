@@ -13,6 +13,10 @@ CREATE PROCEDURE SQLGROUP.crear_tablas
 AS
 BEGIN
 
+	IF OBJECT_ID('SQLGROUP.Chofer_Turno') IS NOT NULL
+		DROP TABLE SQLGROUP.Chofer_Turno
+	IF OBJECT_ID('SQLGROUP.Auto_Turno') IS NOT NULL
+		DROP TABLE SQLGROUP.Auto_Turno
 	IF OBJECT_ID('SQLGROUP.Usuarios_Rol') IS NOT NULL
 		DROP TABLE SQLGROUP.Usuarios_Rol
 	IF OBJECT_ID('SQLGROUP.Factura_Viaje') IS NOT NULL
@@ -109,14 +113,13 @@ BEGIN
 	);
 
 	CREATE TABLE SQLGROUP.Turno (
-		Turno_Id INTEGER PRIMARY KEY,
+		Turno_Id INTEGER IDENTITY(1,1) PRIMARY KEY,
 		Turno_Hora_Inicio NUMERIC(18,0),
 		Turno_Hora_Fin NUMERIC(18,0),
 		Turno_Descripcion VARCHAR(255),
 		Turno_Valor_Kilometro NUMERIC(18,2),
 		Turno_Precio_Base NUMERIC(18,2),
-		Turno_Estado VARCHAR(20),
-		Turno_Chofer_Id INTEGER
+		Turno_Estado VARCHAR(20) DEFAULT 'Habilitado'
 	);
 
 	CREATE TABLE SQLGROUP.Facturas (
@@ -165,6 +168,18 @@ BEGIN
 		CONSTRAINT pk_facturaxviaje PRIMARY KEY(Fv_Viaje_Id,Fv_Factura_Nro) 
 	);
 
+	CREATE TABLE SQLGROUP.Chofer_Turno (
+		Ct_Chofer_Id INTEGER,
+		Ct_Turno_Id INTEGER,
+		CONSTRAINT pk_choferxturno PRIMARY KEY (Ct_Chofer_Id,Ct_Turno_Id)
+	);
+
+	CREATE TABLE SQLGROUP.Auto_Turno (
+		AT_Auto_Patente VARCHAR(10),
+		AT_Turno_Id INTEGER,
+		CONSTRAINT pk_autoxturno PRIMARY KEY (AT_Auto_Patente,AT_Turno_ID)
+	);
+
 	/*----Aca crear foreign keys------*/
 	ALTER TABLE SQLGROUP.Automoviles ADD
 	CONSTRAINT fk_automovil_chofer FOREIGN KEY (Auto_Chofer) REFERENCES SQLGROUP.Choferes(Chofer_Id)
@@ -185,10 +200,6 @@ BEGIN
 	ON DELETE NO ACTION ON UPDATE CASCADE,
 	CONSTRAINT fk_rendiciones_turno FOREIGN KEY (Rendicion_Turno_Id) REFERENCES SQLGROUP.Turno(Turno_Id)
 	ON DELETE NO ACTION ON UPDATE CASCADE;
-
-	ALTER TABLE SQLGROUP.Turno ADD
-	CONSTRAINT fk_turno_chofer FOREIGN KEY (Turno_Chofer_Id) REFERENCES SQLGROUP.Choferes(Chofer_Id)
-	ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 	ALTER TABLE SQLGROUP.Facturas ADD
 	CONSTRAINT fk_factura_cliente FOREIGN KEY (Factura_Cliente_Id) REFERENCES SQLGROUP.Clientes(Cliente_Id)
@@ -211,6 +222,20 @@ BEGIN
 	ON DELETE NO ACTION ON UPDATE CASCADE,
 	CONSTRAINT fk_facturaviaje_factura FOREIGN KEY (Fv_Factura_Nro) REFERENCES SQLGROUP.Facturas(Factura_Nro)
 	ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+	ALTER TABLE SQLGROUP.Chofer_Turno ADD
+	CONSTRAINT fk_choferturno_chofer FOREIGN KEY (Ct_Chofer_Id) REFERENCES SQLGROUP.Choferes(Chofer_Id)
+	ON DELETE NO ACTION ON UPDATE CASCADE,
+	CONSTRAINT fk_choferturno_turno FOREIGN KEY (Ct_Turno_Id) REFERENCES SQLGROUP.Turno(Turno_Id)
+	ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+	ALTER TABLE SQLGROUP.Auto_Turno ADD
+	CONSTRAINT fk_autoturno_auto FOREIGN KEY (AT_Auto_Patente) REFERENCES SQLGROUP.Automoviles(Auto_Patente)
+	ON DELETE NO ACTION ON UPDATE CASCADE,
+	CONSTRAINT fk_autoturno_turno FOREIGN KEY (At_Turno_Id) REFERENCES SQLGROUP.Turno(Turno_Id)
+	ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
 	/*--------------------------------*/
 END
 GO
@@ -306,12 +331,27 @@ BEGIN
 END
 GO
 
+IF(OBJECT_ID('SQLGROUP.migrar_turnos') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_turnos
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_turnos
+AS
+BEGIN
+	INSERT INTO SQLGROUP.Turno (Turno_Hora_Inicio,Turno_Hora_Fin,Turno_Descripcion,Turno_Valor_Kilometro, Turno_Precio_Base)
+	SELECT m.Turno_Hora_Inicio, m.Turno_Hora_Fin, m.Turno_Descripcion, m.Turno_Valor_Kilometro, m.Turno_Precio_Base
+	FROM gd_esquema.Maestra as m
+	GROUP BY m.Turno_Hora_Inicio, m.Turno_Hora_Fin, m.Turno_Descripcion, m.Turno_Valor_Kilometro, m.Turno_Precio_Base
+END
+GO
+
 
 
 /*-----Aca se ejecutan todos los procedures de migracion de arriba------*/
 BEGIN
 	EXEC SQLGROUP.crear_tablas;
 	EXEC SQLGROUP.crear_roles;
+	EXEC.SQLGROUP.migrar_turnos;
 	EXEC SQLGROUP.crear_administradores;
 	EXEC SQLGROUP.migrar_choferes;
 	EXEC SQLGROUP.migrar_clientes;
