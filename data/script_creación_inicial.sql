@@ -93,7 +93,7 @@ BEGIN
 	);
 
 	CREATE TABLE SQLGROUP.Viajes (
-		Viaje_Id INTEGER PRIMARY KEY,
+		Viaje_Id INTEGER IDENTITY(1,1) PRIMARY KEY,
 		Viaje_Cant_Kilometros NUMERIC(18,0) NOT NULL,
 		Viaje_Fecha DATETIME NOT NULL,
 		Viaje_Fecha_INIC DATETIME NOT NULL,
@@ -375,6 +375,22 @@ BEGIN
 END
 GO
 
+IF (OBJECT_ID('SQLGROUP.migrar_viajes') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_viajes
+GO
+
+
+CREATE PROCEDURE SQLGROUP.migrar_viajes
+AS
+BEGIN
+	INSERT SQLGROUP.viajes (Viaje_Cant_Kilometros, Viaje_Fecha, Viaje_Fecha_Inic, Viaje_Fecha_Fin, Viaje_Chofer_Id, Viaje_Auto_Patente, Viaje_Cliente_Id, Viaje_Turno_Id)
+	SELECT Viaje_Cant_Kilometros, Viaje_Fecha, Viaje_Fecha, Viaje_Fecha, c.Chofer_Id, Auto_Patente, cli.Cliente_Id, t.Turno_Id
+	FROM gd_esquema.Maestra as m, SQLGROUP.Choferes as c, SQLGROUP.Clientes as cli, SQLGROUP.Turno as t
+	WHERE m.Chofer_Dni = c.Chofer_Dni AND m.Cliente_Dni = cli.Cliente_Dni AND t.Turno_Hora_Inicio = m.Turno_Hora_Inicio AND t.Turno_Hora_Fin = m.Turno_Hora_Fin
+	GROUP BY Viaje_Cant_Kilometros, Viaje_Fecha, Viaje_Fecha, Viaje_Fecha, c.Chofer_Id, Auto_Patente, cli.Cliente_Id, t.Turno_Id
+END
+GO
+
 
 /*-----Aca se ejecutan todos los procedures de migracion de arriba------*/
 BEGIN
@@ -388,4 +404,5 @@ BEGIN
 	EXEC SQLGROUP.crear_usuarios;
 	EXEC SQLGROUP.migrar_choferesxturno;
 	EXEC SQLGROUP.migrar_autoxturno;
+	EXEC SQLGROUP.migrar_viajes;
 END
