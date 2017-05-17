@@ -345,6 +345,35 @@ BEGIN
 END
 GO
 
+IF(OBJECT_ID('SQLGROUP.migrar_choferesxturno') IS NOT NULL) 
+	DROP PROCEDURE SQLGROUP.migrar_choferesxturno
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_choferesxturno
+AS
+BEGIN
+	INSERT SQLGROUP.Chofer_Turno
+	SELECT Chofer_Id, Turno_Id
+	FROM gd_esquema.Maestra as m, SQLGROUP.Choferes as c, SQLGROUP.Turno as t
+	WHERE m.Chofer_Dni = c.Chofer_Dni AND  t.Turno_Hora_Inicio = m.Turno_Hora_Inicio AND t.Turno_Hora_Fin = m.Turno_Hora_Fin
+	GROUP BY Chofer_Id, Turno_Id
+END
+GO
+
+IF (OBJECT_ID('SQLGROUP.migrar_autoxturno') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_autoxturno
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_autoxturno
+AS
+BEGIN
+	INSERT SQLGROUP.Auto_Turno
+	SELECT Auto_Patente, Turno_Id
+	FROM gd_esquema.Maestra as m, SQLGROUP.Turno as t
+	WHERE t.Turno_Hora_Inicio = m.Turno_Hora_Inicio AND t.Turno_Hora_Fin = m.Turno_Hora_Fin
+	GROUP BY m.Auto_Patente, t.Turno_Id
+END
+GO
 
 
 /*-----Aca se ejecutan todos los procedures de migracion de arriba------*/
@@ -357,4 +386,6 @@ BEGIN
 	EXEC SQLGROUP.migrar_clientes;
 	EXEC SQLGROUP.migrar_automoviles;
 	EXEC SQLGROUP.crear_usuarios;
+	EXEC SQLGROUP.migrar_choferesxturno;
+	EXEC SQLGROUP.migrar_autoxturno;
 END
