@@ -375,6 +375,73 @@ BEGIN
 END
 GO
 
+IF (OBJECT_ID('SQLGROUP.migrar_viajes') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_viajes
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_viajes
+AS
+BEGIN
+	DECLARE viajes_cursor CURSOR FOR
+	SELECT Chofer_Id,Viaje_Fecha,Viaje_Cant_Kilometros,Auto_Patente,Cliente_Id, Turno_Id
+	FROM gd_esquema.Maestra as m, SQLGROUP.Turno as t, SQLGROUP.Clientes as cl, SQLGROUP.Choferes as ch
+	WHERE t.Turno_Hora_Fin = m.Turno_Hora_Fin AND t.Turno_Hora_Inicio = m.Turno_Hora_Inicio AND ch.Chofer_Dni = m.Chofer_Dni AND m.Cliente_Dni = cl.Cliente_Dni
+	GROUP BY Chofer_Id,Viaje_Fecha,Viaje_Cant_Kilometros,Auto_Patente,Cliente_Id, Turno_Id
+	ORDER BY m.Auto_Patente, m.Viaje_Fecha
+
+	/*Variable para el cursor*/
+	DECLARE @chofer_id NUMERIC(18,0), @viaje_fecha DATETIME, @viaje_cant_kilometros NUMERIC(18,0), @auto_patente VARCHAR(10), @cliente_id NUMERIC(18,0), @turno_id INTEGER;
+	/*Extras var*/
+	DECLARE @ultimo_horario DATETIME,@last_patente VARCHAR(10), @last_fecha DATETIME, @cantidad_iguales INTEGER;
+
+	OPEN viajes_cursor;
+	FETCH NEXT FROM viajes_cursor INTO @chofer_id, @viaje_fecha,@viaje_cant_kilometros, @auto_patente, @cliente_id, @turno_id;
+
+	/*Este tarda 20 segundos se puede ya que saco el cursor ordenado si no no se podria
+	Comparo con el resultado anterior de patente y fecha y si son iguales pongo hora inicio la hora terminacion del otro y le agrego dos minutos
+	algo parecido a la otra opcion*/
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		IF(@last_fecha = @viaje_fecha AND @last_patente = @auto_patente)
+		BEGIN
+			SET @cantidad_iguales = @cantidad_iguales + 1;
+		END
+		ELSE
+		BEGIN
+			SET @cantidad_iguales = 0;
+		END
+		
+		INSERT INTO Viajes (Viaje_Cant_Kilometros,Viaje_Fecha,Viaje_Fecha_INIC,Viaje_Fecha_Fin,Viaje_Chofer_Id,Viaje_Auto_Patente,Viaje_Turno_Id,Viaje_Cliente_Id)
+		VALUES (@viaje_cant_kilometros,@viaje_fecha,DATEADD(minute,@cantidad_iguales*2,@viaje_fecha), DATEADD(minute,@cantidad_iguales*2+2,@viaje_fecha),@chofer_id,@auto_patente,@turno_id,@cliente_id)
+		
+		SET @last_patente = @auto_patente;
+		SET @last_fecha = @viaje_fecha;
+		
+		FETCH NEXT FROM viajes_cursor INTO @chofer_id, @viaje_fecha,@viaje_cant_kilometros, @auto_patente, @cliente_id, @turno_id;
+	END
+
+	/* Esto tarda 5 minutos hay q mejorarlo, lo que debe tardar es q siempre busca en la tabla por cada uno, arriba se cambia
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		SELECT @ultimo_horario = MAX(Viaje_Fecha_Fin) FROM Viajes WHERE Viaje_Auto_Patente = @auto_patente AND Viaje_Fecha = @viaje_fecha
+		IF(@ultimo_horario IS NOT NULL)
+		BEGIN
+			/*Si entra aca es xq un auto ya tuvo un viaje, entonces agarro el horario de finalizacion y lo pongo como heca de inicio y le agrego dos minutos y le pongo como fechs de finalizacion*/
+			INSERT INTO Viajes (Viaje_Cant_Kilometros,Viaje_Fecha,Viaje_Fecha_INIC,Viaje_Fecha_Fin,Viaje_Chofer_Id,Viaje_Auto_Patente,Viaje_Turno_Id,Viaje_Cliente_Id)
+			VALUES (@viaje_cant_kilometros,@viaje_fecha,@ultimo_horario, DATEADD(minute,2,@ultimo_horario),@chofer_id,@auto_patente,@turno_id,@cliente_id)
+		END
+		ELSE
+		BEGIN
+			INSERT INTO Viajes (Viaje_Cant_Kilometros,Viaje_Fecha,Viaje_Fecha_INIC,Viaje_Fecha_Fin,Viaje_Chofer_Id,Viaje_Auto_Patente,Viaje_Turno_Id,Viaje_Cliente_Id)
+			VALUES (@viaje_cant_kilometros, @viaje_fecha, @viaje_fecha, DATEADD(MINUTE,2,@viaje_fecha),@chofer_id,@auto_patente,@turno_id,@cliente_id)
+		END
+		FETCH NEXT FROM viajes_cursor INTO @chofer_id, @viaje_fecha,@viaje_cant_kilometros, @auto_patente, @cliente_id, @turno_id;
+	END*/
+	CLOSE viajes_cursor;
+	DEALLOCATE viajes_cursor;
+END
+GO
+
 /*ESTAN MAL XQ HAY Q MIGRAR VIAJES BIEN, HAY Q INVENTARLES BIEN EL TEMA DE HORA INICIO Y FIN
 
 IF (OBJECT_ID('SQLGROUP.migrar_viajes') IS NOT NULL)
@@ -438,7 +505,7 @@ BEGIN
 	EXEC SQLGROUP.crear_usuarios;
 	EXEC SQLGROUP.migrar_choferesxturno;
 	EXEC SQLGROUP.migrar_autoxturno;
-	/*EXEC SQLGROUP.migrar_viajes;
-	EXEC SQLGROUP.migrar_facturas;
+	EXEC SQLGROUP.migrar_viajes;
+	/*EXEC SQLGROUP.migrar_facturas;
 	EXEC SQLGROUP.migrar_viajesxfactura;*/
 END
