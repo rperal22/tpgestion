@@ -21,5 +21,20 @@ namespace UberFrba.Registro_Viajes
         {
 
         }
+
+        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            Me.Label7.Text = CStr(Me.MonthCalendar1.SelectionRange.Start)
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            Me.Label7.Text = CStr(Me.DateTimePicker1.Value)
+        }
     }
 }
