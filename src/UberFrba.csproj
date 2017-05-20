@@ -44,11 +44,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abm Automovil\altaAutomovil.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Automovil\altaAutomovil.Designer.cs">
+      <DependentUpon>altaAutomovil.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Automovil\busquedaAutomovil.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Automovil\busquedaAutomovil.Designer.cs">
+      <DependentUpon>busquedaAutomovil.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Automovil\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Abm Automovil\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Automovil\modificarEliminar.Designer.cs" />
+    <Compile Include="Abm Chofer\altaChofer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Chofer\altaChofer.Designer.cs">
+      <DependentUpon>altaChofer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Chofer\busquedaChofer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Chofer\busquedaChofer.Designer.cs">
+      <DependentUpon>busquedaChofer.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Chofer\Form1.cs">
       <SubType>Form</SubType>
@@ -56,17 +81,71 @@
     <Compile Include="Abm Chofer\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Chofer\formularioModificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Chofer\formularioModificacion.Designer.cs">
+      <DependentUpon>formularioModificacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Chofer\listadoDeSeleccion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Chofer\listadoDeSeleccion.Designer.cs">
+      <DependentUpon>listadoDeSeleccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Cliente\altaCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Cliente\altaCliente.Designer.cs">
+      <DependentUpon>altaCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Cliente\busquedaCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Cliente\busquedaCliente.Designer.cs">
+      <DependentUpon>busquedaCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Cliente\elegirCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Cliente\elegirCliente.Designer.cs">
+      <DependentUpon>elegirCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Cliente\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Abm Cliente\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Cliente\formularioModificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Cliente\formularioModificacion.Designer.cs">
+      <DependentUpon>formularioModificacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Cliente\listadoDeSeleccion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Cliente\listadoDeSeleccion.Designer.cs">
+      <DependentUpon>listadoDeSeleccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Rol\altaRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Rol\altaRol.Designer.cs">
+      <DependentUpon>altaRol.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Rol\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Abm Rol\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Facturacion\facturacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Facturacion\facturacion.Designer.cs">
+      <DependentUpon>facturacion.cs</DependentUpon>
     </Compile>
     <Compile Include="Facturacion\Form1.cs">
       <SubType>Form</SubType>
@@ -91,6 +170,12 @@
     <Compile Include="Listado Estadistico\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="login.Designer.cs">
+      <DependentUpon>login.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registro Viajes\Form1.cs">
@@ -99,12 +184,67 @@
     <Compile Include="Registro Viajes\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Registro Viajes\registroViaje.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Registro Viajes\registroViaje.Designer.cs">
+      <DependentUpon>registroViaje.cs</DependentUpon>
+    </Compile>
     <Compile Include="Rendicion Viajes\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Rendicion Viajes\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Rendicion Viajes\rendirViaje.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Rendicion Viajes\rendirViaje.Designer.cs">
+      <DependentUpon>rendirViaje.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Abm Automovil\altaAutomovil.resx">
+      <DependentUpon>altaAutomovil.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Automovil\busquedaAutomovil.resx">
+      <DependentUpon>busquedaAutomovil.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Automovil\modificarEliminar.resx" />
+    <EmbeddedResource Include="Abm Chofer\altaChofer.resx">
+      <DependentUpon>altaChofer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Chofer\busquedaChofer.resx">
+      <DependentUpon>busquedaChofer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Chofer\formularioModificacion.resx">
+      <DependentUpon>formularioModificacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Chofer\listadoDeSeleccion.resx">
+      <DependentUpon>listadoDeSeleccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Cliente\altaCliente.resx">
+      <DependentUpon>altaCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Cliente\busquedaCliente.resx">
+      <DependentUpon>busquedaCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Cliente\elegirCliente.resx">
+      <DependentUpon>elegirCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Cliente\formularioModificacion.resx">
+      <DependentUpon>formularioModificacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Cliente\listadoDeSeleccion.resx">
+      <DependentUpon>listadoDeSeleccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Rol\altaRol.resx">
+      <DependentUpon>altaRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Facturacion\facturacion.resx">
+      <DependentUpon>facturacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="login.resx">
+      <DependentUpon>login.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -114,6 +254,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Registro Viajes\registroViaje.resx">
+      <DependentUpon>registroViaje.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rendicion Viajes\rendirViaje.resx">
+      <DependentUpon>rendirViaje.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="GD1C2017DataSet.xsc">
       <DependentUpon>GD1C2017DataSet.xsd</DependentUpon>
     </None>

@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace UberFrba.Abm_Chofer
+namespace UberFrba
 {
-    public partial class modificarEliminarChofer : Form
+    public partial class login : Form
     {
-        public modificarEliminarChofer()
+        public login()
         {
             InitializeComponent();
         }
