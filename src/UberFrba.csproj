@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abm Automovil\ABMAutomovil.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Automovil\ABMAutomovil.Designer.cs">
+      <DependentUpon>ABMAutomovil.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Automovil\altaAutomovil.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,6 +74,12 @@
     <Compile Include="Abm Automovil\listadoSeleccionBajaAutomovil.Designer.cs">
       <DependentUpon>listadoSeleccionBajaAutomovil.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Chofer\ABMChofer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Chofer\ABMChofer.Designer.cs">
+      <DependentUpon>ABMChofer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Chofer\altaChofer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +103,12 @@
     </Compile>
     <Compile Include="Abm Chofer\listadoSeleccionBajaChofer.Designer.cs">
       <DependentUpon>listadoSeleccionBajaChofer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Cliente\ABMCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Cliente\ABMCliente.Designer.cs">
+      <DependentUpon>ABMCliente.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Cliente\altaCliente.cs">
       <SubType>Form</SubType>
@@ -160,6 +178,9 @@
     <Compile Include="Rendicion Viajes\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Abm Automovil\ABMAutomovil.resx">
+      <DependentUpon>ABMAutomovil.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Abm Automovil\altaAutomovil.resx">
       <DependentUpon>altaAutomovil.cs</DependentUpon>
     </EmbeddedResource>
@@ -172,6 +193,9 @@
     <EmbeddedResource Include="Abm Automovil\listadoSeleccionBajaAutomovil.resx">
       <DependentUpon>listadoSeleccionBajaAutomovil.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Abm Chofer\ABMChofer.resx">
+      <DependentUpon>ABMChofer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Abm Chofer\altaChofer.resx">
       <DependentUpon>altaChofer.cs</DependentUpon>
     </EmbeddedResource>
@@ -183,6 +207,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Chofer\modificacionChofer.resx">
       <DependentUpon>modificacionChofer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Cliente\ABMCliente.resx">
+      <DependentUpon>ABMCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Cliente\altaCliente.resx">
       <DependentUpon>altaCliente.cs</DependentUpon>
