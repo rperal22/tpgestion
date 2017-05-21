@@ -179,11 +179,11 @@
     <Compile Include="Registro Viajes\registroViaje.Designer.cs">
       <DependentUpon>registroViaje.cs</DependentUpon>
     </Compile>
-    <Compile Include="Rendicion Viajes\Form1.cs">
+    <Compile Include="Rendicion Viajes\rendicionViaje.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Rendicion Viajes\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Rendicion Viajes\rendicionViaje.Designer.cs">
+      <DependentUpon>rendicionViaje.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Abm Automovil\ABMAutomovil.resx">
       <DependentUpon>ABMAutomovil.cs</DependentUpon>
@@ -256,6 +256,9 @@
     </Compile>
     <EmbeddedResource Include="Registro Viajes\registroViaje.resx">
       <DependentUpon>registroViaje.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rendicion Viajes\rendicionViaje.resx">
+      <DependentUpon>rendicionViaje.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
