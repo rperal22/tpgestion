@@ -56,11 +56,11 @@
     <Compile Include="Abm Automovil\altaAutomovil.Designer.cs">
       <DependentUpon>altaAutomovil.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Automovil\modificacion Automovil.cs">
+    <Compile Include="Abm Automovil\modificacionAutomovil.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Automovil\modificacion Automovil.Designer.cs">
-      <DependentUpon>modificacion Automovil.cs</DependentUpon>
+    <Compile Include="Abm Automovil\modificacionAutomovil.Designer.cs">
+      <DependentUpon>modificacionAutomovil.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Automovil\formularioBajaAutomovil.cs">
       <SubType>Form</SubType>
@@ -134,6 +134,12 @@
     <Compile Include="Abm Cliente\modificacionCliente.Designer.cs">
       <DependentUpon>modificacionCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Rol\ABMRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Rol\ABMRol.Designer.cs">
+      <DependentUpon>ABMRol.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Rol\altaRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,8 +190,8 @@
     <EmbeddedResource Include="Abm Automovil\altaAutomovil.resx">
       <DependentUpon>altaAutomovil.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Automovil\modificacion Automovil.resx">
-      <DependentUpon>modificacion Automovil.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Automovil\modificacionAutomovil.resx">
+      <DependentUpon>modificacionAutomovil.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Automovil\formularioBajaAutomovil.resx">
       <DependentUpon>formularioBajaAutomovil.cs</DependentUpon>
@@ -222,6 +228,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Cliente\modificacionCliente.resx">
       <DependentUpon>modificacionCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Rol\ABMRol.resx">
+      <DependentUpon>ABMRol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\altaRol.resx">
       <DependentUpon>altaRol.cs</DependentUpon>

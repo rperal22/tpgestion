@@ -16,5 +16,17 @@ namespace UberFrba.Abm_Chofer
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            altaChofer ver = new altaChofer();
+            ver.Show();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            formularioBajaChofer ver = new formularioBajaChofer();
+            ver.Show();
+        }
     }
 }

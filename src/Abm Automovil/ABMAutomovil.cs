@@ -16,5 +16,21 @@ namespace UberFrba.Abm_Automovil
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            altaAutomovil ver = new altaAutomovil();
+            ver.Show();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+       
+        }
     }
 }
