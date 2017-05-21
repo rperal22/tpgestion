@@ -19,18 +19,20 @@ namespace UberFrba.Abm_Automovil
 
         private void button1_Click(object sender, EventArgs e)
         {
-            altaAutomovil ver = new altaAutomovil();
-            ver.Show();
+            altaAutomovil alta = new altaAutomovil();
+            alta.Show(this);
+      
+        
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-           
+          
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-       
+   
         }
     }
 }

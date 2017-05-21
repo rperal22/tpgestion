@@ -16,5 +16,17 @@ namespace UberFrba.Abm_Cliente
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            altaCliente alta = new altaCliente();
+            alta.Show(this);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            formularioBajaCliente baja = new formularioBajaCliente();
+            baja.Show(this);
+        }
     }
 }

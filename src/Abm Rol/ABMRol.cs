@@ -16,5 +16,16 @@ namespace UberFrba.Abm_Rol
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            altaRol alta = new altaRol();
+            alta.Show(this);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
