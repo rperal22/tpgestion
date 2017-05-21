@@ -152,6 +152,7 @@
     <Compile Include="Abm Rol\listadoSeleccionModificar.Designer.cs">
       <DependentUpon>listadoSeleccionModificar.cs</DependentUpon>
     </Compile>
+    <Compile Include="conexionBase.cs" />
     <Compile Include="Facturacion\Facturar.cs">
       <SubType>Form</SubType>
     </Compile>

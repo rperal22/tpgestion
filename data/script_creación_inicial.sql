@@ -134,7 +134,8 @@ BEGIN
 
 	CREATE TABLE SQLGROUP.Roles (
 		Rol_Nombre VARCHAR(30) PRIMARY KEY,
-		Rol_Descripcion VARCHAR(255) NOT NULL DEFAULT 'Habilitado'
+		Rol_Descripcion VARCHAR(255) NOT NULL,
+		Rol_Estado VARCHAR(20) NOT NULL DEFAULT 'Habilitado'
 	);
 
 	CREATE TABLE SQLGROUP.Funcionalidades (
@@ -497,7 +498,7 @@ GO
 BEGIN
 	EXEC SQLGROUP.crear_tablas;
 	EXEC SQLGROUP.crear_roles;
-	EXEC.SQLGROUP.migrar_turnos;
+	EXEC SQLGROUP.migrar_turnos;
 	EXEC SQLGROUP.crear_administradores;
 	EXEC SQLGROUP.migrar_choferes;
 	EXEC SQLGROUP.migrar_clientes;
@@ -509,3 +510,40 @@ BEGIN
 	/*EXEC SQLGROUP.migrar_facturas;
 	EXEC SQLGROUP.migrar_viajesxfactura;*/
 END
+
+/* --- Aca se crean los elementos de bases de datos que  resolveran las funcionalidades-----*/
+
+/* ---------1) ABM de rol ----------------*/
+
+/* ---------2) LOGIN ------------------------------------------------------------------------------------------------------*/
+
+/* reinicia login tras un logueo correcto*/
+CREATE PROCEDURE SQLGROUP.ReiniciarLogin
+@NOMBRE VARCHAR(255)
+AS
+UPDATE SQLGROUP.Usuarios SET Usuario_Intentos = 0 WHERE Usuario_Id = @NOMBRE
+GO
+
+/* actualiza el contrador de logueo incorrecto*/
+CREATE PROCEDURE SQLGROUP.ActualizarContador
+@NOMBRE VARCHAR(255)
+AS  
+BEGIN
+UPDATE SQLGROUP.Usuarios SET Usuario_Intentos= Usuario_Intentos + 1 WHERE Usuario_Id=@nombre; 
+SELECT Usuario_Intentos FROM SQLGROUP.Usuarios WHERE Usuario_Id=@nombre
+END
+GO
+
+/* deshabilitar un usuario por id */ 
+CREATE PROCEDURE SQLGROUP.DeshabilitarUsuario
+@ID_USER VARCHAR(255)
+AS
+BEGIN
+UPDATE SQLGROUP.Usuarios SET Usuario_Estado='Deshabilitado' WHERE Usuario_Id= @ID_USER;
+GO
+
+---cargar roles no dados de baja
+CREATE PROCEDURE SQLGROUP.CargarRoles
+AS 
+SELECT * FROM SQLGROUP.Roles WHERE Rol_Estado= 'Habilitado'
+GO

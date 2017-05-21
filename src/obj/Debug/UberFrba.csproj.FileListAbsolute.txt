@@ -63,3 +63,6 @@ C:\Users\vaio\Documents\GitHub\tpgestion\src\obj\Debug\UberFrba.Facturacion.Fact
 C:\Users\vaio\Documents\GitHub\tpgestion\src\obj\Debug\UberFrba.login.resources
 C:\Users\vaio\Documents\GitHub\tpgestion\src\obj\Debug\UberFrba.Properties.Resources.resources
 C:\Users\vaio\Documents\GitHub\tpgestion\src\obj\Debug\UberFrba.csproj.GenerateResource.Cache
+C:\Users\Nicolas\tpgestion\src\bin\Debug\UberFrba.exe.config
+C:\Users\Nicolas\tpgestion\src\obj\Debug\UberFrba.exe
+C:\Users\Nicolas\tpgestion\src\obj\Debug\UberFrba.pdb
