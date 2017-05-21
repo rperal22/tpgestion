@@ -152,6 +152,12 @@
     <Compile Include="Abm Rol\listadoSeleccionModificar.Designer.cs">
       <DependentUpon>listadoSeleccionModificar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Turno\altaTurno.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Turno\altaTurno.Designer.cs">
+      <DependentUpon>altaTurno.cs</DependentUpon>
+    </Compile>
     <Compile Include="conexionBase.cs" />
     <Compile Include="Facturacion\Facturar.cs">
       <SubType>Form</SubType>
@@ -238,6 +244,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\listadoSeleccionModificar.resx">
       <DependentUpon>listadoSeleccionModificar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Turno\altaTurno.resx">
+      <DependentUpon>altaTurno.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Facturacion\Facturar.resx">
       <DependentUpon>Facturar.cs</DependentUpon>
