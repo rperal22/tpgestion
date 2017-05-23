@@ -66,3 +66,6 @@ C:\Users\vaio\Documents\GitHub\tpgestion\src\obj\Debug\UberFrba.csproj.GenerateR
 C:\Users\Nicolas\tpgestion\src\bin\Debug\UberFrba.exe.config
 C:\Users\Nicolas\tpgestion\src\obj\Debug\UberFrba.exe
 C:\Users\Nicolas\tpgestion\src\obj\Debug\UberFrba.pdb
+C:\Users\vaio\Documents\GitHub\tpgestion\src\obj\Debug\UberFrba.Abm_Turno.altaTurno.resources
+C:\Users\vaio\Documents\GitHub\tpgestion\src\obj\Debug\UberFrba.Registro_Viajes.registroViaje.resources
+C:\Users\vaio\Documents\GitHub\tpgestion\src\obj\Debug\UberFrba.Rendicion_Viajes.rendicionViaje.resources
