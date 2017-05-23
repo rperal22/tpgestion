@@ -316,14 +316,17 @@ IF(OBJECT_ID('SQLGROUP.crear_usuarios') IS NOT NULL)
 GO
 
 /*Usuario: Nombre Password: Nombre, Falta hacer el trigger que cifra las pass*/
+/* Para llamar una fucion desde qualquier parte del SP debe hacer algo como esto
+select [SchemaName].[FunctionName] (Param1, Param2....); */
+
 CREATE PROCEDURE SQLGROUP.crear_usuarios
 AS
 BEGIN
-	INSERT INTO SQLGROUP.Usuarios (Usuario_Id, Usuario_Password,Usuario_DNI) 
+	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,SELECT SQLGROUP.cifrado_claves(Usuario_Password),Usuario_DNI) -- se agrega funcion de cifrado de claves
 	SELECT Chofer_Nombre + '_' + Chofer_Apellido,Chofer_Nombre,Chofer_Dni 
 	FROM SQLGROUP.Choferes
 
-	INSERT INTO SQLGROUP.Usuarios (Usuario_Id, Usuario_Password,Usuario_DNI)
+	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,SELECT SQLGROUP.cifrado_claves(Usuario_Password),Usuario_DNI)
 	SELECT Cliente_Nombre + '_' + Cliente_Apellido,Cliente_Nombre,Cliente_Dni
 	FROM SQLGROUP.Clientes,SQLGROUP.Usuarios
 	WHERE Cliente_Dni != Usuario_DNI
@@ -547,3 +550,71 @@ CREATE PROCEDURE SQLGROUP.CargarRoles
 AS 
 SELECT * FROM SQLGROUP.Roles WHERE Rol_Estado= 'Habilitado'
 GO
+
+--Funcion que recibe un varchar y lo devuelve cifrado
+CREATE FUNCTION cifrado_claves(@password VARCHAR(64))
+RETURNS VARCHAR(64)
+AS
+BEGIN
+	RETURN CONVERT(CHAR(64),HASHBYTES('SHA2_256',@password),1);
+END
+GO
+/* --------- STORED PROCEDURE LOGIN -----------------*/
+
+CREATE PROCEDURE SQLGROUP.login @usuario varchar (20), @password varchar (64), @a int OUTPUT
+AS
+BEGIN
+DECLARE @cant_fallos AS int
+
+IF (EXISTS (SELECT 1 FROM SQLGROUP.Usuarios WHERE Usuario_Id = @usuario))
+ BEGIN
+  IF (SELECT SQLGROUP.cifrado_claves(@password) = (SELECT Usuario_Password FROM SQLGROUP.Usuarios WHERE Usuario_Id = @usuario))
+  BEGIN
+  UPDATE SQLGROUP.Usuarios SET Usuario_Intentos =0 WHERE Usuario_Id=@usuario
+  IF ('Deshabilitado' = (SELECT Usuario_Estado FROM SQLGROUP.Usuarios WHERE Usuario_Id=@usuario))
+   BEGIN
+   SET @a=0 --usuario inhabilitado
+   SELECT @a
+   END
+  ELSE
+   BEGIN
+   IF ('Habilitado' = (SELECT Usuario_Estado FROM SQLGROUP.Usuarios WHERE Usuario_Id = @usuario))
+    BEGIN
+    set @a = 3 --ingreso correcto
+    SELECT @a
+    --ELSE SELECCIONAR Y RETORNAR EL/LOS ROL/ES ASOCIADO AL USUARIO
+    END
+   ELSE
+    --ESTADO =2
+    BEGIN
+    set @a = 5
+    SELECT @a
+    END 
+   
+   END
+  END 
+ ELSE 
+ BEGIN
+ SET @cant_fallos= (SELECT Usuario_Intentos FROM SQLGROUP.Usuarios WHERE Usuario_Id=@usuario)
+ IF (@cant_fallos= 2)
+ --TERCERA VEZ EN FALLAR
+  BEGIN
+  UPDATE SQLGROUP.Usuarios SET estado=0 WHERE Usuario_Id=@usuario
+  SET @a=1 --la cantidad de fallos ha sido alcanzada
+  SELECT @a
+  END
+ ELSE 
+  BEGIN
+  UPDATE SQLGROUP.Usuarios SET Usuario_Intentos = @cant_fallos + 1 WHERE usuario=@usuario
+  SET @a=2 --contraseña incorrecta
+  SELECT @a
+  END
+ END
+END
+ELSE
+ BEGIN
+ SET @a=4 --usuario inexistente
+ SELECT @a
+ END
+END
+GO 
