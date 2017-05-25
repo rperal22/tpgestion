@@ -29,6 +29,7 @@ namespace UberFrba.Abm_Cliente
             textBoxDNI.Clear();
             textBoxTel.Clear();
             textBoxDireccion.Clear();
+            textBoxCodPos.Clear();
             textBoxMail.Clear();
             textBoxFecNac.Clear();
         }
@@ -37,62 +38,73 @@ namespace UberFrba.Abm_Cliente
         {
             //Conexion a base de datos
             conexionBase.ObtenerStringConexion();
-            try
-            {
-                //Verificación de campos obligatorios
-                string mensaje = "";
+            /*    try
+                {
+                    //Verificación de campos obligatorios
+                    string mensaje = "";
                 
-                if (textBoxNombre.Text == "")
-                {
-                    mensaje = mensaje + "INGRESE NOMBRE ";
-                }
+                    if (textBoxNombre.Text == "")
+                    {
+                        mensaje = mensaje + "INGRESE NOMBRE ";
+                    }
 
-                if (textBoxApellido.Text == "")
-                {
-                    mensaje = mensaje + "INGRESE APELLIDO ";
-                }
+                    if (textBoxApellido.Text == "")
+                    {
+                        mensaje = mensaje + "INGRESE APELLIDO ";
+                    }
 
-                if (textBoxDNI.Text == "")
-                {
-                    mensaje = mensaje + "INGRESE DNI ";
-                }
+                    if (textBoxDNI.Text == "")
+                    {
+                        mensaje = mensaje + "INGRESE DNI ";
+                    }
 
-                //VER TELEFONO DATO UNICO
+                    //VER TELEFONO DATO UNICO
 
-                if (textBoxDireccion.Text == "")
-                {
-                    mensaje = mensaje + "INGRESE DIRECCION ";
-                }
+                    if (textBoxDireccion.Text == "")
+                    {
+                        mensaje = mensaje + "INGRESE DIRECCION ";
+                    }
 
-                if (textBoxCodPos.Text == "")
-                {
-                    mensaje = mensaje + "CODIGO POSTAL ";
-                }
+                    if (textBoxCodPos.Text == "")
+                    {
+                        mensaje = mensaje + "CODIGO POSTAL ";
+                    }
 
-                if (textBoxFecNac.Text == "")
-                {
-                    mensaje = mensaje + "INGRESE FECHA DE NACIMIENTO ";
-                }
+                    if (textBoxFecNac.Text == "")
+                    {
+                        mensaje = mensaje + "INGRESE FECHA DE NACIMIENTO ";
+                    }
 
+            
 
+                } 
 
+                 */
 
+            
 
-
-
-
-            }
+             
         }
 
 
-
-
+         
 
 
 
         private void button3_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void textBoxDNI_TextChanged(object sender, EventArgs e)
+        {
+      
+
+        }
+
+        private void maskedTextDNI_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
         }
     }
 }
