@@ -26,64 +26,20 @@ namespace UberFrba.Abm_Cliente
         {
             textBoxNombre.Clear();
             textBoxApellido.Clear();
-            textBoxDNI.Clear();
             textBoxTel.Clear();
             textBoxDireccion.Clear();
             textBoxCodPos.Clear();
             textBoxMail.Clear();
             textBoxFecNac.Clear();
+      
         }
 
         private void button2_Click(object sender, EventArgs e) //Guardar
         {
-            //Conexion a base de datos
-            conexionBase.ObtenerStringConexion();
-            /*    try
-                {
-                    //Verificación de campos obligatorios
-                    string mensaje = "";
+           
                 
-                    if (textBoxNombre.Text == "")
-                    {
-                        mensaje = mensaje + "INGRESE NOMBRE ";
-                    }
 
-                    if (textBoxApellido.Text == "")
-                    {
-                        mensaje = mensaje + "INGRESE APELLIDO ";
-                    }
 
-                    if (textBoxDNI.Text == "")
-                    {
-                        mensaje = mensaje + "INGRESE DNI ";
-                    }
-
-                    //VER TELEFONO DATO UNICO
-
-                    if (textBoxDireccion.Text == "")
-                    {
-                        mensaje = mensaje + "INGRESE DIRECCION ";
-                    }
-
-                    if (textBoxCodPos.Text == "")
-                    {
-                        mensaje = mensaje + "CODIGO POSTAL ";
-                    }
-
-                    if (textBoxFecNac.Text == "")
-                    {
-                        mensaje = mensaje + "INGRESE FECHA DE NACIMIENTO ";
-                    }
-
-            
-
-                } 
-
-                 */
-
-            
-
-             
         }
 
 
