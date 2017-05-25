@@ -16,5 +16,15 @@ namespace UberFrba.Abm_Rol
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            textBoxNombre.Clear();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

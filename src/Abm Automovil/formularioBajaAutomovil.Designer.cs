@@ -31,10 +31,10 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxChofer = new System.Windows.Forms.TextBox();
+            this.textBoxPatente = new System.Windows.Forms.TextBox();
+            this.textBoxModelo = new System.Windows.Forms.TextBox();
+            this.textBoxMarca = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -59,13 +59,14 @@
             this.button2.TabIndex = 4;
             this.button2.Text = "Limpiar";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox4);
-            this.groupBox1.Controls.Add(this.textBox3);
-            this.groupBox1.Controls.Add(this.textBox2);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.textBoxChofer);
+            this.groupBox1.Controls.Add(this.textBoxPatente);
+            this.groupBox1.Controls.Add(this.textBoxModelo);
+            this.groupBox1.Controls.Add(this.textBoxMarca);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
@@ -77,33 +78,33 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos del Automóvil";
             // 
-            // textBox4
+            // textBoxChofer
             // 
-            this.textBox4.Location = new System.Drawing.Point(100, 118);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 8;
+            this.textBoxChofer.Location = new System.Drawing.Point(100, 118);
+            this.textBoxChofer.Name = "textBoxChofer";
+            this.textBoxChofer.Size = new System.Drawing.Size(100, 20);
+            this.textBoxChofer.TabIndex = 8;
             // 
-            // textBox3
+            // textBoxPatente
             // 
-            this.textBox3.Location = new System.Drawing.Point(100, 92);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 7;
+            this.textBoxPatente.Location = new System.Drawing.Point(100, 92);
+            this.textBoxPatente.Name = "textBoxPatente";
+            this.textBoxPatente.Size = new System.Drawing.Size(100, 20);
+            this.textBoxPatente.TabIndex = 7;
             // 
-            // textBox2
+            // textBoxModelo
             // 
-            this.textBox2.Location = new System.Drawing.Point(100, 66);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 6;
+            this.textBoxModelo.Location = new System.Drawing.Point(100, 66);
+            this.textBoxModelo.Name = "textBoxModelo";
+            this.textBoxModelo.Size = new System.Drawing.Size(100, 20);
+            this.textBoxModelo.TabIndex = 6;
             // 
-            // textBox1
+            // textBoxMarca
             // 
-            this.textBox1.Location = new System.Drawing.Point(100, 40);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 5;
+            this.textBoxMarca.Location = new System.Drawing.Point(100, 40);
+            this.textBoxMarca.Name = "textBoxMarca";
+            this.textBoxMarca.Size = new System.Drawing.Size(100, 20);
+            this.textBoxMarca.TabIndex = 5;
             // 
             // label5
             // 
@@ -162,10 +163,10 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxChofer;
+        private System.Windows.Forms.TextBox textBoxPatente;
+        private System.Windows.Forms.TextBox textBoxModelo;
+        private System.Windows.Forms.TextBox textBoxMarca;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;

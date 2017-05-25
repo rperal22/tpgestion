@@ -28,5 +28,10 @@ namespace UberFrba.Abm_Chofer
             formularioBajaChofer baja = new formularioBajaChofer();
             baja.Show();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

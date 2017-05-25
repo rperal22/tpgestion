@@ -24,7 +24,13 @@ namespace UberFrba.Abm_Cliente
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            textBoxNombre.Clear();
+            textBoxApellido.Clear();
+            textBoxDNI.Clear();
+            textBoxTel.Clear();
+            textBoxDireccion.Clear();
+            textBoxMail.Clear();
+            textBoxFecNac.Clear();
         }
 
         private void button2_Click(object sender, EventArgs e)

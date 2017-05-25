@@ -16,5 +16,19 @@ namespace UberFrba.Abm_Turno
         {
             InitializeComponent();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            textBoxDesc.Clear();
+            textBoxKM.Clear();
+            textBoxprecio.Clear();
+           
+
+        }
     }
 }

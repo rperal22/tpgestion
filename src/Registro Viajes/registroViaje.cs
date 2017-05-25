@@ -16,5 +16,18 @@ namespace UberFrba.Registro_Viajes
         {
             InitializeComponent();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            textBoxAuto.Clear();
+            textBoxIniViaje.Clear();
+            textBoxFinViaje.Clear();
+            textBoxKM.Clear();
+        }
     }
 }

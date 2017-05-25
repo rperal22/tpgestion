@@ -16,5 +16,14 @@ namespace UberFrba.Abm_Automovil
         {
             InitializeComponent();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            textBoxMarca.Clear();
+            textBoxPatente.Clear();
+            textBoxModelo.Clear();
+            textBoxChofer.Clear();
+            
+        }
     }
 }
