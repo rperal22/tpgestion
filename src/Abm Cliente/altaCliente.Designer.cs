@@ -44,10 +44,10 @@
             this.textBoxDireccion = new System.Windows.Forms.TextBox();
             this.textBoxTel = new System.Windows.Forms.TextBox();
             this.textBoxMail = new System.Windows.Forms.TextBox();
-            this.textBoxDNI = new System.Windows.Forms.TextBox();
             this.textBoxApellido = new System.Windows.Forms.TextBox();
             this.textBoxNombre = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.maskedTextDNI = new System.Windows.Forms.MaskedTextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,6 +73,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.maskedTextDNI);
             this.groupBox1.Controls.Add(this.textBoxFecNac);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.textBoxCodPos);
@@ -86,7 +87,6 @@
             this.groupBox1.Controls.Add(this.textBoxDireccion);
             this.groupBox1.Controls.Add(this.textBoxTel);
             this.groupBox1.Controls.Add(this.textBoxMail);
-            this.groupBox1.Controls.Add(this.textBoxDNI);
             this.groupBox1.Controls.Add(this.textBoxApellido);
             this.groupBox1.Controls.Add(this.textBoxNombre);
             this.groupBox1.Location = new System.Drawing.Point(41, 22);
@@ -203,13 +203,6 @@
             this.textBoxMail.Size = new System.Drawing.Size(100, 20);
             this.textBoxMail.TabIndex = 3;
             // 
-            // textBoxDNI
-            // 
-            this.textBoxDNI.Location = new System.Drawing.Point(119, 81);
-            this.textBoxDNI.Name = "textBoxDNI";
-            this.textBoxDNI.Size = new System.Drawing.Size(100, 20);
-            this.textBoxDNI.TabIndex = 2;
-            // 
             // textBoxApellido
             // 
             this.textBoxApellido.Location = new System.Drawing.Point(119, 55);
@@ -234,6 +227,15 @@
             this.button3.Text = "Cancelar";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // maskedTextDNI
+            // 
+            this.maskedTextDNI.Location = new System.Drawing.Point(119, 81);
+            this.maskedTextDNI.Mask = "99999999";
+            this.maskedTextDNI.Name = "maskedTextDNI";
+            this.maskedTextDNI.Size = new System.Drawing.Size(100, 20);
+            this.maskedTextDNI.TabIndex = 16;
+            this.maskedTextDNI.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.maskedTextDNI_MaskInputRejected);
             // 
             // altaCliente
             // 
@@ -268,11 +270,11 @@
         private System.Windows.Forms.TextBox textBoxDireccion;
         private System.Windows.Forms.TextBox textBoxTel;
         private System.Windows.Forms.TextBox textBoxMail;
-        private System.Windows.Forms.TextBox textBoxDNI;
         private System.Windows.Forms.TextBox textBoxApellido;
         private System.Windows.Forms.TextBox textBoxNombre;
         private System.Windows.Forms.TextBox textBoxFecNac;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.MaskedTextBox maskedTextDNI;
     }
 }

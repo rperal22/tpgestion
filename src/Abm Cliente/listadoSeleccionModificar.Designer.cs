@@ -31,13 +31,13 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBoxDNI = new System.Windows.Forms.TextBox();
             this.textBoxApellido = new System.Windows.Forms.TextBox();
             this.textBoxNombre = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
+            this.maskedTextDNI = new System.Windows.Forms.MaskedTextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,7 +62,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBoxDNI);
+            this.groupBox1.Controls.Add(this.maskedTextDNI);
             this.groupBox1.Controls.Add(this.textBoxApellido);
             this.groupBox1.Controls.Add(this.textBoxNombre);
             this.groupBox1.Controls.Add(this.label3);
@@ -74,13 +74,6 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filtros de Búsqueda";
-            // 
-            // textBoxDNI
-            // 
-            this.textBoxDNI.Location = new System.Drawing.Point(215, 27);
-            this.textBoxDNI.Name = "textBoxDNI";
-            this.textBoxDNI.Size = new System.Drawing.Size(100, 20);
-            this.textBoxDNI.TabIndex = 5;
             // 
             // textBoxApellido
             // 
@@ -133,6 +126,14 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // maskedTextDNI
+            // 
+            this.maskedTextDNI.Location = new System.Drawing.Point(206, 27);
+            this.maskedTextDNI.Mask = "99999999";
+            this.maskedTextDNI.Name = "maskedTextDNI";
+            this.maskedTextDNI.Size = new System.Drawing.Size(100, 20);
+            this.maskedTextDNI.TabIndex = 17;
+            // 
             // listadoSeleccionModificar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -155,12 +156,12 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textBoxDNI;
         private System.Windows.Forms.TextBox textBoxApellido;
         private System.Windows.Forms.TextBox textBoxNombre;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.MaskedTextBox maskedTextDNI;
     }
 }
