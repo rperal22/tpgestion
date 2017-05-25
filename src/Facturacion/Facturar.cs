@@ -16,5 +16,19 @@ namespace UberFrba.Facturacion
         {
             InitializeComponent();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            textBoxIniFac.Clear();
+            textBoxFinFac.Clear();
+            textBoxClie.Clear();
+            textBoxViajes.Clear();
+            textBoxTotFac.Clear();
+        }
     }
 }
