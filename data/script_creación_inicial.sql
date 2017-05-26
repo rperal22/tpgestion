@@ -241,6 +241,11 @@ BEGIN
 END
 GO
 
+BEGIN
+	EXEC SQLGROUP.crear_tablas;
+END
+GO
+
 IF(OBJECT_ID('SQLGROUP.migrar_choferes') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_choferes
 GO
@@ -302,11 +307,11 @@ GO
 CREATE PROCEDURE SQLGROUP.crear_roles
 AS
 BEGIN
-	INSERT INTO SQLGROUP.Roles
+	INSERT INTO SQLGROUP.Roles (Rol_Nombre,Rol_Descripcion)
 	VALUES ('Administrador','Rol administrativo del sistema');
-	INSERT INTO SQLGROUP.Roles
+	INSERT INTO SQLGROUP.Roles (Rol_Nombre,Rol_Descripcion)
 	VALUES ('Cliente','Rol cliente del sistema');
-	INSERT INTO SQLGROUP.Roles
+	INSERT INTO SQLGROUP.Roles (Rol_Nombre,Rol_Descripcion)
 	VALUES ('Chofer','Rol chofer del sistema');
 END
 GO
@@ -322,15 +327,18 @@ select [SchemaName].[FunctionName] (Param1, Param2....); */
 CREATE PROCEDURE SQLGROUP.crear_usuarios
 AS
 BEGIN
-	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,SELECT SQLGROUP.cifrado_claves(Usuario_Password),Usuario_DNI) -- se agrega funcion de cifrado de claves
+	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_Password,Usuario_DNI) -- se agrega funcion de cifrado de claves
 	SELECT Chofer_Nombre + '_' + Chofer_Apellido,Chofer_Nombre,Chofer_Dni 
 	FROM SQLGROUP.Choferes
 
-	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,SELECT SQLGROUP.cifrado_claves(Usuario_Password),Usuario_DNI)
+	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_Password,Usuario_DNI)
 	SELECT Cliente_Nombre + '_' + Cliente_Apellido,Cliente_Nombre,Cliente_Dni
 	FROM SQLGROUP.Clientes,SQLGROUP.Usuarios
 	WHERE Cliente_Dni != Usuario_DNI
 	GROUP BY Cliente_Nombre,Cliente_Nombre,Cliente_Dni,Cliente_Apellido
+
+	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_Password,Usuario_DNI)
+	VALUES ('admin','w23e',12345678)
 
 END
 GO
@@ -401,9 +409,6 @@ BEGIN
 	OPEN viajes_cursor;
 	FETCH NEXT FROM viajes_cursor INTO @chofer_id, @viaje_fecha,@viaje_cant_kilometros, @auto_patente, @cliente_id, @turno_id;
 
-	/*Este tarda 20 segundos se puede ya que saco el cursor ordenado si no no se podria
-	Comparo con el resultado anterior de patente y fecha y si son iguales pongo hora inicio la hora terminacion del otro y le agrego dos minutos
-	algo parecido a la otra opcion*/
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
 		IF(@last_fecha = @viaje_fecha AND @last_patente = @auto_patente)
@@ -424,197 +429,108 @@ BEGIN
 		FETCH NEXT FROM viajes_cursor INTO @chofer_id, @viaje_fecha,@viaje_cant_kilometros, @auto_patente, @cliente_id, @turno_id;
 	END
 
-	/* Esto tarda 5 minutos hay q mejorarlo, lo que debe tardar es q siempre busca en la tabla por cada uno, arriba se cambia
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		SELECT @ultimo_horario = MAX(Viaje_Fecha_Fin) FROM Viajes WHERE Viaje_Auto_Patente = @auto_patente AND Viaje_Fecha = @viaje_fecha
-		IF(@ultimo_horario IS NOT NULL)
-		BEGIN
-			/*Si entra aca es xq un auto ya tuvo un viaje, entonces agarro el horario de finalizacion y lo pongo como heca de inicio y le agrego dos minutos y le pongo como fechs de finalizacion*/
-			INSERT INTO Viajes (Viaje_Cant_Kilometros,Viaje_Fecha,Viaje_Fecha_INIC,Viaje_Fecha_Fin,Viaje_Chofer_Id,Viaje_Auto_Patente,Viaje_Turno_Id,Viaje_Cliente_Id)
-			VALUES (@viaje_cant_kilometros,@viaje_fecha,@ultimo_horario, DATEADD(minute,2,@ultimo_horario),@chofer_id,@auto_patente,@turno_id,@cliente_id)
-		END
-		ELSE
-		BEGIN
-			INSERT INTO Viajes (Viaje_Cant_Kilometros,Viaje_Fecha,Viaje_Fecha_INIC,Viaje_Fecha_Fin,Viaje_Chofer_Id,Viaje_Auto_Patente,Viaje_Turno_Id,Viaje_Cliente_Id)
-			VALUES (@viaje_cant_kilometros, @viaje_fecha, @viaje_fecha, DATEADD(MINUTE,2,@viaje_fecha),@chofer_id,@auto_patente,@turno_id,@cliente_id)
-		END
-		FETCH NEXT FROM viajes_cursor INTO @chofer_id, @viaje_fecha,@viaje_cant_kilometros, @auto_patente, @cliente_id, @turno_id;
-	END*/
 	CLOSE viajes_cursor;
 	DEALLOCATE viajes_cursor;
 END
 GO
 
-/*ESTAN MAL XQ HAY Q MIGRAR VIAJES BIEN, HAY Q INVENTARLES BIEN EL TEMA DE HORA INICIO Y FIN
+/*---------------------------------CREACION DE TRIGGERS---------------------------------*/
 
-IF (OBJECT_ID('SQLGROUP.migrar_viajes') IS NOT NULL)
-	DROP PROCEDURE SQLGROUP.migrar_viajes
+If (OBJECT_ID('SQLGROUP.cifrado_claves') IS NOT NULL)
+	DROP FUNCTION SQLGROUP.cifrado_claves
 GO
 
-CREATE PROCEDURE SQLGROUP.migrar_viajes
-AS
-BEGIN
-	INSERT SQLGROUP.viajes (Viaje_Cant_Kilometros, Viaje_Fecha, Viaje_Fecha_Inic, Viaje_Fecha_Fin, Viaje_Chofer_Id, Viaje_Auto_Patente, Viaje_Cliente_Id, Viaje_Turno_Id)
-	SELECT Viaje_Cant_Kilometros, Viaje_Fecha, Viaje_Fecha, Viaje_Fecha, c.Chofer_Id, Auto_Patente, cli.Cliente_Id, t.Turno_Id
-	FROM gd_esquema.Maestra as m, SQLGROUP.Choferes as c, SQLGROUP.Clientes as cli, SQLGROUP.Turno as t
-	WHERE m.Chofer_Dni = c.Chofer_Dni AND m.Cliente_Dni = cli.Cliente_Dni AND t.Turno_Hora_Inicio = m.Turno_Hora_Inicio AND t.Turno_Hora_Fin = m.Turno_Hora_Fin
-	GROUP BY Viaje_Cant_Kilometros, Viaje_Fecha, c.Chofer_Id, Auto_Patente, cli.Cliente_Id, t.Turno_Id
-END
-GO
-
-If (OBJECT_ID('SQLGROUP.migrar_facturas') IS NOT NULL)
-	DROP PROCEDURE SQLGROUP.migrar_facturas
-GO
-
-CREATE PROCEDURE SQLGROUP.migrar_facturas
-AS
-BEGIN
-	INSERT SQLGROUP.Facturas
-	SELECT m.Factura_Nro, m.Factura_Fecha_Inicio, m.Factura_Fecha_Fin, m.Factura_Fecha, 
-						(SELECT SUM(m2.Viaje_Cant_Kilometros * m2.Turno_Valor_Kilometro) + SUM(m2.Turno_Precio_Base) 
-						FROM gd_esquema.Maestra as m2 WHERE m2.Factura_Nro = m.Factura_Nro),COUNT(*), cli.Cliente_Id
-	FROM gd_esquema.Maestra as m, SQLGROUP.Clientes as cli
-	WHERE m.Factura_Nro IS NOT NULL AND m.Cliente_Dni = cli.Cliente_Dni
-	GROUP BY m.Factura_Nro, m.Factura_Fecha_Inicio, m.Factura_Fecha_Fin, m.Factura_Fecha,cli.Cliente_Id
-
-END
-GO
-
-IF (OBJECT_ID('SQLGROUP.migrar_viajesxfactura') IS NOT NULL)
-	DROP PROCEDURE SQLGROUP.migrar_viajesxfactura
-GO
-
-CREATE PROCEDURE SQLGROUP.migrar_viajesxfactura
-AS
-BEGIN
-	INSERT SQLGROUP.Factura_Viaje
-	SELECT f.Factura_Nro, v.Viaje_Id
-	FROM SQLGROUP.Facturas as f, SQLGROUP.Viajes as v, gd_esquema.Maestra as m
-	WHERE m.Factura_Nro IS NOT NULL AND m.Auto_Patente = v.Viaje_Auto_Patente AND m.Viaje_Fecha = v.Viaje_Fecha 
-	GROUP BY f.Factura_Nro, v.Viaje_Id
-END
-GO
-*/
-
-/*-----Aca se ejecutan todos los procedures de migracion de arriba------*/
-BEGIN
-	EXEC SQLGROUP.crear_tablas;
-	EXEC SQLGROUP.crear_roles;
-	EXEC SQLGROUP.migrar_turnos;
-	EXEC SQLGROUP.crear_administradores;
-	EXEC SQLGROUP.migrar_choferes;
-	EXEC SQLGROUP.migrar_clientes;
-	EXEC SQLGROUP.migrar_automoviles;
-	EXEC SQLGROUP.crear_usuarios;
-	EXEC SQLGROUP.migrar_choferesxturno;
-	EXEC SQLGROUP.migrar_autoxturno;
-	EXEC SQLGROUP.migrar_viajes;
-	/*EXEC SQLGROUP.migrar_facturas;
-	EXEC SQLGROUP.migrar_viajesxfactura;*/
-END
-
-/* --- Aca se crean los elementos de bases de datos que  resolveran las funcionalidades-----*/
-
-/* ---------1) ABM de rol ----------------*/
-
-/* ---------2) LOGIN ------------------------------------------------------------------------------------------------------*/
-
-/* reinicia login tras un logueo correcto*/
-CREATE PROCEDURE SQLGROUP.ReiniciarLogin
-@NOMBRE VARCHAR(255)
-AS
-UPDATE SQLGROUP.Usuarios SET Usuario_Intentos = 0 WHERE Usuario_Id = @NOMBRE
-GO
-
-/* actualiza el contrador de logueo incorrecto*/
-CREATE PROCEDURE SQLGROUP.ActualizarContador
-@NOMBRE VARCHAR(255)
-AS  
-BEGIN
-UPDATE SQLGROUP.Usuarios SET Usuario_Intentos= Usuario_Intentos + 1 WHERE Usuario_Id=@nombre; 
-SELECT Usuario_Intentos FROM SQLGROUP.Usuarios WHERE Usuario_Id=@nombre
-END
-GO
-
-/* deshabilitar un usuario por id */ 
-CREATE PROCEDURE SQLGROUP.DeshabilitarUsuario
-@ID_USER VARCHAR(255)
-AS
-BEGIN
-UPDATE SQLGROUP.Usuarios SET Usuario_Estado='Deshabilitado' WHERE Usuario_Id= @ID_USER;
-GO
-
----cargar roles no dados de baja
-CREATE PROCEDURE SQLGROUP.CargarRoles
-AS 
-SELECT * FROM SQLGROUP.Roles WHERE Rol_Estado= 'Habilitado'
-GO
-
---Funcion que recibe un varchar y lo devuelve cifrado
-CREATE FUNCTION cifrado_claves(@password VARCHAR(64))
+CREATE FUNCTION SQLGROUP.cifrado_claves(@password VARCHAR(64))
 RETURNS VARCHAR(64)
 AS
 BEGIN
 	RETURN CONVERT(CHAR(64),HASHBYTES('SHA2_256',@password),1);
 END
 GO
-/* --------- STORED PROCEDURE LOGIN -----------------*/
 
-CREATE PROCEDURE SQLGROUP.login @usuario varchar (20), @password varchar (64), @a int OUTPUT
+IF OBJECT_ID('SQLGROUP.insert_password_cifrado') IS NOT NULL
+	DROP TRIGGER SQLGROUP.insert_password_cifrado;
+GO
+
+--Trigger que cifra la clave cada vez q se inserta un nuevo usuario
+CREATE TRIGGER SQLGROUP.insert_password_cifrado
+ON SQLGROUP.Usuarios INSTEAD OF INSERT
+AS 
+BEGIN
+
+	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_DNI,Usuario_Password,Usuario_Intentos)
+	SELECT i.Usuario_Id, i.Usuario_DNI,CONVERT(CHAR(64),HASHBYTES('SHA2_256',i.Usuario_Password),1), 1
+	FROM inserted as i
+END
+GO
+
+/*-----Aca se ejecutan todos los procedures de migracion de arriba------*/
+BEGIN
+	EXEC SQLGROUP.crear_roles;
+	EXEC SQLGROUP.migrar_turnos;
+	EXEC SQLGROUP.crear_administradores;
+	EXEC SQLGROUP.migrar_choferes;
+	EXEC SQLGROUP.migrar_clientes;
+	EXEC SQLGROUP.migrar_automoviles;	
+	EXEC SQLGROUP.migrar_choferesxturno;
+	EXEC SQLGROUP.migrar_autoxturno;
+	EXEC SQLGROUP.migrar_viajes;
+	EXEC SQLGROUP.crear_usuarios;
+	/*EXEC SQLGROUP.migrar_facturas;
+	EXEC SQLGROUP.migrar_viajesxfactura;*/
+END
+GO
+
+/* --- Aca se crean los elementos de bases de datos que  resolveran las funcionalidades-----*/
+
+/* ---------1) ABM de rol ----------------*/
+
+/* ---------2) LOGIN ------------------------------------------------------------------------------------------------------*/
+/* deshabilitar un usuario por id */ 
+/* Convertir a trigger, un after update que se fije cant de intenteos = 3 entonces updatea el estado*/
+/*
+CREATE PROCEDURE SQLGROUP.DeshabilitarUsuario
+@ID_USER VARCHAR(255)
+AS
+	BEGIN
+		UPDATE SQLGROUP.Usuarios SET Usuario_Estado='Deshabilitado' WHERE Usuario_Id= @ID_USER;
+	END
+GO
+*/
+
+---- STORED PROCEDURE LOGIN -----------------*/
+If (OBJECT_ID('SQLGROUP.login') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.login
+GO
+
+CREATE PROCEDURE SQLGROUP.login @usuario varchar(20), @password varchar(64), @resultado int OUTPUT
 AS
 BEGIN
-DECLARE @cant_fallos AS int
+	
+	/*
+	0 -> Usuario Deshabilitado
+	1 -> Password ok
+	2 -> Password no ok
+	3 -> User not found
+	*/
 
-IF (EXISTS (SELECT 1 FROM SQLGROUP.Usuarios WHERE Usuario_Id = @usuario))
- BEGIN
-  IF (SELECT SQLGROUP.cifrado_claves(@password) = (SELECT Usuario_Password FROM SQLGROUP.Usuarios WHERE Usuario_Id = @usuario))
-  BEGIN
-  UPDATE SQLGROUP.Usuarios SET Usuario_Intentos =0 WHERE Usuario_Id=@usuario
-  IF ('Deshabilitado' = (SELECT Usuario_Estado FROM SQLGROUP.Usuarios WHERE Usuario_Id=@usuario))
-   BEGIN
-   SET @a=0 --usuario inhabilitado
-   SELECT @a
-   END
-  ELSE
-   BEGIN
-   IF ('Habilitado' = (SELECT Usuario_Estado FROM SQLGROUP.Usuarios WHERE Usuario_Id = @usuario))
-    BEGIN
-    set @a = 3 --ingreso correcto
-    SELECT @a
-    --ELSE SELECCIONAR Y RETORNAR EL/LOS ROL/ES ASOCIADO AL USUARIO
-    END
-   ELSE
-    --ESTADO =2
-    BEGIN
-    set @a = 5
-    SELECT @a
-    END 
-   
-   END
-  END 
- ELSE 
- BEGIN
- SET @cant_fallos= (SELECT Usuario_Intentos FROM SQLGROUP.Usuarios WHERE Usuario_Id=@usuario)
- IF (@cant_fallos= 2)
- --TERCERA VEZ EN FALLAR
-  BEGIN
-  UPDATE SQLGROUP.Usuarios SET estado=0 WHERE Usuario_Id=@usuario
-  SET @a=1 --la cantidad de fallos ha sido alcanzada
-  SELECT @a
-  END
- ELSE 
-  BEGIN
-  UPDATE SQLGROUP.Usuarios SET Usuario_Intentos = @cant_fallos + 1 WHERE usuario=@usuario
-  SET @a=2 --contraseña incorrecta
-  SELECT @a
-  END
- END
-END
-ELSE
- BEGIN
- SET @a=4 --usuario inexistente
- SELECT @a
- END
+	SET @resultado = ISNULL((SELECT 
+								CASE 
+								WHEN Usuario_Intentos = 3 THEN 0
+								WHEN (SQLGROUP.cifrado_claves(@password) = Usuario_Password) THEN 1
+								ELSE 2
+								END
+							FROM SQLGROUP.Usuarios
+							WHERE Usuario_Id = @usuario),3)
+	/*Si la passwrod no es correcta aumento la antidad de intentos*/
+	IF(@resultado = 2) 
+	BEGIN
+		UPDATE SQLGROUP.Usuarios SET Usuario_Intentos= Usuario_Intentos + 1 WHERE Usuario_Id=@usuario; 
+	END
+	/*Si la loguea bien reinicio la cant de intentos, si esta deshabilitado no loguea ni reinicio cant de intentos*/
+	IF (@resultado = 1)
+	BEGIN
+		UPDATE SQLGROUP.Usuarios SET Usuario_Intentos = 0 WHERE Usuario_Id = @usuario
+	END
 END
 GO 

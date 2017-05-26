@@ -21,7 +21,7 @@ namespace UberFrba.Abm_Cliente
         {
             textBoxNombre.Clear();
             textBoxApellido.Clear();
-            textBoxDNI.Clear();
+            //textBoxDNI.Clear();
             textBoxTel.Clear();
             textBoxDireccion.Clear();
             textBoxMail.Clear();

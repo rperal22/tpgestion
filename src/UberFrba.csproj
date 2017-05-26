@@ -36,7 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Messaging" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -194,6 +196,8 @@
     <Compile Include="Rendicion Viajes\rendicionViaje.Designer.cs">
       <DependentUpon>rendicionViaje.cs</DependentUpon>
     </Compile>
+    <Compile Include="SQL\SqlGeneral.cs" />
+    <Compile Include="SQL\SqlUsuarios.cs" />
     <EmbeddedResource Include="Abm Automovil\ABMAutomovil.resx">
       <DependentUpon>ABMAutomovil.cs</DependentUpon>
     </EmbeddedResource>
@@ -284,6 +288,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
