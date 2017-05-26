@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UberFrba.Entidades;
 
 namespace UberFrba.SQL
 {
@@ -31,6 +32,38 @@ namespace UberFrba.SQL
             conexion.Close();
             return resultado;
         }
+
+        public List<String> getRolesUsuario(String username)
+        {
+            List<String> roles = new List<string>();
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand query = new SqlCommand("SELECT UR_Rol_Nombre FROM SQLGROUP.Usuarios_Rol WHERE UR_Usuario_Id = @username",conexion);
+            query.Parameters.AddWithValue("@username", username);
+            conexion.Open();
+            SqlDataReader resultados = query.ExecuteReader();
+            while(resultados.Read()) {
+                roles.Add(resultados.GetString(0));
+            }
+            conexion.Close();
+            return roles;
+        }
+
+        public List<String> getFuncionesRoles(String rol)
+        {
+            List<String> funciones = new List<string>();
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand query = new SqlCommand("SELECT RF_Func_Nombre FROM SQLGROUP.Rol_Funcionalidad WHERE RF_Rol_Nombre = @rol", conexion);
+            query.Parameters.AddWithValue("@rol", rol);
+            conexion.Open();
+            SqlDataReader resultados = query.ExecuteReader();
+            while (resultados.Read())
+            {
+                funciones.Add(resultados.GetString(0));
+            }
+            conexion.Close();
+            return funciones;
+        }
+
 
     }
 }

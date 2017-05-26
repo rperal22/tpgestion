@@ -99,3 +99,5 @@ C:\Users\Ezequiel\Desktop\GDD TP\tpgestion\src\obj\Debug\UberFrba.Rendicion_Viaj
 C:\Users\Ezequiel\Desktop\GDD TP\tpgestion\src\obj\Debug\UberFrba.csproj.GenerateResource.Cache
 C:\Users\Ezequiel\Desktop\GDD TP\tpgestion\src\bin\Debug\UberFrba.exe
 C:\Users\Ezequiel\Desktop\GDD TP\tpgestion\src\bin\Debug\UberFrba.pdb
+C:\Users\Ezequiel\Desktop\GDD TP\tpgestion\src\obj\Debug\UberFrba.csprojResolveAssemblyReference.cache
+C:\Users\Ezequiel\Desktop\GDD TP\tpgestion\src\obj\Debug\UberFrba.SeleccionFuncionalidades.resources

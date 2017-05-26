@@ -164,6 +164,8 @@
       <DependentUpon>altaTurno.cs</DependentUpon>
     </Compile>
     <Compile Include="conexionBase.cs" />
+    <Compile Include="Entidades\Rol.cs" />
+    <Compile Include="Entidades\Usuario.cs" />
     <Compile Include="Facturacion\Facturar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -195,6 +197,12 @@
     </Compile>
     <Compile Include="Rendicion Viajes\rendicionViaje.Designer.cs">
       <DependentUpon>rendicionViaje.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SeleccionFuncionalidades.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SeleccionFuncionalidades.Designer.cs">
+      <DependentUpon>SeleccionFuncionalidades.cs</DependentUpon>
     </Compile>
     <Compile Include="SQL\SqlGeneral.cs" />
     <Compile Include="SQL\SqlUsuarios.cs" />
@@ -275,6 +283,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Rendicion Viajes\rendicionViaje.resx">
       <DependentUpon>rendicionViaje.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SeleccionFuncionalidades.resx">
+      <DependentUpon>SeleccionFuncionalidades.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

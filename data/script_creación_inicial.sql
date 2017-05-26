@@ -316,6 +316,29 @@ BEGIN
 END
 GO
 
+IF(OBJECT_ID('SQLGROUP.crear_funciones') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.crear_funciones
+GO
+
+CREATE PROCEDURE SQLGROUP.crear_funciones
+AS
+BEGIN
+	/*NO ESTA COMPLETO!! // Pongo unas para testear*/
+	/*Creo una y se la asigno a sus correspondiente roles*/
+	INSERT INTO SQLGROUP.Funcionalidades (Func_Nombre)
+	VALUES ('ABM de Rol');
+
+	INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Func_Nombre,RF_Rol_Nombre)
+	VALUES ('ABM de Rol','Administrador')
+
+	INSERT INTO SQLGROUP.Funcionalidades (Func_Nombre)
+	VALUES ('ABM de Cliente');
+
+	INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Func_Nombre,RF_Rol_Nombre)
+	VALUES ('ABM de Cliente','Administrador')
+END
+GO
+
 IF(OBJECT_ID('SQLGROUP.crear_usuarios') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.crear_usuarios
 GO
@@ -333,13 +356,40 @@ BEGIN
 
 	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_Password,Usuario_DNI)
 	SELECT Cliente_Nombre + '_' + Cliente_Apellido,Cliente_Nombre,Cliente_Dni
-	FROM SQLGROUP.Clientes,SQLGROUP.Usuarios
-	WHERE Cliente_Dni != Usuario_DNI
+	FROM SQLGROUP.Clientes
+	WHERE Cliente_Dni NOT IN (SELECT Usuario_DNI FROM Usuarios)
 	GROUP BY Cliente_Nombre,Cliente_Nombre,Cliente_Dni,Cliente_Apellido
 
 	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_Password,Usuario_DNI)
 	VALUES ('admin','w23e',12345678)
 
+END
+GO
+
+IF(OBJECT_ID('SQLGROUP.migrar_rolesxusuario') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_rolesxusuario
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_rolesxusuario
+AS
+BEGIN
+	INSERT INTO SQLGROUP.Usuarios_Rol (UR_Usuario_Id,UR_Rol_Nombre)
+	SELECT u.Usuario_Id, 'Chofer'
+	FROM SQLGROUP.Choferes as c, SQLGROUP.Usuarios as u
+	WHERE c.Chofer_Dni = u.Usuario_DNI
+
+	INSERT INTO SQLGROUP.Usuarios_Rol (UR_Usuario_Id,UR_Rol_Nombre)
+	SELECT Usuario_Id, 'Cliente'
+	FROM SQLGROUP.Clientes, SQLGROUP.Usuarios
+	WHERE Cliente_Dni = Usuario_DNI
+
+	INSERT INTO SQLGROUP.Usuarios_Rol (UR_Usuario_Id,UR_Rol_Nombre)
+	VALUES ('admin','Administrador')
+	/*Le pongo todos los roles a admin para testear nomas*/
+	INSERT INTO SQLGROUP.Usuarios_Rol (UR_Usuario_Id,UR_Rol_Nombre)
+	VALUES ('admin','Chofer')
+	INSERT INTO SQLGROUP.Usuarios_Rol (UR_Usuario_Id,UR_Rol_Nombre)
+	VALUES ('admin','Cliente')
 END
 GO
 
@@ -386,6 +436,7 @@ BEGIN
 	GROUP BY m.Auto_Patente, t.Turno_Id
 END
 GO
+
 
 IF (OBJECT_ID('SQLGROUP.migrar_viajes') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_viajes
@@ -470,11 +521,13 @@ BEGIN
 	EXEC SQLGROUP.crear_administradores;
 	EXEC SQLGROUP.migrar_choferes;
 	EXEC SQLGROUP.migrar_clientes;
+	EXEC SQLGROUP.crear_usuarios;
+	EXEC SQLGROUP.migrar_rolesxusuario;
+	EXEC SQLGROUP.crear_funciones;
 	EXEC SQLGROUP.migrar_automoviles;	
 	EXEC SQLGROUP.migrar_choferesxturno;
 	EXEC SQLGROUP.migrar_autoxturno;
 	EXEC SQLGROUP.migrar_viajes;
-	EXEC SQLGROUP.crear_usuarios;
 	/*EXEC SQLGROUP.migrar_facturas;
 	EXEC SQLGROUP.migrar_viajesxfactura;*/
 END
