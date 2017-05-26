@@ -457,9 +457,8 @@ CREATE TRIGGER SQLGROUP.insert_password_cifrado
 ON SQLGROUP.Usuarios INSTEAD OF INSERT
 AS 
 BEGIN
-
-	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_DNI,Usuario_Password,Usuario_Intentos)
-	SELECT i.Usuario_Id, i.Usuario_DNI,CONVERT(CHAR(64),HASHBYTES('SHA2_256',i.Usuario_Password),1), 1
+	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_DNI,Usuario_Password,Usuario_Intentos, Usuario_Estado)
+	SELECT i.Usuario_Id, i.Usuario_DNI,SQLGROUP.cifrado_claves(i.Usuario_Password), i.Usuario_Intentos,i.Usuario_Estado
 	FROM inserted as i
 END
 GO
