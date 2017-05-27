@@ -48,13 +48,21 @@
             this.buttonAgregar = new System.Windows.Forms.Button();
             this.buttonRemover = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxTurnos = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.textBoxRodado);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.textBoxLicencia);
@@ -256,21 +264,57 @@
             this.comboBox1.Size = new System.Drawing.Size(275, 24);
             this.comboBox1.TabIndex = 7;
             // 
-            // textBox1
+            // textBoxTurnos
             // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(391, 266);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(259, 157);
-            this.textBox1.TabIndex = 5;
+            this.textBoxTurnos.Enabled = false;
+            this.textBoxTurnos.Location = new System.Drawing.Point(391, 266);
+            this.textBoxTurnos.Multiline = true;
+            this.textBoxTurnos.Name = "textBoxTurnos";
+            this.textBoxTurnos.Size = new System.Drawing.Size(259, 157);
+            this.textBoxTurnos.TabIndex = 5;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(303, 49);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(77, 17);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Obligatorio";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(303, 81);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(77, 17);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Obligatorio";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(303, 113);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(77, 17);
+            this.label8.TabIndex = 14;
+            this.label8.Text = "Obligatorio";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(303, 146);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(77, 17);
+            this.label9.TabIndex = 15;
+            this.label9.Text = "Obligatorio";
             // 
             // altaAutomovil
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(662, 501);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textBoxTurnos);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.buttonCerrar);
             this.Controls.Add(this.buttonGuardar);
@@ -309,7 +353,11 @@
         private System.Windows.Forms.Button buttonAgregar;
         private System.Windows.Forms.Button buttonRemover;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxTurnos;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
 
 
     }

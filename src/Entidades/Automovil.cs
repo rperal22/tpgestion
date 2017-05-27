@@ -23,6 +23,8 @@ namespace UberFrba.Entidades
             this.modelo = modelo;
             this.chofer = chofer;
             this.turnos = turnos;
+            this.licencia = "";
+            this.rodado = "";
         }
 
     }

@@ -35,18 +35,22 @@ namespace UberFrba.SQL
                 insertDatosAuto.Parameters.AddWithValue("@rodado",auto.rodado);
                 insertDatosAuto.Parameters.AddWithValue("@chofer",auto.chofer);
                 insertDatosAuto.ExecuteNonQuery();
-
+                int i = 0;
                 foreach(Turno tur in auto.turnos) {
                     insertTurnosAuto.CommandText = "INSERT INTO SQLGROUP.Auto_Turno (AT_Auto_Patente,AT_Turno_Id) " +
-                                                   " VALUES(@au_patente,@tu_id)";
-                    insertTurnosAuto.Parameters.AddWithValue("@au_patente", auto.patente);
-                    insertTurnosAuto.Parameters.AddWithValue("@tu_id", tur.id);
+                                                   " VALUES(@au_patente"+ i + ",@tu_id"+i+")";
+                    insertTurnosAuto.Parameters.AddWithValue("@au_patente"+i, auto.patente);
+                    insertTurnosAuto.Parameters.AddWithValue("@tu_id"+i, tur.id);
+                    i++;
                     insertTurnosAuto.ExecuteNonQuery();
                 }
+                transaction.Commit();
 
             }
             catch (Exception ex) {
+                Console.WriteLine(ex.Message);
                 transaction.Rollback();
+
             }
 
         }
