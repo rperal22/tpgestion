@@ -24,7 +24,7 @@ namespace UberFrba.SQL
             SqlParameter VariableRetorno = new SqlParameter("@resultado", SqlDbType.Int);
             VariableRetorno.Direction = ParameterDirection.Output;
 
-            cmd.Parameters.Add(new SqlParameter("@usuario", username));
+            cmd.Parameters.Add(new SqlParameter("@username", username));
             cmd.Parameters.Add(new SqlParameter("@password", password));
             cmd.Parameters.Add(new SqlParameter("@dni", dni));
             cmd.Parameters.Add(VariableRetorno);
