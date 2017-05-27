@@ -25,6 +25,7 @@ namespace UberFrba.Alta_Usuario
             InitializeComponent();
         }
 
+        /*
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             
@@ -58,17 +59,35 @@ namespace UberFrba.Alta_Usuario
             }
 
         }
-
+        */
         private void btnLimpiar_Click_1(object sender, EventArgs e)
         {
             tbNombreUsuario.Clear();
             tbContraseña.Clear();
-            maskedTextBox1.Clear();
+            tbDni.Clear();
         }
 
         private void btnAceptar_Click_1(object sender, EventArgs e)
         {
+            if (tbNombreUsuario != null && tbContraseña != null && tbDni != null)
+            {
+                username = tbNombreUsuario.Text;
+                password = tbContraseña.Text;
+                dni = Convert.ToInt32(tbDni.Text);
 
+                int resultado = new SqlAltaUsuario().crearUsuario(username, password, dni);
+                switch (resultado)
+                {
+                    case 0:
+                        MessageBox.Show("El nombre de usuario ya existe");
+                        break;
+                    case 1:
+                        MessageBox.Show("Usuario creado correctamente");
+                        break;
+
+                }
+
+            }
         }
 
         private void btnCancelar_Click_1(object sender, EventArgs e)

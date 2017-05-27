@@ -36,7 +36,7 @@
             this.btnAceptar = new System.Windows.Forms.Button();
             this.tbNombreUsuario = new System.Windows.Forms.TextBox();
             this.tbContraseña = new System.Windows.Forms.TextBox();
-            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
+            this.tbDni = new System.Windows.Forms.MaskedTextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -111,21 +111,20 @@
             this.tbContraseña.Size = new System.Drawing.Size(202, 20);
             this.tbContraseña.TabIndex = 7;
             // 
-            // maskedTextBox1
+            // tbDni
             // 
-            this.maskedTextBox1.Location = new System.Drawing.Point(322, 157);
-            this.maskedTextBox1.Mask = "99999999";
-            this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.Size = new System.Drawing.Size(202, 20);
-            this.maskedTextBox1.TabIndex = 8;
-            this.maskedTextBox1.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.maskedTextBox1_MaskInputRejected);
+            this.tbDni.Location = new System.Drawing.Point(322, 164);
+            this.tbDni.Mask = "99999999";
+            this.tbDni.Name = "tbDni";
+            this.tbDni.Size = new System.Drawing.Size(202, 20);
+            this.tbDni.TabIndex = 8;
             // 
             // altaUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(594, 324);
-            this.Controls.Add(this.maskedTextBox1);
+            this.Controls.Add(this.tbDni);
             this.Controls.Add(this.tbContraseña);
             this.Controls.Add(this.tbNombreUsuario);
             this.Controls.Add(this.btnAceptar);
@@ -151,6 +150,6 @@
         private System.Windows.Forms.Button btnAceptar;
         private System.Windows.Forms.TextBox tbNombreUsuario;
         private System.Windows.Forms.TextBox tbContraseña;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
+        private System.Windows.Forms.MaskedTextBox tbDni;
     }
 }
