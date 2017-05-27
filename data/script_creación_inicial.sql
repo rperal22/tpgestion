@@ -592,3 +592,24 @@ BEGIN
 	END
 END
 GO 
+
+/* ----------- STORED PRUCEDURE ALTA USUARIOS ----------------------- */
+IF(OBJECT_ID('SQLGROUP.crearUsuario') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.crearUsuario
+GO
+
+CREATE PROCEDURE SQLGROUP.crearUsuario @username varchar(20), @password varchar(64), @dni int ,@resultado int OUTPUT
+AS
+BEGIN
+	IF EXISTS (SELECT Usuario_Id FROM SQLGROUP.Usuarios WHERE Usuario_Id = @username)
+	BEGIN
+	SET @resultado = 0
+	END
+ELSE
+	BEGIN
+	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_Password,Usuario_DNI)
+	VALUES (@username , @password, @dni)
+	SET @resultado = 1
+	END
+END	
+GO

@@ -39,6 +39,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.buttonListo = new System.Windows.Forms.Button();
+            this.btnAltaUsuario = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -155,11 +156,22 @@
             this.buttonListo.Visible = false;
             this.buttonListo.Click += new System.EventHandler(this.buttonListo_Click);
             // 
+            // btnAltaUsuario
+            // 
+            this.btnAltaUsuario.Location = new System.Drawing.Point(20, 189);
+            this.btnAltaUsuario.Name = "btnAltaUsuario";
+            this.btnAltaUsuario.Size = new System.Drawing.Size(140, 29);
+            this.btnAltaUsuario.TabIndex = 13;
+            this.btnAltaUsuario.Text = "Registrarse";
+            this.btnAltaUsuario.UseVisualStyleBackColor = true;
+            this.btnAltaUsuario.Click += new System.EventHandler(this.btnAltaUsuario_Click);
+            // 
             // login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(402, 176);
+            this.ClientSize = new System.Drawing.Size(402, 231);
+            this.Controls.Add(this.btnAltaUsuario);
             this.Controls.Add(this.buttonListo);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.comboBoxRoles);
@@ -187,6 +199,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonListo;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnAltaUsuario;
 
     }
 }
