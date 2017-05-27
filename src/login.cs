@@ -25,7 +25,8 @@ namespace UberFrba
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
-
+            textBoxUsuario.Clear();
+            textBoxPassword.Clear();
         }
 
         private void buttonIngresar_Click(object sender, EventArgs e)
@@ -70,5 +71,15 @@ namespace UberFrba
             this.comboBoxRoles.SelectedIndex = 0;
             this.buttonListo.Visible = true;
             this.buttonListo.Enabled = true;
+        }
+
+        private void login_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 }}
