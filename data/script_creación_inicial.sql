@@ -336,6 +336,12 @@ BEGIN
 
 	INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Func_Nombre,RF_Rol_Nombre)
 	VALUES ('ABM de Cliente','Administrador')
+
+	INSERT INTO SQLGROUP.Funcionalidades (Func_Nombre)
+	VALUES ('ABM Automoviles');
+
+	INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Func_Nombre,RF_Rol_Nombre)
+	VALUES ('ABM Automoviles','Administrador')
 END
 GO
 

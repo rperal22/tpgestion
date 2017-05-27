@@ -163,8 +163,11 @@
     <Compile Include="Abm Turno\altaTurno.Designer.cs">
       <DependentUpon>altaTurno.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmAutomovil.cs" />
     <Compile Include="conexionBase.cs" />
+    <Compile Include="Entidades\Automovil.cs" />
     <Compile Include="Entidades\Rol.cs" />
+    <Compile Include="Entidades\Turno.cs" />
     <Compile Include="Entidades\Usuario.cs" />
     <Compile Include="Facturacion\Facturar.cs">
       <SubType>Form</SubType>
@@ -204,7 +207,9 @@
     <Compile Include="SeleccionFuncionalidades.Designer.cs">
       <DependentUpon>SeleccionFuncionalidades.cs</DependentUpon>
     </Compile>
+    <Compile Include="SQL\SqlAutomoviles.cs" />
     <Compile Include="SQL\SqlGeneral.cs" />
+    <Compile Include="SQL\SqlTurnos.cs" />
     <Compile Include="SQL\SqlUsuarios.cs" />
     <EmbeddedResource Include="Abm Automovil\ABMAutomovil.resx">
       <DependentUpon>ABMAutomovil.cs</DependentUpon>

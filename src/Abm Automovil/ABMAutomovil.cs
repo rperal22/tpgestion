@@ -21,8 +21,6 @@ namespace UberFrba.Abm_Automovil
         {
             altaAutomovil alta = new altaAutomovil();
             alta.Show();
-
-        
         }
 
         private void button2_Click(object sender, EventArgs e)
