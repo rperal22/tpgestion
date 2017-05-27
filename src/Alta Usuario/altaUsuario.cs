@@ -27,9 +27,7 @@ namespace UberFrba.Alta_Usuario
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            tbNombreUsuario.Clear();
-            tbContraseña.Clear();
-            tbDni.Clear();
+            
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -39,11 +37,11 @@ namespace UberFrba.Alta_Usuario
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            if (tbNombreUsuario != null && tbContraseña != null && tbDni != null)
+            if (tbNombreUsuario != null && tbContraseña != null && maskedTextBox1 != null)
             {
                 username = tbNombreUsuario.Text;
                 password = tbContraseña.Text;
-                dni = Convert.ToInt32(tbDni.Text);
+                dni = Convert.ToInt32(maskedTextBox1);
 
                 int resultado = new SqlAltaUsuario().crearUsuario(username, password, dni);
                 switch (resultado)
@@ -58,6 +56,28 @@ namespace UberFrba.Alta_Usuario
                 }
 
             }
+
+        }
+
+        private void btnLimpiar_Click_1(object sender, EventArgs e)
+        {
+            tbNombreUsuario.Clear();
+            tbContraseña.Clear();
+            maskedTextBox1.Clear();
+        }
+
+        private void btnAceptar_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCancelar_Click_1(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void maskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
 
         }
     }

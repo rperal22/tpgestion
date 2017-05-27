@@ -36,7 +36,7 @@
             this.btnAceptar = new System.Windows.Forms.Button();
             this.tbNombreUsuario = new System.Windows.Forms.TextBox();
             this.tbContraseña = new System.Windows.Forms.TextBox();
-            this.tbDni = new System.Windows.Forms.TextBox();
+            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -75,6 +75,7 @@
             this.btnLimpiar.TabIndex = 3;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click_1);
             // 
             // btnCancelar
             // 
@@ -84,6 +85,7 @@
             this.btnCancelar.TabIndex = 4;
             this.btnCancelar.Text = "Salir";
             this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click_1);
             // 
             // btnAceptar
             // 
@@ -93,6 +95,7 @@
             this.btnAceptar.TabIndex = 5;
             this.btnAceptar.Text = "Aceptar";
             this.btnAceptar.UseVisualStyleBackColor = true;
+            this.btnAceptar.Click += new System.EventHandler(this.btnAceptar_Click_1);
             // 
             // tbNombreUsuario
             // 
@@ -108,19 +111,21 @@
             this.tbContraseña.Size = new System.Drawing.Size(202, 20);
             this.tbContraseña.TabIndex = 7;
             // 
-            // tbDni
+            // maskedTextBox1
             // 
-            this.tbDni.Location = new System.Drawing.Point(325, 160);
-            this.tbDni.Name = "tbDni";
-            this.tbDni.Size = new System.Drawing.Size(198, 20);
-            this.tbDni.TabIndex = 8;
+            this.maskedTextBox1.Location = new System.Drawing.Point(322, 157);
+            this.maskedTextBox1.Mask = "99999999";
+            this.maskedTextBox1.Name = "maskedTextBox1";
+            this.maskedTextBox1.Size = new System.Drawing.Size(202, 20);
+            this.maskedTextBox1.TabIndex = 8;
+            this.maskedTextBox1.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.maskedTextBox1_MaskInputRejected);
             // 
             // altaUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(594, 324);
-            this.Controls.Add(this.tbDni);
+            this.Controls.Add(this.maskedTextBox1);
             this.Controls.Add(this.tbContraseña);
             this.Controls.Add(this.tbNombreUsuario);
             this.Controls.Add(this.btnAceptar);
@@ -146,6 +151,6 @@
         private System.Windows.Forms.Button btnAceptar;
         private System.Windows.Forms.TextBox tbNombreUsuario;
         private System.Windows.Forms.TextBox tbContraseña;
-        private System.Windows.Forms.TextBox tbDni;
+        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
     }
 }
