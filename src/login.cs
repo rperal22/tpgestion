@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UberFrba.Entidades;
 using UberFrba.SQL;
+using UberFrba.Alta_Usuario;
 
 namespace UberFrba
 {
@@ -81,5 +82,11 @@ namespace UberFrba
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnAltaUsuario_Click(object sender, EventArgs e)
+        {
+            altaUsuario frm = new altaUsuario();
+            frm.Show();
         }
 }}

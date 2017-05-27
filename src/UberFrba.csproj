@@ -164,6 +164,12 @@
       <DependentUpon>altaTurno.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmAutomovil.cs" />
+    <Compile Include="Alta Usuario\altaUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Alta Usuario\altaUsuario.Designer.cs">
+      <DependentUpon>altaUsuario.cs</DependentUpon>
+    </Compile>
     <Compile Include="conexionBase.cs" />
     <Compile Include="Entidades\Automovil.cs" />
     <Compile Include="Entidades\Rol.cs" />
@@ -207,6 +213,7 @@
     <Compile Include="SeleccionFuncionalidades.Designer.cs">
       <DependentUpon>SeleccionFuncionalidades.cs</DependentUpon>
     </Compile>
+    <Compile Include="SQL\SqlAltaUsuario.cs" />
     <Compile Include="SQL\SqlAutomoviles.cs" />
     <Compile Include="SQL\SqlGeneral.cs" />
     <Compile Include="SQL\SqlTurnos.cs" />
@@ -267,6 +274,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Turno\altaTurno.resx">
       <DependentUpon>altaTurno.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Alta Usuario\altaUsuario.resx">
+      <DependentUpon>altaUsuario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Facturacion\Facturar.resx">
       <DependentUpon>Facturar.cs</DependentUpon>
