@@ -50,9 +50,7 @@ namespace UberFrba.SQL
             catch (Exception ex) {
                 Console.WriteLine(ex.Message);
                 transaction.Rollback();
-
             }
-
         }
     }
 }
