@@ -21,5 +21,6 @@ namespace UberFrba.SQL
         {
             return new SqlConnection(stringConexion);
         }
+
     }
 }

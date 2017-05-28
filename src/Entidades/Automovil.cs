@@ -16,15 +16,15 @@ namespace UberFrba.Entidades
         public int chofer { get; set; }
         public List<Turno> turnos { get; set; }
 
-        public Automovil(String patente, String marca, String modelo, int chofer, List<Turno> turnos)
+        public Automovil(String patente, String marca, String modelo, int chofer, List<Turno> turnos, String licencia, String rodado)
         {
             this.patente = patente;
             this.marca = marca;
             this.modelo = modelo;
             this.chofer = chofer;
             this.turnos = turnos;
-            this.licencia = "";
-            this.rodado = "";
+            this.licencia = licencia;
+            this.rodado = rodado;
         }
 
     }

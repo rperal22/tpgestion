@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using UberFrba.Entidades;
 
 namespace UberFrba.SQL
@@ -45,12 +46,14 @@ namespace UberFrba.SQL
                     insertTurnosAuto.ExecuteNonQuery();
                 }
                 transaction.Commit();
-
+                MessageBox.Show("Automovil guardado correctamente.");
             }
             catch (Exception ex) {
                 Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message);
                 transaction.Rollback();
             }
+            conexion.Close();
         }
     }
 }

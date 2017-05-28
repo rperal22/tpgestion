@@ -50,7 +50,7 @@ namespace UberFrba.Abm_Automovil
             try
             {
                 this.validar();
-                Automovil autoNuevo = new Automovil(this.textBoxPatente.Text, this.textBoxMarca.Text, this.textBoxModelo.Text, Int32.Parse(this.textBoxChofer.Text), this.turnosElegidos);
+                Automovil autoNuevo = new Automovil(this.textBoxPatente.Text, this.textBoxMarca.Text, this.textBoxModelo.Text, Int32.Parse(this.textBoxChofer.Text), this.turnosElegidos, this.textBoxLicencia.Text, this.textBoxRodado.Text);
                 new SqlAutomoviles().guardarAutomovil(autoNuevo);
             }
             catch(FormatException ex) {

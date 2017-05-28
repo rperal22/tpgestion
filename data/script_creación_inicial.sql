@@ -505,7 +505,7 @@ BEGIN
 END
 GO
 
-IF OBJECT_ID('SQLGROUP.insert_password_cifrado') IS NOT NULL
+IF (OBJECT_ID('SQLGROUP.insert_password_cifrado') IS NOT NULL)
 	DROP TRIGGER SQLGROUP.insert_password_cifrado;
 GO
 
@@ -517,6 +517,27 @@ BEGIN
 	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_DNI,Usuario_Password,Usuario_Intentos, Usuario_Estado)
 	SELECT i.Usuario_Id, i.Usuario_DNI,SQLGROUP.cifrado_claves(i.Usuario_Password), i.Usuario_Intentos,i.Usuario_Estado
 	FROM inserted as i
+END
+GO
+
+IF (OBJECT_ID('SQLGROUP.controlarAutosHabilitadosxChofer') IS NOT NULL)
+	DROP TRIGGER SQLGROUP.controlarAutosHabilitadosxChofer;
+GO
+
+--Trigger que cifra la clave cada vez q se inserta un nuevo usuario
+CREATE TRIGGER SQLGROUP.controlarAutosHabilitadosxChofer
+ON SQLGROUP.Automoviles AFTER INSERT , UPDATE
+AS 
+BEGIN
+	IF((SELECT TOP 1 COUNT(*)
+	FROM SQLGROUP.Automoviles
+	WHERE Auto_Estado = 'Habilitado'
+	GROUP BY Auto_Chofer
+	ORDER BY 1 DESC)>1) 
+	BEGIN
+		RAISERROR('El chofer ya tiene mas de un auto habilitado', 16,1);
+		ROLLBACK;
+	END
 END
 GO
 

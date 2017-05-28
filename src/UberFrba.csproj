@@ -163,7 +163,6 @@
     <Compile Include="Abm Turno\altaTurno.Designer.cs">
       <DependentUpon>altaTurno.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmAutomovil.cs" />
     <Compile Include="Alta Usuario\altaUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
