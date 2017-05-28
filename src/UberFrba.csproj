@@ -67,17 +67,11 @@
     <Compile Include="Abm Automovil\modificacionAutomovil.Designer.cs">
       <DependentUpon>modificacionAutomovil.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Automovil\formularioBajaAutomovil.cs">
+    <Compile Include="Abm Automovil\buscadorAutomovil.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Automovil\formularioBajaAutomovil.Designer.cs">
-      <DependentUpon>formularioBajaAutomovil.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Automovil\listadoSeleccionBajaAutomovil.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Automovil\listadoSeleccionBajaAutomovil.Designer.cs">
-      <DependentUpon>listadoSeleccionBajaAutomovil.cs</DependentUpon>
+    <Compile Include="Abm Automovil\buscadorAutomovil.Designer.cs">
+      <DependentUpon>buscadorAutomovil.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Chofer\ABMChofer.cs">
       <SubType>Form</SubType>
@@ -226,11 +220,8 @@
     <EmbeddedResource Include="Abm Automovil\modificacionAutomovil.resx">
       <DependentUpon>modificacionAutomovil.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Automovil\formularioBajaAutomovil.resx">
-      <DependentUpon>formularioBajaAutomovil.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Abm Automovil\listadoSeleccionBajaAutomovil.resx">
-      <DependentUpon>listadoSeleccionBajaAutomovil.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Automovil\buscadorAutomovil.resx">
+      <DependentUpon>buscadorAutomovil.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Chofer\ABMChofer.resx">
       <DependentUpon>ABMChofer.cs</DependentUpon>
@@ -301,6 +292,7 @@
     <EmbeddedResource Include="SeleccionFuncionalidades.resx">
       <DependentUpon>SeleccionFuncionalidades.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\UberFrba.Entidades.Automovil.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

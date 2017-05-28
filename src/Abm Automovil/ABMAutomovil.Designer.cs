@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button3 = new System.Windows.Forms.Button();
             this.botonBaja = new System.Windows.Forms.Button();
             this.botonAlta = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
@@ -37,41 +36,34 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.botonBaja);
             this.groupBox1.Controls.Add(this.botonAlta);
-            this.groupBox1.Location = new System.Drawing.Point(63, 49);
+            this.groupBox1.Location = new System.Drawing.Point(84, 60);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(322, 100);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Size = new System.Drawing.Size(429, 123);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Opciones";
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(215, 45);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Modificación";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // botonBaja
             // 
-            this.botonBaja.Location = new System.Drawing.Point(116, 44);
+            this.botonBaja.Location = new System.Drawing.Point(159, 55);
+            this.botonBaja.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.botonBaja.Name = "botonBaja";
-            this.botonBaja.Size = new System.Drawing.Size(75, 23);
+            this.botonBaja.Size = new System.Drawing.Size(262, 28);
             this.botonBaja.TabIndex = 1;
-            this.botonBaja.Text = "Baja";
+            this.botonBaja.Text = "Modificar o dar de baja";
             this.botonBaja.UseVisualStyleBackColor = true;
             this.botonBaja.Click += new System.EventHandler(this.button2_Click);
             // 
             // botonAlta
             // 
-            this.botonAlta.Location = new System.Drawing.Point(21, 45);
+            this.botonAlta.Location = new System.Drawing.Point(28, 55);
+            this.botonAlta.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.botonAlta.Name = "botonAlta";
-            this.botonAlta.Size = new System.Drawing.Size(75, 23);
+            this.botonAlta.Size = new System.Drawing.Size(100, 28);
             this.botonAlta.TabIndex = 0;
             this.botonAlta.Text = "Alta";
             this.botonAlta.UseVisualStyleBackColor = true;
@@ -79,10 +71,11 @@
             // 
             // ABMAutomovil
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(454, 211);
+            this.ClientSize = new System.Drawing.Size(605, 260);
             this.Controls.Add(this.groupBox1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ABMAutomovil";
             this.Text = "ABMAutomovil";
             this.groupBox1.ResumeLayout(false);
@@ -93,7 +86,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button botonBaja;
         private System.Windows.Forms.Button botonAlta;
     }

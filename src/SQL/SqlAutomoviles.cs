@@ -55,5 +55,32 @@ namespace UberFrba.SQL
             }
             conexion.Close();
         }
+
+        public List<Automovil> getAutomoviles(int cantidad)
+        {
+            List<Automovil> autos = new List<Automovil>();
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand comando = new SqlCommand("SELECT TOP " +cantidad+ " Auto_Patente, Auto_Marca, Auto_Modelo, Auto_Chofer, Auto_Licencia, Auto_Rodado FROM SQLGROUP.automoviles", conexion);
+            conexion.Open();
+            SqlDataReader resultado = comando.ExecuteReader();
+            while(resultado.Read()) {
+                autos.Add(new Automovil(resultado.GetString(0),resultado.GetString(1),resultado.GetString(2),resultado.GetInt32(3),null,resultado.GetString(4),resultado.GetString(5)));
+            }
+            return autos;
+        }
+
+        public List<Automovil> getAutomoviles(String busqueda)
+        {
+            List<Automovil> autos = new List<Automovil>();
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand comando = new SqlCommand("SELECT Auto_Patente, Auto_Marca, Auto_Modelo, Auto_Chofer, Auto_Licencia, Auto_Rodado FROM SQLGROUP.automoviles WHERE " + busqueda, conexion);
+            conexion.Open();
+            SqlDataReader resultado = comando.ExecuteReader();
+            while (resultado.Read())
+            {
+                autos.Add(new Automovil(resultado.GetString(0), resultado.GetString(1), resultado.GetString(2), resultado.GetInt32(3), null, resultado.GetString(4), resultado.GetString(5)));
+            }
+            return autos;
+        }
     }
 }
