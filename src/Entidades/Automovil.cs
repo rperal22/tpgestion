@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UberFrba.Entidades
 {
-    class Automovil
+    public class Automovil
     {
         public String patente {get; set;}
         public String marca {get; set;}
@@ -15,8 +15,9 @@ namespace UberFrba.Entidades
         public String rodado { get; set; }
         public int chofer { get; set; }
         public List<Turno> turnos { get; set; }
+        public String estado { get; set; }
 
-        public Automovil(String patente, String marca, String modelo, int chofer, List<Turno> turnos, String licencia, String rodado)
+        public Automovil(String patente, String marca, String modelo, int chofer, List<Turno> turnos, String licencia, String rodado, String estado)
         {
             this.patente = patente;
             this.marca = marca;
@@ -25,6 +26,7 @@ namespace UberFrba.Entidades
             this.turnos = turnos;
             this.licencia = licencia;
             this.rodado = rodado;
+            this.estado = estado;
         }
 
     }

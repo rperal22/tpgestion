@@ -64,9 +64,9 @@
             this.groupBox1.Controls.Add(this.textBoxMarca);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(13, 31);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(637, 96);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
@@ -75,7 +75,7 @@
             // textBoxChofer
             // 
             this.textBoxChofer.Location = new System.Drawing.Point(333, 59);
-            this.textBoxChofer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxChofer.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxChofer.Name = "textBoxChofer";
             this.textBoxChofer.Size = new System.Drawing.Size(132, 22);
             this.textBoxChofer.TabIndex = 4;
@@ -93,7 +93,7 @@
             // textBoxPatente
             // 
             this.textBoxPatente.Location = new System.Drawing.Point(333, 27);
-            this.textBoxPatente.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxPatente.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxPatente.Name = "textBoxPatente";
             this.textBoxPatente.Size = new System.Drawing.Size(132, 22);
             this.textBoxPatente.TabIndex = 2;
@@ -111,7 +111,7 @@
             // textBoxModelo
             // 
             this.textBoxModelo.Location = new System.Drawing.Point(88, 59);
-            this.textBoxModelo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxModelo.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxModelo.Name = "textBoxModelo";
             this.textBoxModelo.Size = new System.Drawing.Size(132, 22);
             this.textBoxModelo.TabIndex = 3;
@@ -129,7 +129,7 @@
             // textBoxMarca
             // 
             this.textBoxMarca.Location = new System.Drawing.Point(88, 30);
-            this.textBoxMarca.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxMarca.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxMarca.Name = "textBoxMarca";
             this.textBoxMarca.Size = new System.Drawing.Size(132, 22);
             this.textBoxMarca.TabIndex = 1;
@@ -147,7 +147,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(13, 135);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 28);
             this.button1.TabIndex = 5;
@@ -158,7 +158,7 @@
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(133, 135);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 28);
             this.button2.TabIndex = 6;
@@ -190,6 +190,7 @@
             this.dataGridViewAutos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewAutos.Size = new System.Drawing.Size(971, 238);
             this.dataGridViewAutos.TabIndex = 3;
+            this.dataGridViewAutos.DoubleClick += new System.EventHandler(this.editarAuto);
             // 
             // patenteDataGridViewTextBoxColumn
             // 
@@ -246,7 +247,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "buscadorAutomovil";
             this.Text = "Listado de Selección";
             this.groupBox1.ResumeLayout(false);

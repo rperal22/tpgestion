@@ -1,6 +1,6 @@
 ﻿namespace UberFrba.Abm_Automovil
 {
-    partial class altaAutomovil
+    partial class modificarAutomovil
     {
         /// <summary>
         /// Required designer variable.
@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.textBoxRodado = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxLicencia = new System.Windows.Forms.TextBox();
@@ -41,17 +45,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.buttonGuardar = new System.Windows.Forms.Button();
-            this.buttonCerrar = new System.Windows.Forms.Button();
+            this.textBoxTurnos = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.buttonAgregar = new System.Windows.Forms.Button();
             this.buttonRemover = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.textBoxTurnos = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
+            this.buttonCerrar = new System.Windows.Forms.Button();
+            this.buttonGuardar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -74,14 +74,50 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(36, 13);
+            this.groupBox1.Location = new System.Drawing.Point(27, 13);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(614, 245);
-            this.groupBox1.TabIndex = 0;
+            this.groupBox1.Size = new System.Drawing.Size(614, 256);
+            this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos del Automóvil";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(303, 146);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(77, 17);
+            this.label9.TabIndex = 15;
+            this.label9.Text = "Obligatorio";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(303, 113);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(77, 17);
+            this.label8.TabIndex = 14;
+            this.label8.Text = "Obligatorio";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(303, 81);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(77, 17);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Obligatorio";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(303, 49);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(77, 17);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Obligatorio";
             // 
             // textBoxRodado
             // 
@@ -189,37 +225,24 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Marca";
             // 
-            // buttonGuardar
+            // textBoxTurnos
             // 
-            this.buttonGuardar.Location = new System.Drawing.Point(499, 450);
-            this.buttonGuardar.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonGuardar.Name = "buttonGuardar";
-            this.buttonGuardar.Size = new System.Drawing.Size(100, 28);
-            this.buttonGuardar.TabIndex = 12;
-            this.buttonGuardar.Text = "Guardar";
-            this.buttonGuardar.UseVisualStyleBackColor = true;
-            this.buttonGuardar.Click += new System.EventHandler(this.buttonGuardar_Click);
-            // 
-            // buttonCerrar
-            // 
-            this.buttonCerrar.Location = new System.Drawing.Point(70, 450);
-            this.buttonCerrar.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonCerrar.Name = "buttonCerrar";
-            this.buttonCerrar.Size = new System.Drawing.Size(100, 28);
-            this.buttonCerrar.TabIndex = 10;
-            this.buttonCerrar.Text = "Cerrar";
-            this.buttonCerrar.UseVisualStyleBackColor = true;
-            this.buttonCerrar.Click += new System.EventHandler(this.buttonCerrar_Click);
+            this.textBoxTurnos.Enabled = false;
+            this.textBoxTurnos.Location = new System.Drawing.Point(382, 288);
+            this.textBoxTurnos.Multiline = true;
+            this.textBoxTurnos.Name = "textBoxTurnos";
+            this.textBoxTurnos.Size = new System.Drawing.Size(259, 157);
+            this.textBoxTurnos.TabIndex = 7;
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.buttonAgregar);
             this.groupBox2.Controls.Add(this.buttonRemover);
             this.groupBox2.Controls.Add(this.comboBox1);
-            this.groupBox2.Location = new System.Drawing.Point(36, 266);
+            this.groupBox2.Location = new System.Drawing.Point(27, 288);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(349, 157);
-            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Automovil Turno";
             // 
@@ -252,64 +275,40 @@
             this.comboBox1.Size = new System.Drawing.Size(275, 24);
             this.comboBox1.TabIndex = 7;
             // 
-            // textBoxTurnos
+            // buttonCerrar
             // 
-            this.textBoxTurnos.Enabled = false;
-            this.textBoxTurnos.Location = new System.Drawing.Point(391, 266);
-            this.textBoxTurnos.Multiline = true;
-            this.textBoxTurnos.Name = "textBoxTurnos";
-            this.textBoxTurnos.Size = new System.Drawing.Size(259, 157);
-            this.textBoxTurnos.TabIndex = 5;
+            this.buttonCerrar.Location = new System.Drawing.Point(60, 480);
+            this.buttonCerrar.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonCerrar.Name = "buttonCerrar";
+            this.buttonCerrar.Size = new System.Drawing.Size(100, 28);
+            this.buttonCerrar.TabIndex = 13;
+            this.buttonCerrar.Text = "Cerrar";
+            this.buttonCerrar.UseVisualStyleBackColor = true;
+            this.buttonCerrar.Click += new System.EventHandler(this.buttonCerrar_Click);
             // 
-            // label6
+            // buttonGuardar
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(303, 49);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(77, 17);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "Obligatorio";
+            this.buttonGuardar.Location = new System.Drawing.Point(489, 480);
+            this.buttonGuardar.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonGuardar.Name = "buttonGuardar";
+            this.buttonGuardar.Size = new System.Drawing.Size(100, 28);
+            this.buttonGuardar.TabIndex = 14;
+            this.buttonGuardar.Text = "Guardar";
+            this.buttonGuardar.UseVisualStyleBackColor = true;
+            this.buttonGuardar.Click += new System.EventHandler(this.buttonGuardar_Click);
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(303, 81);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(77, 17);
-            this.label7.TabIndex = 13;
-            this.label7.Text = "Obligatorio";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(303, 113);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(77, 17);
-            this.label8.TabIndex = 14;
-            this.label8.Text = "Obligatorio";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(303, 146);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(77, 17);
-            this.label9.TabIndex = 15;
-            this.label9.Text = "Obligatorio";
-            // 
-            // altaAutomovil
+            // modificarAutomovil
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(662, 501);
-            this.Controls.Add(this.textBoxTurnos);
-            this.Controls.Add(this.groupBox2);
+            this.ClientSize = new System.Drawing.Size(669, 521);
             this.Controls.Add(this.buttonCerrar);
             this.Controls.Add(this.buttonGuardar);
+            this.Controls.Add(this.textBoxTurnos);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "altaAutomovil";
-            this.Text = "Alta de Automóvil";
+            this.Name = "modificarAutomovil";
+            this.Text = "Form1";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -321,6 +320,14 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBoxRodado;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textBoxLicencia;
+        private System.Windows.Forms.Label Licencia;
         private System.Windows.Forms.TextBox textBoxChofer;
         private System.Windows.Forms.TextBox textBoxPatente;
         private System.Windows.Forms.TextBox textBoxModelo;
@@ -329,23 +336,12 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button buttonLimpiar;
-        private System.Windows.Forms.Button buttonGuardar;
-        private System.Windows.Forms.Button buttonCerrar;
-        private System.Windows.Forms.TextBox textBoxRodado;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBoxLicencia;
-        private System.Windows.Forms.Label Licencia;
+        private System.Windows.Forms.TextBox textBoxTurnos;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button buttonAgregar;
         private System.Windows.Forms.Button buttonRemover;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBoxTurnos;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
-
-
+        private System.Windows.Forms.Button buttonCerrar;
+        private System.Windows.Forms.Button buttonGuardar;
     }
 }

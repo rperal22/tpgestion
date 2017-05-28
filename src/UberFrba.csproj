@@ -61,17 +61,17 @@
     <Compile Include="Abm Automovil\altaAutomovil.Designer.cs">
       <DependentUpon>altaAutomovil.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Automovil\modificacionAutomovil.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Automovil\modificacionAutomovil.Designer.cs">
-      <DependentUpon>modificacionAutomovil.cs</DependentUpon>
-    </Compile>
     <Compile Include="Abm Automovil\buscadorAutomovil.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Abm Automovil\buscadorAutomovil.Designer.cs">
       <DependentUpon>buscadorAutomovil.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Automovil\modificarAutomovil.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Automovil\modificarAutomovil.Designer.cs">
+      <DependentUpon>modificarAutomovil.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Chofer\ABMChofer.cs">
       <SubType>Form</SubType>
@@ -217,11 +217,11 @@
     <EmbeddedResource Include="Abm Automovil\altaAutomovil.resx">
       <DependentUpon>altaAutomovil.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Automovil\modificacionAutomovil.resx">
-      <DependentUpon>modificacionAutomovil.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Abm Automovil\buscadorAutomovil.resx">
       <DependentUpon>buscadorAutomovil.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Automovil\modificarAutomovil.resx">
+      <DependentUpon>modificarAutomovil.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Chofer\ABMChofer.resx">
       <DependentUpon>ABMChofer.cs</DependentUpon>
