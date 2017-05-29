@@ -625,7 +625,7 @@ IF(OBJECT_ID('SQLGROUP.crearUsuario') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.crearUsuario
 GO
 
-CREATE PROCEDURE SQLGROUP.crearUsuario @username varchar(20), @password varchar(64), @dni int ,@resultado int OUTPUT
+CREATE PROCEDURE SQLGROUP.crearUsuario @username varchar(20), @password varchar(64), @dni int ,@flagRolChofer int, @flagRolCliente int, @resultado int OUTPUT
 AS
 BEGIN
 	IF EXISTS (SELECT Usuario_Id FROM SQLGROUP.Usuarios WHERE Usuario_Id = @username)
@@ -636,6 +636,14 @@ ELSE
 	BEGIN
 	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_Password,Usuario_DNI)
 	VALUES (@username , @password, @dni)
+	IF (@flagRolChofer = 1)
+		BEGIN
+		/* crea la relacion en usuario_rol */
+		END
+	IF (@flagRolCliente = 1)
+		BEGIN
+		/* crea la relacion en usuario_rol */
+		END	
 	SET @resultado = 1
 	END
 END	

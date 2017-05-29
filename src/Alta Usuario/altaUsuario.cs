@@ -17,6 +17,9 @@ namespace UberFrba.Alta_Usuario
         private string username;
         private string password;
         private int dni;
+        private int flagRolChofer;
+        private int flagRolCliente;
+
 
 
 
@@ -69,26 +72,57 @@ namespace UberFrba.Alta_Usuario
 
         private void btnAceptar_Click_1(object sender, EventArgs e)
         {
-            if (tbNombreUsuario != null && tbContraseña != null && tbDni != null)
+            if (cbChofer.Checked == false && cbCliente.Checked == false)
             {
-                username = tbNombreUsuario.Text;
-                password = tbContraseña.Text;
-                dni = Convert.ToInt32(tbDni.Text);
-
-                int resultado = new SqlAltaUsuario().crearUsuario(username, password, dni);
-                switch (resultado)
+                MessageBox.Show("Debe elegir al menos un rol para crear su usuario");
+            }
+            else
+            {
+                if (tbNombreUsuario != null && tbContraseña != null && tbDni != null)
                 {
-                    case 0:
-                        MessageBox.Show("El nombre de usuario ya existe");
-                        break;
-                    case 1:
-                        MessageBox.Show("Usuario creado correctamente");
-                        break;
+                    username = tbNombreUsuario.Text;
+                    password = tbContraseña.Text;
+                    dni = Convert.ToInt32(tbDni.Text);
+
+                    if (cbChofer.Checked == true)
+                    {
+                        flagRolChofer = 1;
+                    }
+                    else
+                    {
+                        flagRolChofer = 0;
+                    }
+
+                    if (cbCliente.Checked == true)
+                    {
+                        flagRolCliente = 1;
+                    }
+                    else
+                    {
+                        flagRolCliente = 0;
+                    }
+                    
+
+                    int resultado = new SqlAltaUsuario().crearUsuario(username, password, dni, flagRolChofer, flagRolCliente);
+                    switch (resultado)
+                    {
+                        case 0:
+                            MessageBox.Show("El nombre de usuario ya existe");
+                            break;
+                        case 1:
+                            MessageBox.Show("Usuario creado correctamente");
+                            break;
+                    }
 
                 }
-
+                else
+                {
+                    MessageBox.Show(" Debe completar todos los campos");
+                }
             }
         }
+
+
 
         private void btnCancelar_Click_1(object sender, EventArgs e)
         {
@@ -96,6 +130,16 @@ namespace UberFrba.Alta_Usuario
         }
 
         private void maskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void cbChofer_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbCliente_CheckedChanged(object sender, EventArgs e)
         {
 
         }
