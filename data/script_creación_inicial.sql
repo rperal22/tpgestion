@@ -342,6 +342,12 @@ BEGIN
 
 	INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Func_Nombre,RF_Rol_Nombre)
 	VALUES ('ABM Automoviles','Administrador')
+
+	INSERT INTO SQLGROUP.Funcionalidades (Func_Nombre)
+	VALUES ('ABM Turno');
+
+	INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Func_Nombre,RF_Rol_Nombre)
+	VALUES ('ABM Turno','Administrador')
 END
 GO
 
@@ -633,4 +639,26 @@ ELSE
 	SET @resultado = 1
 	END
 END	
+GO
+
+/* ----------- STORED PRUCEDURE ALTA TURNOS ----------------------- */
+IF(OBJECT_ID('SQLGROUP.crearTurno') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.crearTurno
+GO
+
+CREATE PROCEDURE SQLGROUP.crearTurno @t_hi NUMERIC(18,0), @t_hf NUMERIC(18,0), @t_desc VARCHAR(255), @t_vk NUMERIC(18,2), @t_pb NUMERIC(18,2), @t_estado VARCHAR(20)
+AS
+BEGIN
+	IF (@t_estado = 'Habilitado' AND (SELECT COUNT(*)
+		FROM Turno
+		WHERE Turno_Estado = 'Habilitado' AND (Turno_Hora_Inicio < @t_hi AND Turno_Hora_Fin > @t_hi) OR  (Turno_Hora_Inicio < @t_hf AND Turno_Hora_Fin > @t_hf)) > 0)
+	BEGIN
+		RAISERROR('Ya hay un turno habilitado en esos horarios', 16,1);
+	END
+	ELSE 
+	BEGIN
+		INSERT INTO Turno (Turno_Hora_Inicio, Turno_Hora_Fin, Turno_Descripcion, Turno_Valor_Kilometro, Turno_Precio_Base, Turno_Estado)
+		VALUES (@t_hi,@t_hf,@t_desc,@t_vk,@t_pb, @t_estado)
+	END
+END
 GO

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,33 @@ namespace UberFrba.SQL
             }
             conexion.Close();
             return turnos;
+        }
+
+        public void guardarTurno(Turno turno)
+        {
+
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand cmd = new SqlCommand("SQLGROUP.crearTurno", conexion);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add(new SqlParameter("@t_hi", turno.hi));
+            cmd.Parameters.Add(new SqlParameter("@t_hf", turno.hf));
+            cmd.Parameters.Add(new SqlParameter("@t_desc", turno.desc));
+            cmd.Parameters.Add(new SqlParameter("@t_vk", turno.valor_kilometro));
+            cmd.Parameters.Add(new SqlParameter("@t_pb", turno.precio_base));
+            cmd.Parameters.Add(new SqlParameter("@t_estado", turno.estado));
+
+            conexion.Open();
+            try
+            {
+                cmd.ExecuteNonQuery(); 
+                conexion.Close();
+            }
+            catch(Exception ex)
+            {
+                conexion.Close();
+                throw ex;
+            }
         }
     }
 }

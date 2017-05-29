@@ -13,6 +13,7 @@ namespace UberFrba.Entidades
         public string desc { get; set; }
         public float valor_kilometro { get; set; }
         public float precio_base { get; set; }
+        public String estado { get; set; }
 
         public Turno(int id, int hi, int hf, string desc, float valor_kilometro, float precio_base)
         {

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UberFrba.Abm_Automovil;
+using UberFrba.Abm_Turno;
 using UberFrba.Entidades;
 
 namespace UberFrba
@@ -30,6 +31,10 @@ namespace UberFrba
             if (comboBoxFuncionalidades.Text.ToLower().Equals("abm automoviles"))
             {
                 new ABMAutomovil().Show();
+            }
+            else if (comboBoxFuncionalidades.Text.ToLower().Equals("abm turno"))
+            {
+                new ABMTurno().Show();
             }
         }
 
