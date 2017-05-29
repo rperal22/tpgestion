@@ -27,8 +27,8 @@ namespace UberFrba.SQL
             cmd.Parameters.Add(new SqlParameter("@username", username));
             cmd.Parameters.Add(new SqlParameter("@password", password));
             cmd.Parameters.Add(new SqlParameter("@dni", dni));
-            cmd.Parameters.Add(new SqlParameter("@flagChofer", flagRolChofer ));
-            cmd.Parameters.Add(new SqlParameter("@flagCliente", flagRolCliente));
+            cmd.Parameters.Add(new SqlParameter("@flagRolChofer", flagRolChofer ));
+            cmd.Parameters.Add(new SqlParameter("@flagRolCliente", flagRolCliente));
             cmd.Parameters.Add(VariableRetorno);
 
             conexion.Open();

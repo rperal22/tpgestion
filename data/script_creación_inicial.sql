@@ -638,11 +638,13 @@ ELSE
 	VALUES (@username , @password, @dni)
 	IF (@flagRolChofer = 1)
 		BEGIN
-		/* crea la relacion en usuario_rol */
+		INSERT INTO SQLGROUP.Usuarios_Rol (UR_Usuario_Id,UR_Rol_Nombre)
+		VALUES (@username, 'Chofer')
 		END
 	IF (@flagRolCliente = 1)
 		BEGIN
-		/* crea la relacion en usuario_rol */
+		INSERT INTO SQLGROUP.Usuarios_Rol (UR_Usuario_Id,UR_Rol_Nombre)
+		VALUES (@username, 'Cliente')
 		END	
 	SET @resultado = 1
 	END
