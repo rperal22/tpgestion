@@ -73,6 +73,7 @@ namespace UberFrba.Abm_Automovil
         private void editarAuto(object sender, EventArgs e)
         {
             new modificarAutomovil(this.dataGridViewAutos.SelectedRows[0].DataBoundItem as Automovil).Show();
+            this.Close();
         }
 
     }

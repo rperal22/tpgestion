@@ -25,6 +25,7 @@ namespace UberFrba.Abm_Automovil
             this.comboBox1.DisplayMember = "desc";
             this.comboBox1.ValueMember = "this";
             this.comboBox1.DataSource = this.turnos;
+            this.comboBoxEstado.SelectedIndex = 0;
         }
 
         private void buttonRemover_Click(object sender, EventArgs e)
@@ -50,7 +51,7 @@ namespace UberFrba.Abm_Automovil
             try
             {
                 this.validar();
-                Automovil autoNuevo = new Automovil(this.textBoxPatente.Text, this.textBoxMarca.Text, this.textBoxModelo.Text, Int32.Parse(this.textBoxChofer.Text), this.turnosElegidos, this.textBoxLicencia.Text, this.textBoxRodado.Text, "Habilitado");
+                Automovil autoNuevo = new Automovil(this.textBoxPatente.Text, this.textBoxMarca.Text, this.textBoxModelo.Text, Int32.Parse(this.textBoxChofer.Text), this.turnosElegidos, this.textBoxLicencia.Text, this.textBoxRodado.Text, this.comboBoxEstado.Text);
                 new SqlAutomoviles().guardarAutomovil(autoNuevo);
             }
             catch(FormatException ex) {

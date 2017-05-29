@@ -29,12 +29,17 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBoxEstado = new System.Windows.Forms.ComboBox();
+            this.labelEstado = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.textBoxRodado = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxLicencia = new System.Windows.Forms.TextBox();
             this.Licencia = new System.Windows.Forms.Label();
             this.textBoxChofer = new System.Windows.Forms.TextBox();
-            this.textBoxPatente = new System.Windows.Forms.TextBox();
             this.textBoxModelo = new System.Windows.Forms.TextBox();
             this.textBoxMarca = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -48,16 +53,15 @@
             this.buttonRemover = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBoxTurnos = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
+            this.textBoxPatente = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.comboBoxEstado);
+            this.groupBox1.Controls.Add(this.labelEstado);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label7);
@@ -82,6 +86,64 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos del Automóvil";
+            // 
+            // comboBoxEstado
+            // 
+            this.comboBoxEstado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxEstado.FormattingEnabled = true;
+            this.comboBoxEstado.Items.AddRange(new object[] {
+            "Habilitado",
+            "Deshabilitado"});
+            this.comboBoxEstado.Location = new System.Drawing.Point(438, 69);
+            this.comboBoxEstado.Name = "comboBoxEstado";
+            this.comboBoxEstado.Size = new System.Drawing.Size(169, 24);
+            this.comboBoxEstado.TabIndex = 17;
+            // 
+            // labelEstado
+            // 
+            this.labelEstado.AutoSize = true;
+            this.labelEstado.Location = new System.Drawing.Point(435, 49);
+            this.labelEstado.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelEstado.Name = "labelEstado";
+            this.labelEstado.Size = new System.Drawing.Size(52, 17);
+            this.labelEstado.TabIndex = 16;
+            this.labelEstado.Text = "Estado";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(303, 146);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(77, 17);
+            this.label9.TabIndex = 15;
+            this.label9.Text = "Obligatorio";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(303, 113);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(77, 17);
+            this.label8.TabIndex = 14;
+            this.label8.Text = "Obligatorio";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(303, 81);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(77, 17);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Obligatorio";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(303, 49);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(77, 17);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Obligatorio";
             // 
             // textBoxRodado
             // 
@@ -124,14 +186,6 @@
             this.textBoxChofer.Name = "textBoxChofer";
             this.textBoxChofer.Size = new System.Drawing.Size(132, 22);
             this.textBoxChofer.TabIndex = 4;
-            // 
-            // textBoxPatente
-            // 
-            this.textBoxPatente.Location = new System.Drawing.Point(133, 113);
-            this.textBoxPatente.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxPatente.Name = "textBoxPatente";
-            this.textBoxPatente.Size = new System.Drawing.Size(132, 22);
-            this.textBoxPatente.TabIndex = 3;
             // 
             // textBoxModelo
             // 
@@ -261,41 +315,13 @@
             this.textBoxTurnos.Size = new System.Drawing.Size(259, 157);
             this.textBoxTurnos.TabIndex = 5;
             // 
-            // label6
+            // textBoxPatente
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(303, 49);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(77, 17);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "Obligatorio";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(303, 81);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(77, 17);
-            this.label7.TabIndex = 13;
-            this.label7.Text = "Obligatorio";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(303, 113);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(77, 17);
-            this.label8.TabIndex = 14;
-            this.label8.Text = "Obligatorio";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(303, 146);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(77, 17);
-            this.label9.TabIndex = 15;
-            this.label9.Text = "Obligatorio";
+            this.textBoxPatente.Location = new System.Drawing.Point(133, 113);
+            this.textBoxPatente.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxPatente.Name = "textBoxPatente";
+            this.textBoxPatente.Size = new System.Drawing.Size(132, 22);
+            this.textBoxPatente.TabIndex = 3;
             // 
             // altaAutomovil
             // 
@@ -322,7 +348,6 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox textBoxChofer;
-        private System.Windows.Forms.TextBox textBoxPatente;
         private System.Windows.Forms.TextBox textBoxModelo;
         private System.Windows.Forms.TextBox textBoxMarca;
         private System.Windows.Forms.Label label5;
@@ -345,6 +370,9 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox comboBoxEstado;
+        private System.Windows.Forms.Label labelEstado;
+        private System.Windows.Forms.TextBox textBoxPatente;
 
 
     }

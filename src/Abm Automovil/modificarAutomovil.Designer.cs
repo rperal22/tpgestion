@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBoxEstado = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -38,7 +40,6 @@
             this.textBoxLicencia = new System.Windows.Forms.TextBox();
             this.Licencia = new System.Windows.Forms.Label();
             this.textBoxChofer = new System.Windows.Forms.TextBox();
-            this.textBoxPatente = new System.Windows.Forms.TextBox();
             this.textBoxModelo = new System.Windows.Forms.TextBox();
             this.textBoxMarca = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -52,12 +53,16 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.buttonCerrar = new System.Windows.Forms.Button();
             this.buttonGuardar = new System.Windows.Forms.Button();
+            this.labelPatente = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.labelPatente);
+            this.groupBox1.Controls.Add(this.comboBoxEstado);
+            this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label7);
@@ -67,7 +72,6 @@
             this.groupBox1.Controls.Add(this.textBoxLicencia);
             this.groupBox1.Controls.Add(this.Licencia);
             this.groupBox1.Controls.Add(this.textBoxChofer);
-            this.groupBox1.Controls.Add(this.textBoxPatente);
             this.groupBox1.Controls.Add(this.textBoxModelo);
             this.groupBox1.Controls.Add(this.textBoxMarca);
             this.groupBox1.Controls.Add(this.label5);
@@ -82,6 +86,28 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos del Automóvil";
+            // 
+            // comboBoxEstado
+            // 
+            this.comboBoxEstado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxEstado.FormattingEnabled = true;
+            this.comboBoxEstado.Items.AddRange(new object[] {
+            "Habilitado",
+            "Deshabilitado"});
+            this.comboBoxEstado.Location = new System.Drawing.Point(417, 69);
+            this.comboBoxEstado.Name = "comboBoxEstado";
+            this.comboBoxEstado.Size = new System.Drawing.Size(169, 24);
+            this.comboBoxEstado.TabIndex = 19;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(414, 49);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(52, 17);
+            this.label10.TabIndex = 18;
+            this.label10.Text = "Estado";
             // 
             // label9
             // 
@@ -160,14 +186,6 @@
             this.textBoxChofer.Name = "textBoxChofer";
             this.textBoxChofer.Size = new System.Drawing.Size(132, 22);
             this.textBoxChofer.TabIndex = 4;
-            // 
-            // textBoxPatente
-            // 
-            this.textBoxPatente.Location = new System.Drawing.Point(133, 113);
-            this.textBoxPatente.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxPatente.Name = "textBoxPatente";
-            this.textBoxPatente.Size = new System.Drawing.Size(132, 22);
-            this.textBoxPatente.TabIndex = 3;
             // 
             // textBoxModelo
             // 
@@ -297,6 +315,16 @@
             this.buttonGuardar.UseVisualStyleBackColor = true;
             this.buttonGuardar.Click += new System.EventHandler(this.buttonGuardar_Click);
             // 
+            // labelPatente
+            // 
+            this.labelPatente.AutoSize = true;
+            this.labelPatente.Location = new System.Drawing.Point(130, 117);
+            this.labelPatente.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelPatente.Name = "labelPatente";
+            this.labelPatente.Size = new System.Drawing.Size(57, 17);
+            this.labelPatente.TabIndex = 20;
+            this.labelPatente.Text = "Patente";
+            // 
             // modificarAutomovil
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -329,7 +357,6 @@
         private System.Windows.Forms.TextBox textBoxLicencia;
         private System.Windows.Forms.Label Licencia;
         private System.Windows.Forms.TextBox textBoxChofer;
-        private System.Windows.Forms.TextBox textBoxPatente;
         private System.Windows.Forms.TextBox textBoxModelo;
         private System.Windows.Forms.TextBox textBoxMarca;
         private System.Windows.Forms.Label label5;
@@ -343,5 +370,8 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button buttonCerrar;
         private System.Windows.Forms.Button buttonGuardar;
+        private System.Windows.Forms.ComboBox comboBoxEstado;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label labelPatente;
     }
 }
