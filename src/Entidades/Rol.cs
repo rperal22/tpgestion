@@ -7,11 +7,17 @@ namespace UberFrba.Entidades
 {
     public class Rol
     {
-        public List<String> funcionalidades {get; set;}
+        public String nombre { get; set; }
+        public List<Funcionalidad> funcionalidades { get; set; }
+        public String estado { get; set; }
+        public String desc { get; set; }
 
-        public Rol(List<String> func)
+        public Rol(String nombre, String estado, String desc, List<Funcionalidad> func)
         {
-            funcionalidades = func;
+            this.nombre = nombre;
+            this.estado = estado;
+            this.desc = desc;
+            this.funcionalidades = func;
         }
     }
 }

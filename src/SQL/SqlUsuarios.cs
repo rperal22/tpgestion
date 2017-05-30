@@ -48,22 +48,5 @@ namespace UberFrba.SQL
             return roles;
         }
 
-        public List<String> getFuncionesRoles(String rol)
-        {
-            List<String> funciones = new List<string>();
-            SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand query = new SqlCommand("SELECT RF_Func_Nombre FROM SQLGROUP.Rol_Funcionalidad WHERE RF_Rol_Nombre = @rol", conexion);
-            query.Parameters.AddWithValue("@rol", rol);
-            conexion.Open();
-            SqlDataReader resultados = query.ExecuteReader();
-            while (resultados.Read())
-            {
-                funciones.Add(resultados.GetString(0));
-            }
-            conexion.Close();
-            return funciones;
-        }
-
-
     }
 }

@@ -183,6 +183,7 @@
     </Compile>
     <Compile Include="conexionBase.cs" />
     <Compile Include="Entidades\Automovil.cs" />
+    <Compile Include="Entidades\Funcionalidad.cs" />
     <Compile Include="Entidades\Rol.cs" />
     <Compile Include="Entidades\Turno.cs" />
     <Compile Include="Entidades\Usuario.cs" />
@@ -227,6 +228,7 @@
     <Compile Include="SQL\SqlAltaUsuario.cs" />
     <Compile Include="SQL\SqlAutomoviles.cs" />
     <Compile Include="SQL\SqlGeneral.cs" />
+    <Compile Include="SQL\SqlRoles.cs" />
     <Compile Include="SQL\SqlTurnos.cs" />
     <Compile Include="SQL\SqlUsuarios.cs" />
     <EmbeddedResource Include="Abm Automovil\ABMAutomovil.resx">

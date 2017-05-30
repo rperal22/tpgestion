@@ -57,7 +57,7 @@ namespace UberFrba
 
         private void buttonListo_Click(object sender, EventArgs e)
         {
-            new SeleccionFuncionalidades(new Usuario(username,new Rol(new SqlUsuarios().getFuncionesRoles((string)this.comboBoxRoles.SelectedItem)))).Show();
+            new SeleccionFuncionalidades(new Usuario(username,new SqlRoles().getRol(this.comboBoxRoles.Text))).Show();
         }
 
         private void habilitarSeleccionDeRoles()

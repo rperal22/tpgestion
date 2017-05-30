@@ -21,7 +21,9 @@ namespace UberFrba
         {
             InitializeComponent();
             this.usuario = user;
-            this.comboBoxFuncionalidades.Items.AddRange(usuario.userrol.funcionalidades.ToArray());
+            this.comboBoxFuncionalidades.DisplayMember = "nombreFuncion";
+            this.comboBoxFuncionalidades.ValueMember = "this";
+            this.comboBoxFuncionalidades.DataSource = this.usuario.userrol.funcionalidades;
         }
 
         private void buttonSeleccionar_Click(object sender, EventArgs e)
