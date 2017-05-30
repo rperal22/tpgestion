@@ -37,6 +37,10 @@
             this.tbNombreUsuario = new System.Windows.Forms.TextBox();
             this.tbContraseña = new System.Windows.Forms.TextBox();
             this.tbDni = new System.Windows.Forms.MaskedTextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbChofer = new System.Windows.Forms.CheckBox();
+            this.cbCliente = new System.Windows.Forms.CheckBox();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -68,7 +72,7 @@
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(51, 271);
+            this.btnLimpiar.Location = new System.Drawing.Point(51, 320);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnLimpiar.Size = new System.Drawing.Size(139, 28);
@@ -79,7 +83,7 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(413, 271);
+            this.btnCancelar.Location = new System.Drawing.Point(413, 321);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(137, 28);
             this.btnCancelar.TabIndex = 4;
@@ -89,7 +93,7 @@
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(241, 271);
+            this.btnAceptar.Location = new System.Drawing.Point(238, 321);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(130, 27);
             this.btnAceptar.TabIndex = 5;
@@ -119,11 +123,45 @@
             this.tbDni.Size = new System.Drawing.Size(202, 20);
             this.tbDni.TabIndex = 8;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.cbCliente);
+            this.groupBox1.Controls.Add(this.cbChofer);
+            this.groupBox1.Location = new System.Drawing.Point(55, 204);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(468, 78);
+            this.groupBox1.TabIndex = 9;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Seleccione un Rol";
+            // 
+            // cbChofer
+            // 
+            this.cbChofer.AutoSize = true;
+            this.cbChofer.Location = new System.Drawing.Point(122, 35);
+            this.cbChofer.Name = "cbChofer";
+            this.cbChofer.Size = new System.Drawing.Size(57, 17);
+            this.cbChofer.TabIndex = 0;
+            this.cbChofer.Text = "Chofer";
+            this.cbChofer.UseVisualStyleBackColor = true;
+            this.cbChofer.CheckedChanged += new System.EventHandler(this.cbChofer_CheckedChanged);
+            // 
+            // cbCliente
+            // 
+            this.cbCliente.AutoSize = true;
+            this.cbCliente.Location = new System.Drawing.Point(277, 35);
+            this.cbCliente.Name = "cbCliente";
+            this.cbCliente.Size = new System.Drawing.Size(58, 17);
+            this.cbCliente.TabIndex = 1;
+            this.cbCliente.Text = "Cliente";
+            this.cbCliente.UseVisualStyleBackColor = true;
+            this.cbCliente.CheckedChanged += new System.EventHandler(this.cbCliente_CheckedChanged);
+            // 
             // altaUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(594, 324);
+            this.ClientSize = new System.Drawing.Size(594, 405);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tbDni);
             this.Controls.Add(this.tbContraseña);
             this.Controls.Add(this.tbNombreUsuario);
@@ -135,6 +173,8 @@
             this.Controls.Add(this.label1);
             this.Name = "altaUsuario";
             this.Text = "altaUsuario";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -151,5 +191,8 @@
         private System.Windows.Forms.TextBox tbNombreUsuario;
         private System.Windows.Forms.TextBox tbContraseña;
         private System.Windows.Forms.MaskedTextBox tbDni;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox cbCliente;
+        private System.Windows.Forms.CheckBox cbChofer;
     }
 }

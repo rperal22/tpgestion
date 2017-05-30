@@ -13,7 +13,7 @@ namespace UberFrba.SQL
     class SqlAltaUsuario
     {
 
-        public int crearUsuario(String username, String password, Int32 dni)
+        public int crearUsuario(String username, String password, Int32 dni, Int32 flagRolChofer, Int32 flagRolCliente)
         {
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             SqlCommand cmd = new SqlCommand("SQLGROUP.crearUsuario", conexion);
@@ -27,6 +27,8 @@ namespace UberFrba.SQL
             cmd.Parameters.Add(new SqlParameter("@username", username));
             cmd.Parameters.Add(new SqlParameter("@password", password));
             cmd.Parameters.Add(new SqlParameter("@dni", dni));
+            cmd.Parameters.Add(new SqlParameter("@flagRolChofer", flagRolChofer ));
+            cmd.Parameters.Add(new SqlParameter("@flagRolCliente", flagRolCliente));
             cmd.Parameters.Add(VariableRetorno);
 
             conexion.Open();
