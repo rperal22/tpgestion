@@ -12,9 +12,6 @@ GO
 CREATE PROCEDURE SQLGROUP.crear_tablas 
 AS
 BEGIN
-
-	IF OBJECT_ID('SQLGROUP.Chofer_Turno') IS NOT NULL
-		DROP TABLE SQLGROUP.Chofer_Turno
 	IF OBJECT_ID('SQLGROUP.Auto_Turno') IS NOT NULL
 		DROP TABLE SQLGROUP.Auto_Turno
 	IF OBJECT_ID('SQLGROUP.Usuarios_Rol') IS NOT NULL
@@ -169,12 +166,6 @@ BEGIN
 		CONSTRAINT pk_facturaxviaje PRIMARY KEY(Fv_Viaje_Id,Fv_Factura_Nro) 
 	);
 
-	CREATE TABLE SQLGROUP.Chofer_Turno (
-		Ct_Chofer_Id INTEGER,
-		Ct_Turno_Id INTEGER,
-		CONSTRAINT pk_choferxturno PRIMARY KEY (Ct_Chofer_Id,Ct_Turno_Id)
-	);
-
 	CREATE TABLE SQLGROUP.Auto_Turno (
 		AT_Auto_Patente VARCHAR(10),
 		AT_Turno_Id INTEGER,
@@ -222,12 +213,6 @@ BEGIN
 	CONSTRAINT fk_facturaviaje_viaje FOREIGN KEY (Fv_Viaje_Id) REFERENCES SQLGROUP.Viajes(Viaje_Id)
 	ON DELETE NO ACTION ON UPDATE CASCADE,
 	CONSTRAINT fk_facturaviaje_factura FOREIGN KEY (Fv_Factura_Nro) REFERENCES SQLGROUP.Facturas(Factura_Nro)
-	ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-	ALTER TABLE SQLGROUP.Chofer_Turno ADD
-	CONSTRAINT fk_choferturno_chofer FOREIGN KEY (Ct_Chofer_Id) REFERENCES SQLGROUP.Choferes(Chofer_Id)
-	ON DELETE NO ACTION ON UPDATE CASCADE,
-	CONSTRAINT fk_choferturno_turno FOREIGN KEY (Ct_Turno_Id) REFERENCES SQLGROUP.Turno(Turno_Id)
 	ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 	ALTER TABLE SQLGROUP.Auto_Turno ADD
@@ -419,21 +404,6 @@ BEGIN
 END
 GO
 
-IF(OBJECT_ID('SQLGROUP.migrar_choferesxturno') IS NOT NULL) 
-	DROP PROCEDURE SQLGROUP.migrar_choferesxturno
-GO
-
-CREATE PROCEDURE SQLGROUP.migrar_choferesxturno
-AS
-BEGIN
-	INSERT SQLGROUP.Chofer_Turno
-	SELECT Chofer_Id, Turno_Id
-	FROM gd_esquema.Maestra as m, SQLGROUP.Choferes as c, SQLGROUP.Turno as t
-	WHERE m.Chofer_Dni = c.Chofer_Dni AND  t.Turno_Hora_Inicio = m.Turno_Hora_Inicio AND t.Turno_Hora_Fin = m.Turno_Hora_Fin
-	GROUP BY Chofer_Id, Turno_Id
-END
-GO
-
 IF (OBJECT_ID('SQLGROUP.migrar_autoxturno') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_autoxturno
 GO
@@ -558,7 +528,6 @@ BEGIN
 	EXEC SQLGROUP.migrar_rolesxusuario;
 	EXEC SQLGROUP.crear_funciones;
 	EXEC SQLGROUP.migrar_automoviles;	
-	EXEC SQLGROUP.migrar_choferesxturno;
 	EXEC SQLGROUP.migrar_autoxturno;
 	EXEC SQLGROUP.migrar_viajes;
 	/*EXEC SQLGROUP.migrar_facturas;
