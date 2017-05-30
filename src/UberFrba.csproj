@@ -163,6 +163,18 @@
     <Compile Include="Abm Turno\altaTurno.Designer.cs">
       <DependentUpon>altaTurno.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Turno\BusquedaTurno.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Turno\BusquedaTurno.Designer.cs">
+      <DependentUpon>BusquedaTurno.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Turno\ModificarTurno.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Turno\ModificarTurno.Designer.cs">
+      <DependentUpon>ModificarTurno.cs</DependentUpon>
+    </Compile>
     <Compile Include="Alta Usuario\altaUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -273,6 +285,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Turno\altaTurno.resx">
       <DependentUpon>altaTurno.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Turno\BusquedaTurno.resx">
+      <DependentUpon>BusquedaTurno.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Turno\ModificarTurno.resx">
+      <DependentUpon>ModificarTurno.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Alta Usuario\altaUsuario.resx">
       <DependentUpon>altaUsuario.cs</DependentUpon>

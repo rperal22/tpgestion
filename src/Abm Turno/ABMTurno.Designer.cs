@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.buttonAlta = new System.Windows.Forms.Button();
+            this.buttonModificacion = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonAlta
@@ -41,11 +42,22 @@
             this.buttonAlta.UseVisualStyleBackColor = true;
             this.buttonAlta.Click += new System.EventHandler(this.buttonAlta_Click);
             // 
+            // buttonModificacion
+            // 
+            this.buttonModificacion.Location = new System.Drawing.Point(195, 66);
+            this.buttonModificacion.Name = "buttonModificacion";
+            this.buttonModificacion.Size = new System.Drawing.Size(261, 56);
+            this.buttonModificacion.TabIndex = 1;
+            this.buttonModificacion.Text = "Modificacion o Baja";
+            this.buttonModificacion.UseVisualStyleBackColor = true;
+            this.buttonModificacion.Click += new System.EventHandler(this.buttonModificacion_Click);
+            // 
             // ABMTurno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(509, 189);
+            this.Controls.Add(this.buttonModificacion);
             this.Controls.Add(this.buttonAlta);
             this.Name = "ABMTurno";
             this.Text = "ABMTurno";
@@ -56,5 +68,6 @@
         #endregion
 
         private System.Windows.Forms.Button buttonAlta;
+        private System.Windows.Forms.Button buttonModificacion;
     }
 }

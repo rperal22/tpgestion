@@ -634,10 +634,40 @@ BEGIN
 	BEGIN
 		RAISERROR('Ya hay un turno habilitado en esos horarios', 16,1);
 	END
+	ELSE IF (@t_hf < @t_hi)
+	BEGIN
+		RAISERROR('La hora final no puede ser menor que la hora inicial', 16,1);
+	END
 	ELSE 
 	BEGIN
 		INSERT INTO Turno (Turno_Hora_Inicio, Turno_Hora_Fin, Turno_Descripcion, Turno_Valor_Kilometro, Turno_Precio_Base, Turno_Estado)
 		VALUES (@t_hi,@t_hf,@t_desc,@t_vk,@t_pb, @t_estado)
+	END
+END
+GO
+
+IF(OBJECT_ID('SQLGROUP.updatearTurno') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.updatearTurno
+GO
+
+CREATE PROCEDURE SQLGROUP.updatearTurno @t_id INT, @t_hi NUMERIC(18,0), @t_hf NUMERIC(18,0), @t_desc VARCHAR(255), @t_vk NUMERIC(18,2), @t_pb NUMERIC(18,2), @t_estado VARCHAR(20)
+AS
+BEGIN
+	IF (@t_estado = 'Habilitado' AND (SELECT COUNT(*)
+		FROM Turno
+		WHERE Turno_Estado = 'Habilitado' AND (Turno_Hora_Inicio < @t_hi AND Turno_Hora_Fin > @t_hi) OR  (Turno_Hora_Inicio < @t_hf AND Turno_Hora_Fin > @t_hf)) > 0)
+	BEGIN
+		RAISERROR('Ya hay un turno habilitado en esos horarios', 16,1);
+	END
+	ELSE IF (@t_hf < @t_hi)
+	BEGIN
+		RAISERROR('La hora final no puede ser menor que la hora inicial', 16,1);
+	END
+	ELSE 
+	BEGIN
+		UPDATE Turno SET Turno_Descripcion = @t_desc, Turno_Hora_Inicio = @t_hi, Turno_Hora_Fin = @t_hf, Turno_Precio_Base = @t_pb,
+						Turno_Valor_Kilometro = @t_vk, Turno_Estado = @t_estado
+						WHERE Turno_Id = @t_id
 	END
 END
 GO

@@ -21,5 +21,10 @@ namespace UberFrba.Abm_Turno
         {
             new altaTurno().Show();
         }
+
+        private void buttonModificacion_Click(object sender, EventArgs e)
+        {
+            new BusquedaTurno().Show();
+        }
     }
 }

@@ -13,17 +13,19 @@ using UberFrba.SQL;
 
 namespace UberFrba.Abm_Turno
 {
-    public partial class altaTurno : Form
+    public partial class ModificarTurno : Form
     {
-        public altaTurno()
+        private Turno turnoEnModificacion;
+        public ModificarTurno(Turno turno)
         {
             InitializeComponent();
-            this.comboBoxEstado.SelectedIndex = 1;
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            this.Close();
+            this.turnoEnModificacion = turno;
+            this.textBoxDesc.Text = turno.desc;
+            this.textBoxHF.Text = turno.hf.ToString();
+            this.textBoxHI.Text = turno.hi.ToString();
+            this.textBoxKM.Text = turno.valor_kilometro.ToString();
+            this.textBoxprecio.Text = turno.precio_base.ToString();
+            this.comboBoxEstado.Text = turno.estado;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -31,8 +33,6 @@ namespace UberFrba.Abm_Turno
             textBoxDesc.Clear();
             textBoxKM.Clear();
             textBoxprecio.Clear();
-           
-
         }
 
         private void buttonGuardar_Click(object sender, EventArgs e)
@@ -40,10 +40,10 @@ namespace UberFrba.Abm_Turno
             try
             {
                 this.validar();
-                Turno turnoAGuardar = new Turno(-1, Int32.Parse(this.textBoxHI.Text), Int32.Parse(this.textBoxHF.Text), this.textBoxDesc.Text, float.Parse(this.textBoxKM.Text), float.Parse(this.textBoxprecio.Text));
-                turnoAGuardar.estado = this.comboBoxEstado.Text;
-                new SqlTurnos().guardarTurno(turnoAGuardar);
-                MessageBox.Show("Turno guardado correctamete");
+                Turno turnoAActualizar = new Turno(turnoEnModificacion.id, Int32.Parse(this.textBoxHI.Text), Int32.Parse(this.textBoxHF.Text), this.textBoxDesc.Text, float.Parse(this.textBoxKM.Text), float.Parse(this.textBoxprecio.Text));
+                turnoAActualizar.estado = this.comboBoxEstado.Text;
+                new SqlTurnos().actualizarTurno(turnoAActualizar);
+                MessageBox.Show("Turno actualizado correctamete");
             }
             catch (FormatException ex)
             {
@@ -69,6 +69,12 @@ namespace UberFrba.Abm_Turno
             float.Parse(this.textBoxprecio.Text);
             Int32.Parse(this.textBoxHI.Text);
             Int32.Parse(this.textBoxHF.Text);
+        }
+        
+        private void button3_Click(object sender, EventArgs e)
+        {
+            new BusquedaTurno().Show();
+            this.Close();
         }
     }
 }
