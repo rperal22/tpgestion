@@ -117,18 +117,18 @@ namespace UberFrba.SQL
             return funcionalidades;
         }
 
-        public List<String> getFuncionesTotales()
+        public List<Funcionalidad> getFuncionesTotales()
         {
-            List<String> funcionalidades = new List<String>();
+            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             try
             {
-                SqlCommand consulta = new SqlCommand("SELECT Func_Nombre FROM dbo.funcionalidad", conexion);
+                SqlCommand consulta = new SqlCommand("SELECT Func_Nombre, Func_Descripcion FROM SQLGROUP.Funcionalidades", conexion);
                 conexion.Open();
                 SqlDataReader funcResultados = consulta.ExecuteReader();
                 while (funcResultados.Read())
                 {
-                    funcionalidades.Add(funcResultados.GetString(0));
+                    funcionalidades.Add(new Funcionalidad(funcResultados.GetString(0),funcResultados.GetString(1)));
                 }
             }
             catch (Exception ex)

@@ -310,11 +310,6 @@ AS
 BEGIN
 	/*NO ESTA COMPLETO!! // Pongo unas para testear*/
 	/*Creo una y se la asigno a sus correspondiente roles*/
-	INSERT INTO SQLGROUP.Funcionalidades (Func_Nombre)
-	VALUES ('ABM de Rol');
-
-	INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Func_Nombre,RF_Rol_Nombre)
-	VALUES ('ABM de Rol','Administrador')
 
 	INSERT INTO SQLGROUP.Funcionalidades (Func_Nombre)
 	VALUES ('ABM de Cliente');
@@ -333,6 +328,12 @@ BEGIN
 
 	INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Func_Nombre,RF_Rol_Nombre)
 	VALUES ('ABM Turno','Administrador')
+
+	INSERT INTO SQLGROUP.Funcionalidades (Func_Nombre)
+	VALUES ('ABM Rol');
+
+	INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Func_Nombre,RF_Rol_Nombre)
+	VALUES ('ABM Rol','Administrador')
 END
 GO
 
