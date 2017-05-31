@@ -17,11 +17,6 @@ namespace UberFrba.Abm_Rol
             InitializeComponent();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button4_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -30,6 +25,11 @@ namespace UberFrba.Abm_Rol
         private void buttonAlta_Click(object sender, EventArgs e)
         {
             new altaRol().Show();
+        }
+
+        private void buttonModificacion_Click(object sender, EventArgs e)
+        {
+            new listadoSeleccionModificar().Show();
         }
     }
 }

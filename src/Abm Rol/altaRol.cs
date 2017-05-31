@@ -39,6 +39,7 @@ namespace UberFrba.Abm_Rol
             {
                 this.validar();
                 new SqlRoles().insertarNuevoRol(new Rol(this.textBoxNombre.Text, this.comboBoxEstado.Text, this.textBoxDesc.Text, this.funcSeleccionadas));
+                MessageBox.Show("Rol guardado con exito");
             }
             catch (SqlException ex)
             {

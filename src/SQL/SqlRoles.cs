@@ -45,7 +45,7 @@ namespace UberFrba.SQL
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             try
             {
-                SqlCommand consulta = new SqlCommand("SELECT Rol_Nombre, Rol_Estado, Rol_Descripcion,  FROM SQLGROUP.Roles", conexion);
+                SqlCommand consulta = new SqlCommand("SELECT Rol_Nombre, Rol_Estado, Rol_Descripcion FROM SQLGROUP.Roles", conexion);
                 conexion.Open();
                 SqlDataReader rolesResultados = consulta.ExecuteReader();
                 while (rolesResultados.Read())
@@ -142,56 +142,41 @@ namespace UberFrba.SQL
             return funcionalidades;
         }
 
-        public Boolean actualizarFuncionesRoles(String rolViejo, String rolNuevo, List<String> funcionesNuevas, String habilitado)
+        public void actualizarRol(Rol rolNuevo, Rol rolViejo)
         {
-            Boolean ok = true;
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             conexion.Open();
-            SqlTransaction actualizacionRol = conexion.BeginTransaction("Actualizar Funciones De Un Rol");
-            SqlCommand command = new SqlCommand();
-            command.Connection = conexion;
-            command.Transaction = actualizacionRol;
-            int i = 0;
-            command.Parameters.Add("@rolViejo", SqlDbType.VarChar).Value = rolViejo;
-            command.Parameters.Add("@rolNuevo", SqlDbType.VarChar).Value = rolNuevo;
-            command.Parameters.Add("@habilitado", SqlDbType.VarChar).Value = habilitado;
+            SqlTransaction transaction = conexion.BeginTransaction();
+            SqlCommand comando2 = new SqlCommand("", conexion, transaction);
+            SqlCommand borrarFuncionalidades = new SqlCommand("DELETE FROM SQLGROUP.Rol_Funcionalidad WHERE RF_Rol_Nombre = @nombreElminiar", conexion, transaction);
+            borrarFuncionalidades.Parameters.AddWithValue("@nombreElminiar", rolViejo.nombre);
             try
             {
-                command.CommandText = "DELETE FROM rolxfuncionalidad WHERE RF_Rol_Tipo = @rolViejo";
-                command.ExecuteNonQuery();
-
-                command.CommandText = "UPDATE rol SET Rol_Tipo = @rolNuevo WHERE Rol_Tipo = @rolViejo";
-                command.ExecuteNonQuery();
-                /*Primero los borra si no esta habilitado, asi no actualiza y luego borra al pedo*/
-                if (!habilitado.Equals("Habilitado"))
+                borrarFuncionalidades.ExecuteNonQuery();
+                SqlCommand comando = new SqlCommand("UPDATE SQLGROUP.Roles SET Rol_Nombre = @nombre, Rol_Descripcion = @desc, Rol_Estado = @estado WHERE Rol_Nombre = @rolViejo", conexion, transaction);
+                comando.Parameters.AddWithValue("@nombre", rolNuevo.nombre);
+                comando.Parameters.AddWithValue("@desc", rolNuevo.desc);
+                comando.Parameters.AddWithValue("@estado", rolNuevo.estado);
+                comando.Parameters.AddWithValue("@rolViejo", rolViejo.nombre);
+                comando.ExecuteNonQuery();
+                int i = 0;
+                foreach (Funcionalidad func in rolNuevo.funcionalidades)
                 {
-                    command.CommandText = "DELETE FROM rolxusuario WHERE RU_Rol_Tipo = @rolNuevo";
-                    command.ExecuteNonQuery();
-                }
-
-                command.CommandText = "UPDATE rol SET Rol_Estado = @habilitado WHERE Rol_Tipo = @rolNuevo";
-                command.ExecuteNonQuery();
-
-                foreach (String funcion in funcionesNuevas)
-                {
-                    command.CommandText = "INSERT INTO rolxfuncionalidad VALUES (@rolNuevo,(SELECT Func_Codigo FROM funcionalidad WHERE Func_Nombre = @funcion" + i + "))";
-                    command.Parameters.Add("@funcion" + i, SqlDbType.VarChar).Value = funcion;
-                    command.ExecuteNonQuery();
+                    comando2.CommandText = "INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Rol_Nombre, RF_Func_Nombre) VALUES (@nombreRol" + i + ",@nombreFunc" + i + ")";
+                    comando2.Parameters.AddWithValue("@nombreRol" + i, rolNuevo.nombre);
+                    comando2.Parameters.AddWithValue("@nombreFunc" + i, func.nombreFuncion);
+                    comando2.ExecuteNonQuery();
                     i++;
                 }
-                actualizacionRol.Commit();
+                transaction.Commit();
+                conexion.Close();
             }
             catch (Exception ex)
             {
-                ok = false;
-                System.Console.Write(ex.ToString());
-                actualizacionRol.Rollback();
-            }
-            finally
-            {
+                transaction.Rollback();
                 conexion.Close();
+                throw ex;
             }
-            return ok;
         }
 
         public void insertarNuevoRol(Rol rolNuevo)
