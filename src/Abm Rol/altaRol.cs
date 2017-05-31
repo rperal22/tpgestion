@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,11 @@ namespace UberFrba.Abm_Rol
             try
             {
                 this.validar();
+                new SqlRoles().insertarNuevoRol(new Rol(this.textBoxNombre.Text, this.comboBoxEstado.Text, this.textBoxDesc.Text, this.funcSeleccionadas));
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message);
             }
             catch (SystemException ex)
             {
@@ -96,8 +102,11 @@ namespace UberFrba.Abm_Rol
                 SystemException ex = new SystemException("Debes ponerle un nombre");
                 throw ex;
             }
-
+            if (this.comboBoxEstado.SelectedIndex == -1)
+            {
+                SystemException ex = new SystemException("Seleccione un estado");
+                throw ex;
+            }
         }
-
     }
 }

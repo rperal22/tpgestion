@@ -194,42 +194,37 @@ namespace UberFrba.SQL
             return ok;
         }
 
-        public void insertarNuevoRol(String rol, List<String> funcionesNuevas, String habilitado)
+        public void insertarNuevoRol(Rol rolNuevo)
         {
-            String mensajeError = null;
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             conexion.Open();
-            SqlTransaction actualizacionRol = conexion.BeginTransaction("Actualizar Funciones De Un Rol");
-            SqlCommand command = new SqlCommand();
-            command.Connection = conexion;
-            command.Transaction = actualizacionRol;
-            command.Parameters.Add("@rolNuevo", SqlDbType.VarChar).Value = rol;
-            command.Parameters.Add("@habilitado", SqlDbType.VarChar).Value = habilitado;
-            int i = 0;
+            SqlTransaction transaction = conexion.BeginTransaction();
+            SqlCommand comando2 = new SqlCommand("", conexion, transaction);
             try
             {
-                command.CommandText = "IF (Select COUNT(*) FROM rol WHERE Rol_Tipo = @rolNuevo)<>0 RAISERROR('Ya existe este Rol',16,1);";
-                command.ExecuteNonQuery();
-                command.CommandText = "INSERT INTO rol VALUES(@rolNuevo,@habilitado)";
-                command.ExecuteNonQuery();
-
-                foreach (String funcion in funcionesNuevas)
+                SqlCommand comando = new SqlCommand("INSERT INTO SQLGROUP.Roles (Rol_Nombre,Rol_Descripcion,Rol_Estado) VALUES (@nombre,@desc,@estado)", conexion, transaction);
+                comando.Parameters.AddWithValue("@nombre", rolNuevo.nombre);
+                comando.Parameters.AddWithValue("@desc", rolNuevo.desc);
+                comando.Parameters.AddWithValue("@estado", rolNuevo.estado);
+                comando.ExecuteNonQuery();
+                int i = 0;
+                foreach (Funcionalidad func in rolNuevo.funcionalidades)
                 {
-                    command.CommandText = "INSERT INTO rolxfuncionalidad VALUES (@rolNuevo,(SELECT Func_Codigo FROM funcionalidad WHERE Func_Nombre = @funcion" + i + "))";
-                    command.Parameters.Add("@funcion" + i, SqlDbType.VarChar).Value = funcion;
-                    command.ExecuteNonQuery();
+                    comando2.CommandText = "INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Rol_Nombre, RF_Func_Nombre) VALUES (@nombreRol" + i + ",@nombreFunc" + i + ")";
+                    comando2.Parameters.AddWithValue("@nombreRol" + i, rolNuevo.nombre);
+                    comando2.Parameters.AddWithValue("@nombreFunc" + i, func.nombreFuncion);
+                    comando2.ExecuteNonQuery();
                     i++;
                 }
-                actualizacionRol.Commit();
+                transaction.Commit();
+                conexion.Close();
             }
             catch (Exception ex)
             {
-                mensajeError = ex.Message;
-                System.Console.Write(ex.ToString());
-                actualizacionRol.Rollback();
+                transaction.Rollback();
+                conexion.Close();
+                throw ex;
             }
-            conexion.Close();               
-            return;
         }
     }
 }
