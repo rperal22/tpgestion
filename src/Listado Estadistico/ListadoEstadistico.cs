@@ -25,7 +25,7 @@ namespace UberFrba.Listado_Estadistico
         private String anio;
         private String trimestre;
 
-        SqlDataReader rd;
+        
         SqlDataAdapter da;
         DataTable dt;
 

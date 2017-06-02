@@ -28,90 +28,95 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBoxViajes = new System.Windows.Forms.TextBox();
-            this.textBoxTotFac = new System.Windows.Forms.TextBox();
-            this.textBoxClie = new System.Windows.Forms.TextBox();
-            this.textBoxFinFac = new System.Windows.Forms.TextBox();
-            this.textBoxIniFac = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lbFechaFin = new System.Windows.Forms.Label();
+            this.cbClientes = new System.Windows.Forms.ComboBox();
+            this.dtpInicio = new System.Windows.Forms.DateTimePicker();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tbImporteTotal = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnLimpiar = new System.Windows.Forms.Button();
+            this.btnGuardar = new System.Windows.Forms.Button();
+            this.btnCancelar = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.tbCantViajes = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.dgvListaViajes = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvListaViajes)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBoxViajes);
-            this.groupBox1.Controls.Add(this.textBoxTotFac);
-            this.groupBox1.Controls.Add(this.textBoxClie);
-            this.groupBox1.Controls.Add(this.textBoxFinFac);
-            this.groupBox1.Controls.Add(this.textBoxIniFac);
-            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.lbFechaFin);
+            this.groupBox1.Controls.Add(this.cbClientes);
+            this.groupBox1.Controls.Add(this.dtpInicio);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.tbImporteTotal);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(38, 26);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(307, 191);
+            this.groupBox1.Size = new System.Drawing.Size(642, 202);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos de Facturación";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // textBoxViajes
+            // lbFechaFin
             // 
-            this.textBoxViajes.Location = new System.Drawing.Point(148, 141);
-            this.textBoxViajes.Name = "textBoxViajes";
-            this.textBoxViajes.Size = new System.Drawing.Size(100, 20);
-            this.textBoxViajes.TabIndex = 9;
+            this.lbFechaFin.AutoSize = true;
+            this.lbFechaFin.Location = new System.Drawing.Point(184, 100);
+            this.lbFechaFin.Name = "lbFechaFin";
+            this.lbFechaFin.Size = new System.Drawing.Size(197, 13);
+            this.lbFechaFin.TabIndex = 13;
+            this.lbFechaFin.Text = "Autocalculado a partir de la fecha inicio*";
             // 
-            // textBoxTotFac
+            // cbClientes
             // 
-            this.textBoxTotFac.Location = new System.Drawing.Point(148, 115);
-            this.textBoxTotFac.Name = "textBoxTotFac";
-            this.textBoxTotFac.Size = new System.Drawing.Size(100, 20);
-            this.textBoxTotFac.TabIndex = 8;
+            this.cbClientes.FormattingEnabled = true;
+            this.cbClientes.Location = new System.Drawing.Point(187, 132);
+            this.cbClientes.Name = "cbClientes";
+            this.cbClientes.Size = new System.Drawing.Size(200, 21);
+            this.cbClientes.TabIndex = 12;
+            this.cbClientes.SelectedIndexChanged += new System.EventHandler(this.cbClientes_SelectedIndexChanged);
             // 
-            // textBoxClie
+            // dtpInicio
             // 
-            this.textBoxClie.Location = new System.Drawing.Point(148, 89);
-            this.textBoxClie.Name = "textBoxClie";
-            this.textBoxClie.Size = new System.Drawing.Size(100, 20);
-            this.textBoxClie.TabIndex = 7;
+            this.dtpInicio.Location = new System.Drawing.Point(187, 63);
+            this.dtpInicio.Name = "dtpInicio";
+            this.dtpInicio.Size = new System.Drawing.Size(200, 20);
+            this.dtpInicio.TabIndex = 10;
+            this.dtpInicio.ValueChanged += new System.EventHandler(this.dtpInicio_ValueChanged);
             // 
-            // textBoxFinFac
+            // label6
             // 
-            this.textBoxFinFac.Location = new System.Drawing.Point(148, 63);
-            this.textBoxFinFac.Name = "textBoxFinFac";
-            this.textBoxFinFac.Size = new System.Drawing.Size(100, 20);
-            this.textBoxFinFac.TabIndex = 6;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(16, 25);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(275, 13);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "Recuerde que la facturacion se realiza en forma mensual";
             // 
-            // textBoxIniFac
+            // tbImporteTotal
             // 
-            this.textBoxIniFac.Location = new System.Drawing.Point(148, 37);
-            this.textBoxIniFac.Name = "textBoxIniFac";
-            this.textBoxIniFac.Size = new System.Drawing.Size(100, 20);
-            this.textBoxIniFac.TabIndex = 5;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 144);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(88, 13);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Viajes facturados";
+            this.tbImporteTotal.Location = new System.Drawing.Point(187, 172);
+            this.tbImporteTotal.Name = "tbImporteTotal";
+            this.tbImporteTotal.Size = new System.Drawing.Size(100, 20);
+            this.tbImporteTotal.TabIndex = 8;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 118);
+            this.label4.Location = new System.Drawing.Point(15, 175);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(127, 13);
             this.label4.TabIndex = 3;
@@ -120,7 +125,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 92);
+            this.label3.Location = new System.Drawing.Point(16, 140);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(39, 13);
             this.label3.TabIndex = 2;
@@ -129,7 +134,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 66);
+            this.label2.Location = new System.Drawing.Point(15, 100);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(102, 13);
             this.label2.TabIndex = 1;
@@ -138,54 +143,116 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 40);
+            this.label1.Location = new System.Drawing.Point(15, 63);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(130, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Fecha de inicio de factura";
             // 
-            // button1
+            // btnLimpiar
             // 
-            this.button1.Location = new System.Drawing.Point(38, 234);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Limpiar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnLimpiar.Location = new System.Drawing.Point(388, 514);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.btnLimpiar.TabIndex = 1;
+            this.btnLimpiar.Text = "Limpiar";
+            this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
-            // button2
+            // btnGuardar
             // 
-            this.button2.Location = new System.Drawing.Point(149, 234);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Guardar";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnGuardar.Location = new System.Drawing.Point(499, 514);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(75, 23);
+            this.btnGuardar.TabIndex = 2;
+            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
-            // button3
+            // btnCancelar
             // 
-            this.button3.Location = new System.Drawing.Point(270, 234);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Cancelar";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btnCancelar.Location = new System.Drawing.Point(620, 514);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(75, 23);
+            this.btnCancelar.TabIndex = 3;
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.tbCantViajes);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.dgvListaViajes);
+            this.groupBox2.Location = new System.Drawing.Point(38, 246);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(642, 262);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Lista de viajes facturados";
+            // 
+            // tbCantViajes
+            // 
+            this.tbCantViajes.Location = new System.Drawing.Point(178, 20);
+            this.tbCantViajes.Name = "tbCantViajes";
+            this.tbCantViajes.Size = new System.Drawing.Size(54, 20);
+            this.tbCantViajes.TabIndex = 14;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 28);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(147, 13);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Cantidad de viajes facturados";
+            // 
+            // dgvListaViajes
+            // 
+            this.dgvListaViajes.AllowUserToAddRows = false;
+            this.dgvListaViajes.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvListaViajes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvListaViajes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvListaViajes.Location = new System.Drawing.Point(6, 57);
+            this.dgvListaViajes.Name = "dgvListaViajes";
+            this.dgvListaViajes.ReadOnly = true;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvListaViajes.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvListaViajes.RowHeadersVisible = false;
+            this.dgvListaViajes.Size = new System.Drawing.Size(629, 186);
+            this.dgvListaViajes.TabIndex = 0;
             // 
             // Facturar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(381, 356);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(731, 568);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.btnCancelar);
+            this.Controls.Add(this.btnGuardar);
+            this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.groupBox1);
             this.Name = "Facturar";
             this.Text = "Facturación";
+            this.Load += new System.EventHandler(this.Facturar_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvListaViajes)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -193,18 +260,21 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textBoxViajes;
-        private System.Windows.Forms.TextBox textBoxTotFac;
-        private System.Windows.Forms.TextBox textBoxClie;
-        private System.Windows.Forms.TextBox textBoxFinFac;
-        private System.Windows.Forms.TextBox textBoxIniFac;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox tbImporteTotal;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnLimpiar;
+        private System.Windows.Forms.Button btnGuardar;
+        private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.DateTimePicker dtpInicio;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox cbClientes;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox tbCantViajes;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.DataGridView dgvListaViajes;
+        private System.Windows.Forms.Label lbFechaFin;
     }
 }
