@@ -24,6 +24,8 @@ namespace UberFrba.Registro_Viajes
         private String auto;
         private Int32 turnoID;
         private Int32 clienteID;
+
+
         SqlDataReader dr;
         SqlConnection conexion = SqlGeneral.nuevaConexion();
         private String nombreCliente;
@@ -42,7 +44,7 @@ namespace UberFrba.Registro_Viajes
 
         private void button1_Click(object sender, EventArgs e)
         {
-            textBoxKM.Clear();
+            tbKM.Clear();
         }
 
         private void registroViaje_Load(object sender, EventArgs e)
@@ -91,7 +93,12 @@ namespace UberFrba.Registro_Viajes
 
         private void cbTurno_SelectedIndexChanged(object sender, EventArgs e)
         {
-            turno = cbTurno.SelectedItem.ToString(); // CARGO EL TURNO
+            turno = cbTurno.SelectedItem.ToString(); // CARGO EL Nombre del TURNO
+            SqlCommand getIdTurno = new SqlCommand("SELECT Turno_Id FROM SQLGROUP.Turno WHERE Turno_Descripcion LIKE @turno", conexion);
+            getIdTurno.Parameters.AddWithValue("@turno", turno);
+            conexion.Open();
+            dr = getIdTurno.ExecuteReader();
+            turnoID = Convert.ToInt32(dr["Turno_Id"]); // CARGO el ID del turno
         }
 
         private void cbClientes_SelectedIndexChanged(object sender, EventArgs e)
@@ -109,6 +116,42 @@ namespace UberFrba.Registro_Viajes
             dr = obtenerIdCliente.ExecuteReader();
             clienteID = Convert.ToInt32(dr["Cliente_Id"]); // CARGO EL ID DEL CLIENTE
             
+        }
+
+        private void dtpInicio_ValueChanged(object sender, EventArgs e)
+        {
+            fechaInicio = dtpInicio.Value; // CARGO FECHA de inicio de viaje
+        }
+
+        private void dtpFin_ValueChanged(object sender, EventArgs e)
+        {
+            fechaFin = dtpFin.Value; // CARGO FECHA de fin de viaje
+        }
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+
+            if (tbKM.Text != null)
+            {
+                kilometros = Convert.ToDecimal(tbKM.Text); // CARGO KMs
+                int resultado = new SqlCargaViajes().cargarViaje(chofer, kilometros, turno, fechaInicio, fechaFin, auto,turnoID, clienteID);
+                switch(resultado)
+                {
+                    case 0:
+                        MessageBox.Show("El chofer elegido no trabaja en el turno seleccionado");
+                        break;
+                    case 1:
+                        MessageBox.Show("Ya tiene un viaje para la fecha y hora elegida");
+                        break;
+                    case 2:
+                        MessageBox.Show("Viaje registrado correctamente");
+                        break;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Hay campos vacios");
+            }
         }
 
 

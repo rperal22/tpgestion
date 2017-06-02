@@ -35,7 +35,7 @@
             this.lbAutoxChofer = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.cbClientes = new System.Windows.Forms.ComboBox();
-            this.textBoxKM = new System.Windows.Forms.TextBox();
+            this.tbKM = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -58,7 +58,7 @@
             this.groupBox1.Controls.Add(this.lbAutoxChofer);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.cbClientes);
-            this.groupBox1.Controls.Add(this.textBoxKM);
+            this.groupBox1.Controls.Add(this.tbKM);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
@@ -90,6 +90,7 @@
             this.dtpFin.Size = new System.Drawing.Size(200, 20);
             this.dtpFin.TabIndex = 19;
             this.dtpFin.Value = new System.DateTime(2017, 6, 2, 11, 59, 14, 0);
+            this.dtpFin.ValueChanged += new System.EventHandler(this.dtpFin_ValueChanged);
             // 
             // dtpInicio
             // 
@@ -97,6 +98,7 @@
             this.dtpInicio.Name = "dtpInicio";
             this.dtpInicio.Size = new System.Drawing.Size(200, 20);
             this.dtpInicio.TabIndex = 18;
+            this.dtpInicio.ValueChanged += new System.EventHandler(this.dtpInicio_ValueChanged);
             // 
             // lbAutoxChofer
             // 
@@ -125,12 +127,12 @@
             this.cbClientes.TabIndex = 14;
             this.cbClientes.SelectedIndexChanged += new System.EventHandler(this.cbClientes_SelectedIndexChanged);
             // 
-            // textBoxKM
+            // tbKM
             // 
-            this.textBoxKM.Location = new System.Drawing.Point(181, 153);
-            this.textBoxKM.Name = "textBoxKM";
-            this.textBoxKM.Size = new System.Drawing.Size(204, 20);
-            this.textBoxKM.TabIndex = 10;
+            this.tbKM.Location = new System.Drawing.Point(181, 153);
+            this.tbKM.Name = "tbKM";
+            this.tbKM.Size = new System.Drawing.Size(204, 20);
+            this.tbKM.TabIndex = 10;
             // 
             // label7
             // 
@@ -222,6 +224,7 @@
             this.btnGuardar.TabIndex = 2;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // button3
             // 
@@ -254,7 +257,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textBoxKM;
+        private System.Windows.Forms.TextBox tbKM;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
