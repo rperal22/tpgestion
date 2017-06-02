@@ -234,6 +234,7 @@
     <Compile Include="SQL\SqlAltaUsuario.cs" />
     <Compile Include="SQL\SqlAutomoviles.cs" />
     <Compile Include="SQL\SqlCargaViajes.cs" />
+    <Compile Include="SQL\SqlFacturacion.cs" />
     <Compile Include="SQL\SqlGeneral.cs" />
     <Compile Include="SQL\SqlRendicion.cs" />
     <Compile Include="SQL\SqlRoles.cs" />

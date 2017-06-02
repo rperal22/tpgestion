@@ -105,8 +105,9 @@ namespace UberFrba.Facturacion
             cantViajes = dt.Rows.Count;
             tbCantViajes.Text = cantViajes.ToString();
 
-            //Falta ver si se puede calcular el total facturado desde la data table
-
+            totalFacturado = new SqlFacturacion().calcularCostoTotal(fechaInicio, fechaFin, clienteID);
+            tbImporteTotal.Text = totalFacturado.ToString();
+            
 
         }
 
