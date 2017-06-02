@@ -30,7 +30,6 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.textBoxAuto = new System.Windows.Forms.TextBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.textBoxIniViaje = new System.Windows.Forms.TextBox();
             this.textBoxFinViaje = new System.Windows.Forms.TextBox();
@@ -41,18 +40,20 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbChoferes = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.lbAutoxChofer = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lbAutoxChofer);
             this.groupBox1.Controls.Add(this.dateTimePicker1);
-            this.groupBox1.Controls.Add(this.textBoxAuto);
             this.groupBox1.Controls.Add(this.comboBox3);
             this.groupBox1.Controls.Add(this.textBoxIniViaje);
             this.groupBox1.Controls.Add(this.textBoxFinViaje);
@@ -63,7 +64,7 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.cbChoferes);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(45, 27);
             this.groupBox1.Name = "groupBox1";
@@ -78,13 +79,6 @@
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(204, 20);
             this.dateTimePicker1.TabIndex = 16;
-            // 
-            // textBoxAuto
-            // 
-            this.textBoxAuto.Location = new System.Drawing.Point(181, 55);
-            this.textBoxAuto.Name = "textBoxAuto";
-            this.textBoxAuto.Size = new System.Drawing.Size(204, 20);
-            this.textBoxAuto.TabIndex = 15;
             // 
             // comboBox3
             // 
@@ -169,13 +163,14 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Automóvil";
             // 
-            // comboBox1
+            // cbChoferes
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(181, 28);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(204, 21);
-            this.comboBox1.TabIndex = 1;
+            this.cbChoferes.FormattingEnabled = true;
+            this.cbChoferes.Location = new System.Drawing.Point(181, 28);
+            this.cbChoferes.Name = "cbChoferes";
+            this.cbChoferes.Size = new System.Drawing.Size(204, 21);
+            this.cbChoferes.TabIndex = 1;
+            this.cbChoferes.SelectedIndexChanged += new System.EventHandler(this.cbChoferes_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -188,7 +183,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(45, 265);
+            this.button1.Location = new System.Drawing.Point(45, 312);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -198,7 +193,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(199, 265);
+            this.button2.Location = new System.Drawing.Point(198, 312);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -207,7 +202,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(361, 264);
+            this.button3.Location = new System.Drawing.Point(361, 312);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 3;
@@ -215,20 +210,41 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // lbAutoxChofer
+            // 
+            this.lbAutoxChofer.AutoSize = true;
+            this.lbAutoxChofer.Location = new System.Drawing.Point(178, 58);
+            this.lbAutoxChofer.Name = "lbAutoxChofer";
+            this.lbAutoxChofer.Size = new System.Drawing.Size(76, 13);
+            this.lbAutoxChofer.TabIndex = 17;
+            this.lbAutoxChofer.Text = "Auto Asignado";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(45, 265);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(236, 13);
+            this.label8.TabIndex = 4;
+            this.label8.Text = "Recuerde que todos los campos son obligatorios";
+            // 
             // registroViaje
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(519, 322);
+            this.ClientSize = new System.Drawing.Size(519, 372);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
             this.Name = "registroViaje";
             this.Text = "Registro del Viaje";
+            this.Load += new System.EventHandler(this.registroViaje_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -244,13 +260,14 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbChoferes;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBoxAuto;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label lbAutoxChofer;
+        private System.Windows.Forms.Label label8;
     }
 }
