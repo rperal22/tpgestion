@@ -468,6 +468,71 @@ BEGIN
 END
 GO
 
+IF (OBJECT_ID('SQLGROUP.entreFechasNoCuentaMinutosSegundo') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.entreFechasNoCuentaMinutosSegundo
+GO
+
+CREATE FUNCTION SQLGROUP.entreFechasNoCuentaMinutosSegundo (@fechamin DATETIME, @fechamax DATETIME, @fechaentre DATETIME)
+RETURNS int
+BEGIN
+	RETURN (SELECT CASE WHEN YEAR(@fechaentre) >= YEAR(@fechamin) AND YEAR(@fechaentre) <= YEAR(@fechamax) AND MONTH(@fechaentre) >= MONTH(@fechamin) AND MONTH(@fechaentre) <= MONTH(@fechamax) AND DAY(@fechaentre) >= DAY(@fechamin) AND DAY(@fechaentre) <= DAY(@fechamax) THEN 1
+					ELSE 0 END) 
+END
+GO
+
+IF (OBJECT_ID('SQLGROUP.migrar_factura') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_factura
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_factura 
+AS
+BEGIN
+	DECLARE facturas CURSOR FOR
+	SELECT m.Factura_Nro, m.Factura_Fecha,  m.Factura_Fecha_Inicio, m.Factura_Fecha_Fin, c.Cliente_Id
+	FROM gd_esquema.Maestra as m, SQLGROUP.Clientes AS c 
+	WHERE Factura_Nro IS NOT NULL AND c.Cliente_Dni = m.Cliente_Dni
+	GROUP BY m.Factura_Nro, m.Factura_Fecha, m.Factura_Fecha_Fin, m.Factura_Fecha_Inicio, c.Cliente_Id
+
+	DECLARE @nrofact NUMERIC(18,0),@fnfact DATETIME, @fifact DATETIME, @fffact DATETIME, @clienteid INT;
+	DECLARE @cantidadViajes INT, @valorTotal NUMERIC(18,2);
+
+	OPEN facturas;
+	FETCH NEXT FROM facturas INTO @nrofact, @fnfact, @fifact, @fffact, @clienteid;
+
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		SELECT @cantidadViajes = COUNT(*), @valorTotal = ISNULL(SUM(t.Turno_Precio_Base + t.Turno_Valor_Kilometro*v.Viaje_Cant_Kilometros),0)
+		FROM SQLGROUP.Viajes as v, SQLGROUP.Turno as t
+		WHERE SQLGROUP.entreFechasNoCuentaMinutosSegundo(@fifact,@fffact,Viaje_Fecha) = 1 AND v.Viaje_Cliente_Id = @clienteid AND t.Turno_Id = v.Viaje_Turno_Id;
+
+		INSERT INTO Facturas (Factura_Nro, Factura_Fecha, Factura_Fecha_Inicio, Factura_Fecha_Fin, Factura_Total, Factua_Nro_Viajes, Factura_Cliente_Id)
+		VALUES (@nrofact, @fnfact, @fifact, @fnfact, @valorTotal, @cantidadViajes, @clienteid)
+
+		FETCH NEXT FROM facturas INTO @nrofact, @fnfact, @fifact, @fffact, @clienteid;
+	END
+	CLOSE facturas;
+	DEALLOCATE facturas;
+
+
+END
+GO
+
+IF (OBJECT_ID('SQLGROUP.migrar_viajes_factura') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_viajes_factura
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_viajes_factura 
+AS
+BEGIN
+
+	INSERT INTO SQLGROUP.Factura_Viaje (Fv_Factura_Nro, Fv_Viaje_Id)
+	SELECT Factura_Nro, Viaje_Id
+	FROM SQLGROUP.Facturas, SQLGROUP.Viajes
+	WHERE SQLGROUP.entreFechasNoCuentaMinutosSegundo(Factura_Fecha_Inicio,Factura_Fecha_Fin,Viaje_Fecha) = 1 AND Viaje_Cliente_Id = Factura_Cliente_Id
+
+END
+GO
 /*---------------------------------CREACION DE TRIGGERS---------------------------------*/
 
 If (OBJECT_ID('SQLGROUP.cifrado_claves') IS NOT NULL)
@@ -531,8 +596,8 @@ BEGIN
 	EXEC SQLGROUP.migrar_automoviles;	
 	EXEC SQLGROUP.migrar_autoxturno;
 	EXEC SQLGROUP.migrar_viajes;
-	/*EXEC SQLGROUP.migrar_facturas;
-	EXEC SQLGROUP.migrar_viajesxfactura;*/
+	EXEC SQLGROUP.migrar_factura 
+	EXEC SQLGROUP.migrar_viajes_factura;
 END
 GO
 
