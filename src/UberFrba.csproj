@@ -189,6 +189,7 @@
     </Compile>
     <Compile Include="conexionBase.cs" />
     <Compile Include="Entidades\Automovil.cs" />
+    <Compile Include="Entidades\Chofer.cs" />
     <Compile Include="Entidades\Funcionalidad.cs" />
     <Compile Include="Entidades\Rol.cs" />
     <Compile Include="Entidades\Turno.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="SQL\SqlAltaUsuario.cs" />
     <Compile Include="SQL\SqlAutomoviles.cs" />
     <Compile Include="SQL\SqlCargaViajes.cs" />
+    <Compile Include="SQL\SqlChoferes.cs" />
     <Compile Include="SQL\SqlFacturacion.cs" />
     <Compile Include="SQL\SqlGeneral.cs" />
     <Compile Include="SQL\SqlRendicion.cs" />
