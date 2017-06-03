@@ -12,6 +12,8 @@ GO
 CREATE PROCEDURE SQLGROUP.crear_tablas 
 AS
 BEGIN
+	IF OBJECT_ID('SQLGROUP.Rendicion_Viaje') IS NOT NULL
+		DROP TABLE SQLGROUP.Rendicion_Viaje
 	IF OBJECT_ID('SQLGROUP.Auto_Turno') IS NOT NULL
 		DROP TABLE SQLGROUP.Auto_Turno
 	IF OBJECT_ID('SQLGROUP.Usuarios_Rol') IS NOT NULL
@@ -166,6 +168,13 @@ BEGIN
 		CONSTRAINT pk_facturaxviaje PRIMARY KEY(Fv_Viaje_Id,Fv_Factura_Nro) 
 	);
 
+	CREATE TABLE SQLGROUP.Rendicion_Viaje (
+		Rv_Viaje_Id INTEGER,
+		Rv_Rendicion_Nro NUMERIC(18,0),
+		Rv_Importe NUMERIC(18,2),
+		CONSTRAINT pk_rendicionxviaje PRIMARY KEY(Rv_Viaje_Id,Rv_Rendicion_Nro) 
+	);
+
 	CREATE TABLE SQLGROUP.Auto_Turno (
 		AT_Auto_Patente VARCHAR(10),
 		AT_Turno_Id INTEGER,
@@ -221,6 +230,11 @@ BEGIN
 	CONSTRAINT fk_autoturno_turno FOREIGN KEY (At_Turno_Id) REFERENCES SQLGROUP.Turno(Turno_Id)
 	ON DELETE NO ACTION ON UPDATE NO ACTION;
 
+	ALTER TABLE SQLGROUP.Rendicion_Viaje ADD
+	CONSTRAINT fk_rendicionviaje_viaje FOREIGN KEY (Rv_Viaje_Id) REFERENCES SQLGROUP.Viajes(Viaje_Id)
+	ON DELETE NO ACTION ON UPDATE CASCADE,
+	CONSTRAINT fk_rendicionviaje_rendicion FOREIGN KEY (Rv_Rendicion_Nro) REFERENCES SQLGROUP.Rendiciones(Rendicion_Nro)
+	ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 	/*--------------------------------*/
 END
@@ -469,7 +483,7 @@ END
 GO
 
 IF (OBJECT_ID('SQLGROUP.entreFechasNoCuentaMinutosSegundo') IS NOT NULL)
-	DROP PROCEDURE SQLGROUP.entreFechasNoCuentaMinutosSegundo
+	DROP FUNCTION SQLGROUP.entreFechasNoCuentaMinutosSegundo
 GO
 
 CREATE FUNCTION SQLGROUP.entreFechasNoCuentaMinutosSegundo (@fechamin DATETIME, @fechamax DATETIME, @fechaentre DATETIME)
@@ -525,12 +539,40 @@ GO
 CREATE PROCEDURE SQLGROUP.migrar_viajes_factura 
 AS
 BEGIN
-
 	INSERT INTO SQLGROUP.Factura_Viaje (Fv_Factura_Nro, Fv_Viaje_Id)
 	SELECT Factura_Nro, Viaje_Id
 	FROM SQLGROUP.Facturas, SQLGROUP.Viajes
 	WHERE SQLGROUP.entreFechasNoCuentaMinutosSegundo(Factura_Fecha_Inicio,Factura_Fecha_Fin,Viaje_Fecha) = 1 AND Viaje_Cliente_Id = Factura_Cliente_Id
+END
+GO
 
+IF (OBJECT_ID('SQLGROUP.migrar_rendiciones') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_rendiciones
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_rendiciones 
+AS
+BEGIN
+	INSERT INTO Rendiciones (Rendicion_Nro, Rendicion_Fecha, Rendicion_Importe, Rendicion_Chofer_Id, Rendicion_Turno_Id)
+	SELECT m.Rendicion_Nro, Rendicion_Fecha, SUM(Rendicion_Importe), c.Chofer_Id, t.Turno_Id
+	FROM gd_esquema.Maestra as m, SQLGROUP.Choferes as c, SQLGROUP.Turno as t
+	WHERE m.Rendicion_Nro IS NOT NULL AND c.Chofer_Dni = m.Chofer_Dni AND t.Turno_Hora_Inicio = m.Turno_Hora_Inicio AND t.Turno_Hora_Fin = m.Turno_Hora_Fin
+	GROUP BY m.Rendicion_Nro, Rendicion_Fecha, c.Chofer_Id, t.Turno_Id
+END
+GO
+
+IF (OBJECT_ID('SQLGROUP.migrar_rendicionesxviajes') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.migrar_rendicionesxviajes
+GO
+
+CREATE PROCEDURE SQLGROUP.migrar_rendicionesxviajes
+AS
+BEGIN
+	INSERT INTO SQLGROUP.Rendicion_Viaje (Rv_Rendicion_Nro, Rv_Importe, Rv_Viaje_Id)
+	SELECT m.Rendicion_Nro, m.Rendicion_Importe, v.Viaje_Id
+	FROM gd_esquema.Maestra as m, SQLGROUP.Viajes as v, SQLGROUP.Choferes as c, SQLGROUP.Clientes as cli
+	WHERE m.Viaje_Fecha = v.Viaje_Fecha AND m.Chofer_Dni = c.Chofer_Dni AND v.Viaje_Chofer_Id = c.Chofer_Id AND m.Rendicion_Nro IS NOT NULL AND cli.Cliente_Dni = m.Cliente_Dni AND v.Viaje_Cliente_Id = cli.Cliente_Id AND m.Viaje_Cant_Kilometros = v.Viaje_Cant_Kilometros
+	GROUP BY m.Rendicion_Nro, m.Rendicion_Importe, v.Viaje_Id
 END
 GO
 /*---------------------------------CREACION DE TRIGGERS---------------------------------*/
@@ -598,6 +640,8 @@ BEGIN
 	EXEC SQLGROUP.migrar_viajes;
 	EXEC SQLGROUP.migrar_factura 
 	EXEC SQLGROUP.migrar_viajes_factura;
+	EXEC SQLGROUP.migrar_rendiciones;
+	EXEC SQLGROUP.migrar_rendicionesxviajes;
 END
 GO
 
