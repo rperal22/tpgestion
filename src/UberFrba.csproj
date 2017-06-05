@@ -184,6 +184,7 @@
     <Compile Include="conexionBase.cs" />
     <Compile Include="Entidades\Automovil.cs" />
     <Compile Include="Entidades\Chofer.cs" />
+    <Compile Include="Entidades\Cliente.cs" />
     <Compile Include="Entidades\Funcionalidad.cs" />
     <Compile Include="Entidades\Rol.cs" />
     <Compile Include="Entidades\Turno.cs" />
@@ -208,11 +209,23 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Registro Viajes\seleccionarChofer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Registro Viajes\seleccionarChofer.Designer.cs">
+      <DependentUpon>seleccionarChofer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Registro Viajes\registroViaje.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Registro Viajes\registroViaje.Designer.cs">
       <DependentUpon>registroViaje.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registro Viajes\seleccionarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Registro Viajes\seleccionarCliente.Designer.cs">
+      <DependentUpon>seleccionarCliente.cs</DependentUpon>
     </Compile>
     <Compile Include="Rendicion Viajes\rendicionViaje.cs">
       <SubType>Form</SubType>
@@ -230,6 +243,7 @@
     <Compile Include="SQL\SqlAutomoviles.cs" />
     <Compile Include="SQL\SqlCargaViajes.cs" />
     <Compile Include="SQL\SqlChoferes.cs" />
+    <Compile Include="SQL\SqlClientes.cs" />
     <Compile Include="SQL\SqlFacturacion.cs" />
     <Compile Include="SQL\SqlGeneral.cs" />
     <Compile Include="SQL\SqlRendicion.cs" />
@@ -320,8 +334,14 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Registro Viajes\seleccionarChofer.resx">
+      <DependentUpon>seleccionarChofer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Registro Viajes\registroViaje.resx">
       <DependentUpon>registroViaje.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registro Viajes\seleccionarCliente.resx">
+      <DependentUpon>seleccionarCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Rendicion Viajes\rendicionViaje.resx">
       <DependentUpon>rendicionViaje.cs</DependentUpon>

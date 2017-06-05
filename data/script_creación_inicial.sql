@@ -366,7 +366,7 @@ BEGIN
 	VALUES ('Registrar Viaje');
 
 	INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Func_Nombre,RF_Rol_Nombre)
-	VALUES ('Registrar Viaje','Chofer')
+	VALUES ('Registrar Viaje','Administrador')
 
 	INSERT INTO SQLGROUP.Funcionalidades (Func_Nombre)
 	VALUES ('Rendir Viajes');

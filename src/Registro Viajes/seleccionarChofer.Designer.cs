@@ -1,6 +1,6 @@
-﻿namespace UberFrba.ABM_Chofer
+﻿namespace UberFrba.Registro_Viajes
 {
-    partial class listadoSeleccionBajaChofer
+    partial class seleccionarChofer
     {
         /// <summary>
         /// Required designer variable.

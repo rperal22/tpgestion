@@ -1,4 +1,4 @@
-﻿namespace UberFrba.Abm_Chofer
+﻿namespace UberFrba.ABM_Chofer
 {
     partial class ABMChofer
     {

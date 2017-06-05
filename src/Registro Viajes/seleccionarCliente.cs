@@ -10,11 +10,12 @@ using System.Windows.Forms;
 using UberFrba.Entidades;
 using UberFrba.SQL;
 
-namespace UberFrba.ABM_Chofer
+namespace UberFrba.Registro_Viajes
 {
-    public partial class listadoSeleccionBajaChofer : Form
+    public partial class seleccionarCliente : Form
     {
-        public listadoSeleccionBajaChofer()
+        public Cliente cli { get; set; }
+        public seleccionarCliente()
         {
             InitializeComponent();
             this.buttonLimpiar_Click(null, null);
@@ -25,7 +26,7 @@ namespace UberFrba.ABM_Chofer
             textBoxNombre.Clear();
             textBoxApellido.Clear();
             textBoxDNI.Clear();
-            this.dataGridView1.DataSource = new BindingSource(new BindingList<Chofer>(new SqlChoferes().getChoferes(15)),null);
+            this.dataGridView1.DataSource = new BindingSource(new BindingList<Cliente>(new SqlClientes().getClientes(15)), null);
         }
 
         private void buttonBuscar_Click(object sender, EventArgs e)
@@ -33,7 +34,7 @@ namespace UberFrba.ABM_Chofer
             String busqueda = "";
             if (textBoxNombre.TextLength > 0)
             {
-                busqueda = busqueda + "Chofer_Nombre LIKE '%" + textBoxNombre.Text + "%'";
+                busqueda = busqueda + "Cliente_Nombre LIKE '%" + textBoxNombre.Text + "%'";
             }
             if (textBoxApellido.TextLength > 0)
             {
@@ -41,7 +42,7 @@ namespace UberFrba.ABM_Chofer
                 {
                     busqueda = busqueda + " AND ";
                 }
-                busqueda = busqueda + "Chofer_Apellido LIKE '%" + textBoxApellido.Text + "%'";
+                busqueda = busqueda + "Cliente_Apellido LIKE '%" + textBoxApellido.Text + "%'";
             }
 
             if (textBoxDNI.TextLength > 0)
@@ -50,7 +51,7 @@ namespace UberFrba.ABM_Chofer
                 {
                     busqueda = busqueda + " AND ";
                 }
-                busqueda = busqueda + "Chofer_DNI LIKE '%" + textBoxDNI.Text + "%'";
+                busqueda = busqueda + "Cliente_DNI LIKE '%" + textBoxDNI.Text + "%'";
             }
             busqueda = busqueda.Trim();
             if (busqueda.Equals(""))
@@ -58,7 +59,7 @@ namespace UberFrba.ABM_Chofer
                 MessageBox.Show("Ningun campo completado");
                 return;
             }
-            this.dataGridView1.DataSource = new BindingSource(new BindingList<Chofer>(new SqlChoferes().getChoferes(busqueda)), null);
+            this.dataGridView1.DataSource = new BindingSource(new BindingList<Cliente>(new SqlClientes().getClientes(busqueda)), null);
         }
 
         private void buttonCancelar_Click(object sender, EventArgs e)
@@ -68,7 +69,8 @@ namespace UberFrba.ABM_Chofer
 
         private void seleccionChofer(object sender, EventArgs e)
         {
-            new modificacionChofer(this.dataGridView1.SelectedRows[0].DataBoundItem as Chofer).Show();
+            cli = this.dataGridView1.SelectedRows[0].DataBoundItem as Cliente;
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
     }

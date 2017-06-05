@@ -9,12 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using UberFrba.SQL;
+using UberFrba.Entidades;
+using UberFrba.Registro_Viajes;
 
 
-namespace UberFrba.Registro_Viajes
+namespace UberFrba.ABM_Chofer
 {
     public partial class registroViaje : Form
      {
+        Cliente clienteSeleccionado;
+        Chofer choferSeleccionado;
 
         private String chofer;
         private Decimal kilometros;
@@ -47,49 +51,7 @@ namespace UberFrba.Registro_Viajes
             tbKM.Clear();
         }
 
-        private void registroViaje_Load(object sender, EventArgs e)
-        {
-            conexion.Open();
-            SqlCommand cmd = new SqlCommand("SELECT Chofer_Nombre FROM SQLGROUP.Choferes", conexion);
-            dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                cbChoferes.Items.Add(dr["Nombre_Chofer"].ToString());
-            }
-            dr.Close();
-            SqlCommand cmdClientes = new SqlCommand("SELECT Cliente_Nombre, CLiente_Apellido FROM SQLGROUP.Clientes", conexion);
-            dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                cbClientes.Items.Add(dr["Cliente_Nombre"].ToString() + "" + dr["Cliente_Apellido"].ToString());
-                
-            }
-            dr.Close();
-            conexion.Close();
-         }
 
-        private void cbChoferes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            chofer = cbChoferes.SelectedItem.ToString(); // CARGO EL NOMBRE DEL CHOFER
-            SqlCommand cmd = new SqlCommand("SELECT Auto_Patente FROM SQLGROUP.Automoviles JOIN SQLGROUP.Choferes ON Auto_Chofer = Chofer_Id WHERE Chofer_Nombre LIKE @chofer ", conexion);
-            cmd.Parameters.AddWithValue("@chofer", chofer);
-            conexion.Open();
-            dr = cmd.ExecuteReader();
-            lbAutoxChofer.Text = dr["Auto_Patente"].ToString();
-            auto = dr["Auto_Patente"].ToString(); // CARGO LA PATENTE DEL AUTO
-            dr.Close();
-
-
-            SqlCommand query = new SqlCommand("SELECT Turno_Descripcion FROM SQLGROUP.Turno ,SQLGROUP.Chofer_Turno, SQLGROUP.Choferes WHERE Chofer_Id = Ct_Chofer_Id AND Turno_Id = Ct_Turno_Id AND Chofer_Nombre LIKE @chofer Group BY Turno_Descripcion", conexion);
-            query.Parameters.AddWithValue("@chofer", chofer);
-            dr = query.ExecuteReader();
-            while (dr.Read())
-            {
-                cbTurno.Items.Add(dr["Turno_Descripcion"].ToString());
-            }
-            dr.Close();
-            conexion.Close();
-         }
 
         private void cbTurno_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -101,22 +63,6 @@ namespace UberFrba.Registro_Viajes
             turnoID = Convert.ToInt32(dr["Turno_Id"]); // CARGO el ID del turno
         }
 
-        private void cbClientes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            String clienteElegido = cbClientes.SelectedItem.ToString();
-            string[] words;
-            words = clienteElegido.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries);
-            nombreCliente = words[0];
-            apellidoCliente= words[1];
-
-            SqlCommand obtenerIdCliente = new SqlCommand("SELECT Cliente_Id FROM SQLGROUP.Clientes WHERE Cliente_Nombre LIKE @nombreCliente AND Cliente_Apellido LIKE @apellidoCliente",conexion);
-            obtenerIdCliente.Parameters.AddWithValue("@nombreCliente", nombreCliente);
-            obtenerIdCliente.Parameters.AddWithValue("@apellidoCLiente",apellidoCliente);
-            conexion.Open();
-            dr = obtenerIdCliente.ExecuteReader();
-            clienteID = Convert.ToInt32(dr["Cliente_Id"]); // CARGO EL ID DEL CLIENTE
-            
-        }
 
         private void dtpInicio_ValueChanged(object sender, EventArgs e)
         {
@@ -151,6 +97,26 @@ namespace UberFrba.Registro_Viajes
             else
             {
                 MessageBox.Show("Hay campos vacios");
+            }
+        }
+
+        private void buttonCambiarChofer_Click(object sender, EventArgs e)
+        {
+            var form = new seleccionarChofer();
+            if (form.ShowDialog(this) == DialogResult.OK)
+            {
+                this.choferSeleccionado = form.cf;
+                this.labelChofer.Text = this.choferSeleccionado.nombre + " " + this.choferSeleccionado.apellido;
+            }
+        }
+
+        private void buttonCambiarCliente_Click(object sender, EventArgs e)
+        {
+            var form = new seleccionarCliente();
+            if (form.ShowDialog(this) == DialogResult.OK)
+            {
+                this.clienteSeleccionado = form.cli;
+                this.labelCliente.Text = this.clienteSeleccionado.nombre + " " + this.clienteSeleccionado.apellido;
             }
         }
 

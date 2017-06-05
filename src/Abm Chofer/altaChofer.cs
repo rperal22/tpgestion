@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using UberFrba.Entidades;
 using UberFrba.SQL;
 
-namespace UberFrba.Abm_Chofer
+namespace UberFrba.ABM_Chofer
 {
     public partial class altaChofer : Form
     {

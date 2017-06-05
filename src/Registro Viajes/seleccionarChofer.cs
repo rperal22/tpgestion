@@ -10,11 +10,12 @@ using System.Windows.Forms;
 using UberFrba.Entidades;
 using UberFrba.SQL;
 
-namespace UberFrba.ABM_Chofer
+namespace UberFrba.Registro_Viajes
 {
-    public partial class listadoSeleccionBajaChofer : Form
+    public partial class seleccionarChofer : Form
     {
-        public listadoSeleccionBajaChofer()
+        public Chofer cf { get; set; }
+        public seleccionarChofer()
         {
             InitializeComponent();
             this.buttonLimpiar_Click(null, null);
@@ -68,7 +69,8 @@ namespace UberFrba.ABM_Chofer
 
         private void seleccionChofer(object sender, EventArgs e)
         {
-            new modificacionChofer(this.dataGridView1.SelectedRows[0].DataBoundItem as Chofer).Show();
+            this.cf = this.dataGridView1.SelectedRows[0].DataBoundItem as Chofer;
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
     }
