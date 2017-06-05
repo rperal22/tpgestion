@@ -25,7 +25,7 @@ namespace UberFrba.Abm_Chofer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            formularioBajaChofer baja = new formularioBajaChofer();
+            listadoSeleccionBajaChofer baja = new listadoSeleccionBajaChofer();
             baja.Show();
         }
 

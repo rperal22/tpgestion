@@ -65,7 +65,8 @@ BEGIN
 		Chofer_Dni NUMERIC(18,0) UNIQUE NOT NULL,
 		Chofer_Telefono NUMERIC(18,0) NOT NULL,
 		Chofer_Mail VARCHAR(50),
-		Chofer_Fecha_Nac DATETIME NOT NULL
+		Chofer_Fecha_Nac DATETIME NOT NULL,
+		Chofer_Estado VARCHAR(20) NOT NULL DEFAULT 'Habilitado'
 	);
 
 	CREATE TABLE SQLGROUP.Clientes (

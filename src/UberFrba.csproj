@@ -85,12 +85,6 @@
     <Compile Include="Abm Chofer\altaChofer.Designer.cs">
       <DependentUpon>altaChofer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Chofer\formularioBajaChofer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Chofer\formularioBajaChofer.Designer.cs">
-      <DependentUpon>formularioBajaChofer.cs</DependentUpon>
-    </Compile>
     <Compile Include="Abm Chofer\modificacionChofer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -259,9 +253,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Chofer\altaChofer.resx">
       <DependentUpon>altaChofer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Abm Chofer\formularioBajaChofer.resx">
-      <DependentUpon>formularioBajaChofer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Chofer\listadoSeleccionBajaChofer.resx">
       <DependentUpon>listadoSeleccionBajaChofer.cs</DependentUpon>

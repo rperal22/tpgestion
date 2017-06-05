@@ -18,6 +18,7 @@ namespace UberFrba.Abm_Chofer
         public altaChofer()
         {
             InitializeComponent();
+            this.comboBox1.SelectedIndex = 0;
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
@@ -35,7 +36,7 @@ namespace UberFrba.Abm_Chofer
             try
             {
                 this.validar();
-                Chofer cf = new Chofer(this.textBoxNombre.Text, this.textBoxApellido.Text, Int32.Parse(this.textBoxDNI.Text), this.textBoxDireccion.Text, Int32.Parse(this.textBoxTel.Text), this.textBoxMail.Text, this.dateTimePickerNacimiento.Value);
+                Chofer cf = new Chofer(this.textBoxNombre.Text, this.textBoxApellido.Text, Int32.Parse(this.textBoxDNI.Text), this.textBoxDireccion.Text, Int32.Parse(this.textBoxTel.Text), this.textBoxMail.Text, this.dateTimePickerNacimiento.Value, this.comboBox1.Text);
                 new SqlChoferes().guardarChofer(cf);
             }
             catch (FormatException ex)
