@@ -13,32 +13,21 @@ using UberFrba.Entidades;
 using UberFrba.Registro_Viajes;
 
 
-namespace UberFrba.ABM_Chofer
+namespace UberFrba.Registro_Viajes
 {
     public partial class registroViaje : Form
      {
-        Cliente clienteSeleccionado;
-        Chofer choferSeleccionado;
-
-        private String chofer;
-        private Decimal kilometros;
-        private String turno;
-        private DateTime fechaInicio;
-        private DateTime fechaFin;
-        private String auto;
-        private Int32 turnoID;
-        private Int32 clienteID;
-
-
-        SqlDataReader dr;
-        SqlConnection conexion = SqlGeneral.nuevaConexion();
-        private String nombreCliente;
-        private String apellidoCliente;
-
+        private Cliente clienteSeleccionado;
+        private Chofer choferSeleccionado;
+        private Automovil auto;
 
         public registroViaje()
         {
             InitializeComponent();
+            this.dtpHoraFin.Format = DateTimePickerFormat.Time;
+            this.dtpHoraInicio.Format = DateTimePickerFormat.Time;
+            this.dtpHoraFin.ShowUpDown = true;
+            this.dtpHoraInicio.ShowUpDown = true;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -51,52 +40,24 @@ namespace UberFrba.ABM_Chofer
             tbKM.Clear();
         }
 
-
-
-        private void cbTurno_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            turno = cbTurno.SelectedItem.ToString(); // CARGO EL Nombre del TURNO
-            SqlCommand getIdTurno = new SqlCommand("SELECT Turno_Id FROM SQLGROUP.Turno WHERE Turno_Descripcion LIKE @turno", conexion);
-            getIdTurno.Parameters.AddWithValue("@turno", turno);
-            conexion.Open();
-            dr = getIdTurno.ExecuteReader();
-            turnoID = Convert.ToInt32(dr["Turno_Id"]); // CARGO el ID del turno
-        }
-
-
-        private void dtpInicio_ValueChanged(object sender, EventArgs e)
-        {
-            fechaInicio = dtpInicio.Value; // CARGO FECHA de inicio de viaje
-        }
-
-        private void dtpFin_ValueChanged(object sender, EventArgs e)
-        {
-            fechaFin = dtpFin.Value; // CARGO FECHA de fin de viaje
-        }
-
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-
-            if (tbKM.Text != null)
+            try
             {
-                kilometros = Convert.ToDecimal(tbKM.Text); // CARGO KMs
-                int resultado = new SqlCargaViajes().cargarViaje(chofer, kilometros, turno, fechaInicio, fechaFin, auto,turnoID, clienteID);
-                switch(resultado)
-                {
-                    case 0:
-                        MessageBox.Show("El chofer elegido no trabaja en el turno seleccionado");
-                        break;
-                    case 1:
-                        MessageBox.Show("Ya tiene un viaje para la fecha y hora elegida");
-                        break;
-                    case 2:
-                        MessageBox.Show("Viaje registrado correctamente");
-                        break;
-                }
+                this.validar();
+                new SqlViajes().cargarViaje(choferSeleccionado, float.Parse(tbKM.Text), this.cbTurno.SelectedValue as Turno, dayPicker.Value, dtpHoraInicio.Value, auto, clienteSeleccionado);
             }
-            else
+            catch (FormatException ex)
             {
-                MessageBox.Show("Hay campos vacios");
+                MessageBox.Show("Compruebe el campo kilometros.");
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (SystemException ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -107,6 +68,7 @@ namespace UberFrba.ABM_Chofer
             {
                 this.choferSeleccionado = form.cf;
                 this.labelChofer.Text = this.choferSeleccionado.nombre + " " + this.choferSeleccionado.apellido;
+                this.actualizarAutomovil();
             }
         }
 
@@ -118,6 +80,42 @@ namespace UberFrba.ABM_Chofer
                 this.clienteSeleccionado = form.cli;
                 this.labelCliente.Text = this.clienteSeleccionado.nombre + " " + this.clienteSeleccionado.apellido;
             }
+        }
+
+        private void actualizarAutomovil()
+        {
+            auto = new SqlChoferes().getAutoHabilitado(this.choferSeleccionado);
+            lbAutoxChofer.Text = "Marca: " + auto.marca + " Patente: " + auto.patente;
+            this.cbTurno.DisplayMember = "desc";
+            this.cbTurno.ValueMember = "this";
+            this.cbTurno.DataSource = auto.turnos;
+        }
+
+        private void validar()
+        {
+            if (choferSeleccionado == null && clienteSeleccionado == null && auto == null)
+            {
+                throw new SystemException("Completar datos obligatorios");
+            }
+        }
+
+        private void cambioDeFecha(object sender, EventArgs e)
+        {
+            DateTime nueva = this.dayPicker.Value;
+            nueva = nueva.AddMinutes(-nueva.Minute);
+            nueva = nueva.AddHours(-nueva.Hour);
+            int horasInicio = this.dtpHoraInicio.Value.Hour;
+            int horasFin = this.dtpHoraFin.Value.Hour;
+            int minutosInicio = this.dtpHoraInicio.Value.Minute;
+            int minutosFin = this.dtpHoraFin.Value.Minute;
+
+            this.dtpHoraInicio.Value = nueva;
+            this.dtpHoraInicio.Value = this.dtpHoraInicio.Value.AddHours(horasInicio);
+            this.dtpHoraInicio.Value = this.dtpHoraInicio.Value.AddMinutes(minutosInicio);
+            this.dtpHoraFin.Value = nueva;
+            this.dtpHoraFin.Value = this.dtpHoraFin.Value.AddHours(horasFin);
+            this.dtpHoraFin.Value = this.dtpHoraFin.Value.AddMinutes(horasInicio);
+       
         }
 
 

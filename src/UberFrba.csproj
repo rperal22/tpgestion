@@ -241,7 +241,7 @@
     </Compile>
     <Compile Include="SQL\SqlAltaUsuario.cs" />
     <Compile Include="SQL\SqlAutomoviles.cs" />
-    <Compile Include="SQL\SqlCargaViajes.cs" />
+    <Compile Include="SQL\SqlViajes.cs" />
     <Compile Include="SQL\SqlChoferes.cs" />
     <Compile Include="SQL\SqlClientes.cs" />
     <Compile Include="SQL\SqlFacturacion.cs" />

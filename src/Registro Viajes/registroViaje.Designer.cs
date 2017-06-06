@@ -1,4 +1,4 @@
-﻿namespace UberFrba.ABM_Chofer
+﻿namespace UberFrba.Registro_Viajes
 {
     partial class registroViaje
     {
@@ -29,8 +29,15 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.dtpFin = new System.Windows.Forms.DateTimePicker();
-            this.dtpInicio = new System.Windows.Forms.DateTimePicker();
+            this.dtpHoraFin = new System.Windows.Forms.DateTimePicker();
+            this.label9 = new System.Windows.Forms.Label();
+            this.buttonCambiarCliente = new System.Windows.Forms.Button();
+            this.buttonCambiarChofer = new System.Windows.Forms.Button();
+            this.labelChofer = new System.Windows.Forms.Label();
+            this.labelCliente = new System.Windows.Forms.Label();
+            this.cbTurno = new System.Windows.Forms.ComboBox();
+            this.dtpHoraInicio = new System.Windows.Forms.DateTimePicker();
+            this.dayPicker = new System.Windows.Forms.DateTimePicker();
             this.lbAutoxChofer = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.tbKM = new System.Windows.Forms.TextBox();
@@ -44,23 +51,20 @@
             this.button1 = new System.Windows.Forms.Button();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.cbTurno = new System.Windows.Forms.ComboBox();
-            this.labelCliente = new System.Windows.Forms.Label();
-            this.labelChofer = new System.Windows.Forms.Label();
-            this.buttonCambiarChofer = new System.Windows.Forms.Button();
-            this.buttonCambiarCliente = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.dtpHoraFin);
+            this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.buttonCambiarCliente);
             this.groupBox1.Controls.Add(this.buttonCambiarChofer);
             this.groupBox1.Controls.Add(this.labelChofer);
             this.groupBox1.Controls.Add(this.labelCliente);
             this.groupBox1.Controls.Add(this.cbTurno);
-            this.groupBox1.Controls.Add(this.dtpFin);
-            this.groupBox1.Controls.Add(this.dtpInicio);
+            this.groupBox1.Controls.Add(this.dtpHoraInicio);
+            this.groupBox1.Controls.Add(this.dayPicker);
             this.groupBox1.Controls.Add(this.lbAutoxChofer);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.tbKM);
@@ -72,32 +76,100 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(60, 33);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(897, 491);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos del Viaje";
             // 
-            // dtpFin
+            // dtpHoraFin
             // 
-            this.dtpFin.Location = new System.Drawing.Point(241, 310);
-            this.dtpFin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.dtpFin.Name = "dtpFin";
-            this.dtpFin.Size = new System.Drawing.Size(265, 22);
-            this.dtpFin.TabIndex = 19;
-            this.dtpFin.Value = new System.DateTime(2017, 6, 2, 11, 59, 14, 0);
-            this.dtpFin.ValueChanged += new System.EventHandler(this.dtpFin_ValueChanged);
+            this.dtpHoraFin.CustomFormat = "\"HH:mm\"";
+            this.dtpHoraFin.Location = new System.Drawing.Point(551, 315);
+            this.dtpHoraFin.Margin = new System.Windows.Forms.Padding(4);
+            this.dtpHoraFin.Name = "dtpHoraFin";
+            this.dtpHoraFin.Size = new System.Drawing.Size(173, 22);
+            this.dtpHoraFin.TabIndex = 27;
+            this.dtpHoraFin.Value = new System.DateTime(2017, 6, 2, 11, 59, 14, 0);
             // 
-            // dtpInicio
+            // label9
             // 
-            this.dtpInicio.Location = new System.Drawing.Point(241, 263);
-            this.dtpInicio.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.dtpInicio.Name = "dtpInicio";
-            this.dtpInicio.Size = new System.Drawing.Size(265, 22);
-            this.dtpInicio.TabIndex = 18;
-            this.dtpInicio.ValueChanged += new System.EventHandler(this.dtpInicio_ValueChanged);
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(392, 315);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(140, 17);
+            this.label9.TabIndex = 26;
+            this.label9.Text = "Seleccione hora final";
+            // 
+            // buttonCambiarCliente
+            // 
+            this.buttonCambiarCliente.Location = new System.Drawing.Point(673, 355);
+            this.buttonCambiarCliente.Name = "buttonCambiarCliente";
+            this.buttonCambiarCliente.Size = new System.Drawing.Size(185, 23);
+            this.buttonCambiarCliente.TabIndex = 25;
+            this.buttonCambiarCliente.Text = "Cambiar";
+            this.buttonCambiarCliente.UseVisualStyleBackColor = true;
+            this.buttonCambiarCliente.Click += new System.EventHandler(this.buttonCambiarCliente_Click);
+            // 
+            // buttonCambiarChofer
+            // 
+            this.buttonCambiarChofer.Location = new System.Drawing.Point(673, 38);
+            this.buttonCambiarChofer.Name = "buttonCambiarChofer";
+            this.buttonCambiarChofer.Size = new System.Drawing.Size(185, 23);
+            this.buttonCambiarChofer.TabIndex = 24;
+            this.buttonCambiarChofer.Text = "Cambiar";
+            this.buttonCambiarChofer.UseVisualStyleBackColor = true;
+            this.buttonCambiarChofer.Click += new System.EventHandler(this.buttonCambiarChofer_Click);
+            // 
+            // labelChofer
+            // 
+            this.labelChofer.AutoSize = true;
+            this.labelChofer.Location = new System.Drawing.Point(237, 38);
+            this.labelChofer.Name = "labelChofer";
+            this.labelChofer.Size = new System.Drawing.Size(160, 17);
+            this.labelChofer.TabIndex = 22;
+            this.labelChofer.Text = "Seleccione algun chofer";
+            // 
+            // labelCliente
+            // 
+            this.labelCliente.AutoSize = true;
+            this.labelCliente.Location = new System.Drawing.Point(237, 361);
+            this.labelCliente.Name = "labelCliente";
+            this.labelCliente.Size = new System.Drawing.Size(161, 17);
+            this.labelCliente.TabIndex = 21;
+            this.labelCliente.Text = "Seleccione algun cliente";
+            // 
+            // cbTurno
+            // 
+            this.cbTurno.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTurno.FormattingEnabled = true;
+            this.cbTurno.Location = new System.Drawing.Point(241, 127);
+            this.cbTurno.Margin = new System.Windows.Forms.Padding(4);
+            this.cbTurno.Name = "cbTurno";
+            this.cbTurno.Size = new System.Drawing.Size(271, 24);
+            this.cbTurno.TabIndex = 20;
+            // 
+            // dtpHoraInicio
+            // 
+            this.dtpHoraInicio.CustomFormat = "\"HH:mm\"";
+            this.dtpHoraInicio.Location = new System.Drawing.Point(189, 310);
+            this.dtpHoraInicio.Margin = new System.Windows.Forms.Padding(4);
+            this.dtpHoraInicio.Name = "dtpHoraInicio";
+            this.dtpHoraInicio.Size = new System.Drawing.Size(173, 22);
+            this.dtpHoraInicio.TabIndex = 19;
+            this.dtpHoraInicio.Value = new System.DateTime(2017, 6, 2, 11, 59, 14, 0);
+            // 
+            // dayPicker
+            // 
+            this.dayPicker.Location = new System.Drawing.Point(241, 263);
+            this.dayPicker.Margin = new System.Windows.Forms.Padding(4);
+            this.dayPicker.Name = "dayPicker";
+            this.dayPicker.Size = new System.Drawing.Size(265, 22);
+            this.dayPicker.TabIndex = 18;
+            this.dayPicker.ValueChanged += new System.EventHandler(this.cambioDeFecha);
             // 
             // lbAutoxChofer
             // 
@@ -105,9 +177,9 @@
             this.lbAutoxChofer.Location = new System.Drawing.Point(237, 91);
             this.lbAutoxChofer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbAutoxChofer.Name = "lbAutoxChofer";
-            this.lbAutoxChofer.Size = new System.Drawing.Size(100, 17);
+            this.lbAutoxChofer.Size = new System.Drawing.Size(197, 17);
             this.lbAutoxChofer.TabIndex = 17;
-            this.lbAutoxChofer.Text = "Auto Asignado";
+            this.lbAutoxChofer.Text = "No ha seleccionado un chofer";
             // 
             // label8
             // 
@@ -122,7 +194,7 @@
             // tbKM
             // 
             this.tbKM.Location = new System.Drawing.Point(241, 188);
-            this.tbKM.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbKM.Margin = new System.Windows.Forms.Padding(4);
             this.tbKM.Name = "tbKM";
             this.tbKM.Size = new System.Drawing.Size(271, 22);
             this.tbKM.TabIndex = 10;
@@ -140,12 +212,12 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(23, 310);
+            this.label6.Location = new System.Drawing.Point(23, 315);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(189, 17);
+            this.label6.Size = new System.Drawing.Size(146, 17);
             this.label6.TabIndex = 6;
-            this.label6.Text = "Fecha y hora del fin del viaje";
+            this.label6.Text = "Seleccione hora inicio";
             // 
             // label5
             // 
@@ -199,8 +271,8 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(268, 577);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Location = new System.Drawing.Point(195, 532);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 28);
             this.button1.TabIndex = 1;
@@ -210,8 +282,8 @@
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(411, 577);
-            this.btnGuardar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnGuardar.Location = new System.Drawing.Point(466, 532);
+            this.btnGuardar.Margin = new System.Windows.Forms.Padding(4);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(100, 28);
             this.btnGuardar.TabIndex = 2;
@@ -221,62 +293,14 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(557, 577);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button3.Location = new System.Drawing.Point(714, 532);
+            this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(100, 28);
             this.button3.TabIndex = 3;
             this.button3.Text = "Cancelar";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // cbTurno
-            // 
-            this.cbTurno.FormattingEnabled = true;
-            this.cbTurno.Location = new System.Drawing.Point(241, 127);
-            this.cbTurno.Margin = new System.Windows.Forms.Padding(4);
-            this.cbTurno.Name = "cbTurno";
-            this.cbTurno.Size = new System.Drawing.Size(271, 24);
-            this.cbTurno.TabIndex = 20;
-            this.cbTurno.SelectedIndexChanged += new System.EventHandler(this.cbTurno_SelectedIndexChanged);
-            // 
-            // labelCliente
-            // 
-            this.labelCliente.AutoSize = true;
-            this.labelCliente.Location = new System.Drawing.Point(237, 361);
-            this.labelCliente.Name = "labelCliente";
-            this.labelCliente.Size = new System.Drawing.Size(160, 17);
-            this.labelCliente.TabIndex = 21;
-            this.labelCliente.Text = "Seleccione algun chofer";
-            // 
-            // labelChofer
-            // 
-            this.labelChofer.AutoSize = true;
-            this.labelChofer.Location = new System.Drawing.Point(237, 38);
-            this.labelChofer.Name = "labelChofer";
-            this.labelChofer.Size = new System.Drawing.Size(160, 17);
-            this.labelChofer.TabIndex = 22;
-            this.labelChofer.Text = "Seleccione algun chofer";
-            // 
-            // buttonCambiarChofer
-            // 
-            this.buttonCambiarChofer.Location = new System.Drawing.Point(673, 38);
-            this.buttonCambiarChofer.Name = "buttonCambiarChofer";
-            this.buttonCambiarChofer.Size = new System.Drawing.Size(185, 23);
-            this.buttonCambiarChofer.TabIndex = 24;
-            this.buttonCambiarChofer.Text = "Cambiar";
-            this.buttonCambiarChofer.UseVisualStyleBackColor = true;
-            this.buttonCambiarChofer.Click += new System.EventHandler(this.buttonCambiarChofer_Click);
-            // 
-            // buttonCambiarCliente
-            // 
-            this.buttonCambiarCliente.Location = new System.Drawing.Point(673, 355);
-            this.buttonCambiarCliente.Name = "buttonCambiarCliente";
-            this.buttonCambiarCliente.Size = new System.Drawing.Size(185, 23);
-            this.buttonCambiarCliente.TabIndex = 25;
-            this.buttonCambiarCliente.Text = "Cambiar";
-            this.buttonCambiarCliente.UseVisualStyleBackColor = true;
-            this.buttonCambiarCliente.Click += new System.EventHandler(this.buttonCambiarCliente_Click);
             // 
             // registroViaje
             // 
@@ -287,7 +311,7 @@
             this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "registroViaje";
             this.Text = "Registro del Viaje";
             this.groupBox1.ResumeLayout(false);
@@ -312,12 +336,14 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label lbAutoxChofer;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.DateTimePicker dtpFin;
-        private System.Windows.Forms.DateTimePicker dtpInicio;
+        private System.Windows.Forms.DateTimePicker dtpHoraInicio;
+        private System.Windows.Forms.DateTimePicker dayPicker;
         private System.Windows.Forms.Label labelChofer;
         private System.Windows.Forms.Label labelCliente;
         private System.Windows.Forms.ComboBox cbTurno;
         private System.Windows.Forms.Button buttonCambiarCliente;
         private System.Windows.Forms.Button buttonCambiarChofer;
+        private System.Windows.Forms.DateTimePicker dtpHoraFin;
+        private System.Windows.Forms.Label label9;
     }
 }

@@ -94,7 +94,7 @@ BEGIN
 
 	CREATE TABLE SQLGROUP.Viajes (
 		Viaje_Id INTEGER IDENTITY(1,1) PRIMARY KEY,
-		Viaje_Cant_Kilometros NUMERIC(18,0) NOT NULL,
+		Viaje_Cant_Kilometros NUMERIC(18,2) NOT NULL,
 		Viaje_Fecha DATETIME NOT NULL,
 		Viaje_Fecha_INIC DATETIME NOT NULL,
 		Viaje_Fecha_Fin DATETIME NOT NULL,
@@ -815,6 +815,35 @@ BEGIN
 		UPDATE Turno SET Turno_Descripcion = @t_desc, Turno_Hora_Inicio = @t_hi, Turno_Hora_Fin = @t_hf, Turno_Precio_Base = @t_pb,
 						Turno_Valor_Kilometro = @t_vk, Turno_Estado = @t_estado
 						WHERE Turno_Id = @t_id
+	END
+END
+GO
+
+IF(OBJECT_ID('SQLGROUP.integridadViajes') IS NOT NULL)
+	DROP TRIGGER SQLGROUP.integridadViajes
+GO
+
+CREATE TRIGGER SQLGROUP.integridadViajes 
+ON SQLGROUP.Viajes AFTER INSERT
+AS
+BEGIN
+	IF((SELECT COUNT(*)
+	FROM inserted as i, SQLGROUP.Viajes as v
+	WHERE i.Viaje_Auto_Patente = v.Viaje_Auto_Patente 
+	AND  (i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin
+	OR i.Viaje_Fecha_Fin >= v.Viaje_Fecha_Fin AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin))>1)
+	BEGIN
+		ROLLBACK;
+		RAISERROR('Ya hay un auto con un viaje en este horario.', 16,1);
+	END
+	IF((SELECT COUNT(*)
+	FROM inserted as i, SQLGROUP.Viajes as v
+	WHERE i.Viaje_Cliente_Id = v.Viaje_Cliente_Id
+	AND  (i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin
+	OR i.Viaje_Fecha_Fin >= v.Viaje_Fecha_Fin AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin))>1)
+	BEGIN
+		ROLLBACK;
+		RAISERROR('El cliente ya tiene un viaje en esta fecha.', 16,1);
 	END
 END
 GO
