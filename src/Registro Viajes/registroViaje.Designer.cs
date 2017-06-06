@@ -51,11 +51,13 @@
             this.button1 = new System.Windows.Forms.Button();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.labelInfoTurno = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.labelInfoTurno);
             this.groupBox1.Controls.Add(this.dtpHoraFin);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.buttonCambiarCliente);
@@ -151,6 +153,7 @@
             this.cbTurno.Name = "cbTurno";
             this.cbTurno.Size = new System.Drawing.Size(271, 24);
             this.cbTurno.TabIndex = 20;
+            this.cbTurno.SelectedIndexChanged += new System.EventHandler(this.cbTurno_SelectedIndexChanged);
             // 
             // dtpHoraInicio
             // 
@@ -302,6 +305,15 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // labelInfoTurno
+            // 
+            this.labelInfoTurno.AutoSize = true;
+            this.labelInfoTurno.Location = new System.Drawing.Point(548, 138);
+            this.labelInfoTurno.Name = "labelInfoTurno";
+            this.labelInfoTurno.Size = new System.Drawing.Size(124, 17);
+            this.labelInfoTurno.TabIndex = 28;
+            this.labelInfoTurno.Text = "Info Turno Horario";
+            // 
             // registroViaje
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -345,5 +357,6 @@
         private System.Windows.Forms.Button buttonCambiarChofer;
         private System.Windows.Forms.DateTimePicker dtpHoraFin;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label labelInfoTurno;
     }
 }

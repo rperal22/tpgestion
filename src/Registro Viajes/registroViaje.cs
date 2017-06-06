@@ -45,7 +45,7 @@ namespace UberFrba.Registro_Viajes
             try
             {
                 this.validar();
-                new SqlViajes().cargarViaje(choferSeleccionado, float.Parse(tbKM.Text), this.cbTurno.SelectedValue as Turno, dayPicker.Value, dtpHoraInicio.Value, auto, clienteSeleccionado);
+                new SqlViajes().cargarViaje(choferSeleccionado, float.Parse(tbKM.Text), this.cbTurno.SelectedValue as Turno, dtpHoraInicio.Value, dtpHoraFin.Value, auto, clienteSeleccionado);
             }
             catch (FormatException ex)
             {
@@ -93,9 +93,18 @@ namespace UberFrba.Registro_Viajes
 
         private void validar()
         {
+            Turno turno = (this.cbTurno.SelectedValue as Turno);
             if (choferSeleccionado == null && clienteSeleccionado == null && auto == null)
             {
                 throw new SystemException("Completar datos obligatorios");
+            }
+            else if (dtpHoraInicio.Value > dtpHoraFin.Value)
+            {
+                throw new SystemException("Hora inicio dene ser menor que la final");
+            }
+            else if (!(dtpHoraInicio.Value.Hour > turno.hi && dtpHoraFin.Value.Hour < turno.hf))
+            {
+                throw new SystemException("Comprobar horarios dentro del limite del turno");
             }
         }
 
@@ -115,7 +124,12 @@ namespace UberFrba.Registro_Viajes
             this.dtpHoraFin.Value = nueva;
             this.dtpHoraFin.Value = this.dtpHoraFin.Value.AddHours(horasFin);
             this.dtpHoraFin.Value = this.dtpHoraFin.Value.AddMinutes(horasInicio);
-       
+        }
+
+        private void cbTurno_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Turno turno = (this.cbTurno.SelectedValue as Turno);
+            this.labelInfoTurno.Text = "Hora Min: " + turno.hi + " Hora Max (no inclusive): " + turno.hf;
         }
 
 

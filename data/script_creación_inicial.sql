@@ -834,7 +834,7 @@ BEGIN
 	OR i.Viaje_Fecha_Fin >= v.Viaje_Fecha_Fin AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin))>1)
 	BEGIN
 		ROLLBACK;
-		RAISERROR('Ya hay un auto con un viaje en este horario.', 16,1);
+		RAISERROR('El auto ya tiene un viaje en este horario', 16,1);
 	END
 	IF((SELECT COUNT(*)
 	FROM inserted as i, SQLGROUP.Viajes as v
