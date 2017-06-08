@@ -46,6 +46,7 @@ namespace UberFrba.Registro_Viajes
             {
                 this.validar();
                 new SqlViajes().cargarViaje(choferSeleccionado, float.Parse(tbKM.Text), this.cbTurno.SelectedValue as Turno, dtpHoraInicio.Value, dtpHoraFin.Value, auto, clienteSeleccionado);
+                MessageBox.Show("Viaje se registro con exito");
             }
             catch (FormatException ex)
             {

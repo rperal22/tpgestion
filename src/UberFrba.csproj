@@ -189,11 +189,18 @@
     <Compile Include="Entidades\Rol.cs" />
     <Compile Include="Entidades\Turno.cs" />
     <Compile Include="Entidades\Usuario.cs" />
+    <Compile Include="Entidades\Viaje.cs" />
     <Compile Include="Facturacion\Facturar.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Facturacion\Facturar.Designer.cs">
       <DependentUpon>Facturar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Facturacion\seleccionarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Facturacion\seleccionarCliente.Designer.cs">
+      <DependentUpon>seleccionarCliente.cs</DependentUpon>
     </Compile>
     <Compile Include="Listado Estadistico\ListadoEstadistico.cs">
       <SubType>Form</SubType>
@@ -318,6 +325,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Facturacion\Facturar.resx">
       <DependentUpon>Facturar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Facturacion\seleccionarCliente.resx">
+      <DependentUpon>seleccionarCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Listado Estadistico\ListadoEstadistico.resx">
       <DependentUpon>ListadoEstadistico.cs</DependentUpon>

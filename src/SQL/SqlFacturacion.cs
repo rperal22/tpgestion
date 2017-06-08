@@ -7,34 +7,33 @@ using System.Data;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using UberFrba.SQL;
+using UberFrba.Entidades;
 
 namespace UberFrba.SQL
 {
     class SqlFacturacion
     {
-        public Decimal calcularCostoTotal(DateTime fechaInicio, DateTime fechaFin, Int32 clienteID)
+        public void facturar(DateTime fechaInicio, DateTime fechaFin, Cliente cliente)
         {
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand cmd = new SqlCommand("SQLGROUP.consultaCostoTotal", conexion);
-            cmd.CommandType = CommandType.StoredProcedure;
+            SqlCommand newFactura = new SqlCommand("SQLGROUP.facturar",conexion);
+            newFactura.CommandType = CommandType.StoredProcedure;
 
-            // instancio parametro de salida
-            SqlParameter VariableRetorno = new SqlParameter("@resultado", SqlDbType.Int);
-            VariableRetorno.Direction = ParameterDirection.Output;
-
-            
-            cmd.Parameters.Add(new SqlParameter("@fechaInicio", fechaInicio));
-            cmd.Parameters.Add(new SqlParameter("@fechaFin", fechaFin));
-            cmd.Parameters.Add(new SqlParameter("@clienteID", clienteID));
-            cmd.Parameters.Add(VariableRetorno);
-
-            conexion.Open();
-            cmd.ExecuteNonQuery(); // aca se abre la conexion y se ejecuta el SP de login
-            int resultado = (int)cmd.Parameters["@resultado"].Value;
-            conexion.Close();
-            return resultado;
+            newFactura.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+            newFactura.Parameters.AddWithValue("@fechaFin", fechaFin);
+            newFactura.Parameters.AddWithValue("@clienteId", cliente.id);
+            newFactura.Parameters.AddWithValue("@fechaFacturar", fechaInicio);
+            try
+            {
+                conexion.Open();
+                newFactura.ExecuteNonQuery();
+                conexion.Close();
+            }
+            catch (Exception ex)
+            {
+                conexion.Close();
+                throw ex;
+            }
         }
-
-
     }
 }

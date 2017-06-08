@@ -12,6 +12,7 @@ using UberFrba.ABM_Chofer;
 using UberFrba.Abm_Rol;
 using UberFrba.Abm_Turno;
 using UberFrba.Entidades;
+using UberFrba.Facturacion;
 using UberFrba.Registro_Viajes;
 
 namespace UberFrba
@@ -52,6 +53,10 @@ namespace UberFrba
             else if (comboBoxFuncionalidades.Text.ToLower().Equals("registrar viaje"))
             {
                 new registroViaje().Show();
+            }
+            else if (comboBoxFuncionalidades.Text.ToLower().Equals("facturar"))
+            {
+                new Facturar().Show();
             }
         }
 

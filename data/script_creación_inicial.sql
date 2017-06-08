@@ -526,8 +526,22 @@ GO
 CREATE FUNCTION SQLGROUP.entreFechasNoCuentaMinutosSegundo (@fechamin DATETIME, @fechamax DATETIME, @fechaentre DATETIME)
 RETURNS int
 BEGIN
-	RETURN (SELECT CASE WHEN YEAR(@fechaentre) >= YEAR(@fechamin) AND YEAR(@fechaentre) <= YEAR(@fechamax) AND MONTH(@fechaentre) >= MONTH(@fechamin) AND MONTH(@fechaentre) <= MONTH(@fechamax) AND DAY(@fechaentre) >= DAY(@fechamin) AND DAY(@fechaentre) <= DAY(@fechamax) THEN 1
-					ELSE 0 END) 
+	IF(YEAR(@fechaentre) >= YEAR(@fechamin) AND YEAR(@fechaentre) <= YEAR(@fechamax) AND MONTH(@fechaentre) >= MONTH(@fechamin) AND MONTH(@fechaentre) <= MONTH(@fechamax))
+	BEGIN
+		IF(MONTH(@fechaentre) = MONTH(@fechamax) AND DAY(@fechaentre) <= DAY(@fechamax))
+		BEGIN
+			RETURN 1;
+		END
+		IF(MONTH(@fechaentre) = MONTH(@fechamin) AND DAY(@fechaentre) >= DAY(@fechamin))
+		BEGIN
+			RETURN 1;
+		END
+	END
+	ELSE 
+	BEGIN
+		RETURN 0;
+	END
+	RETURN 0;
 END
 GO
 
@@ -819,6 +833,31 @@ BEGIN
 END
 GO
 
+IF(OBJECT_ID('SQLGROUP.facturar') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.facturar;
+GO
+
+CREATE PROCEDURE SQLGROUP.facturar @fechaInicio DATETIME, @fechaFin DATETIME, @clienteId INT, @fechaFacturar DATETIME
+AS
+BEGIN
+	DECLARE @cantidadViajes INT, @valorTotal NUMERIC(18,2), @facturaNro NUMERIC(18,0);
+	SET @facturaNro = (SELECT MAX(Factura_Nro)+1 FROM Facturas);
+
+	SELECT @cantidadViajes = COUNT(*), @valorTotal = ISNULL(SUM(t.Turno_Precio_Base + t.Turno_Valor_Kilometro*v.Viaje_Cant_Kilometros),0)
+	FROM SQLGROUP.Viajes as v, SQLGROUP.Turno as t
+	WHERE SQLGROUP.entreFechasNoCuentaMinutosSegundo(@fechaInicio,@fechaFin,Viaje_Fecha) = 1 AND v.Viaje_Cliente_Id = @clienteid AND t.Turno_Id = v.Viaje_Turno_Id;
+
+	INSERT INTO Facturas (Factura_Nro, Factura_Fecha, Factura_Fecha_Inicio, Factura_Fecha_Fin, Factura_Total, Factua_Nro_Viajes, Factura_Cliente_Id)
+	VALUES (@facturaNro, @fechaFacturar, @fechaInicio, @fechaFin, @valorTotal, @cantidadViajes, @clienteid)
+
+
+	INSERT INTO SQLGROUP.Factura_Viaje (Fv_Factura_Nro, Fv_Viaje_Id)
+	SELECT Factura_Nro, Viaje_Id
+	FROM SQLGROUP.Facturas, SQLGROUP.Viajes
+	WHERE SQLGROUP.entreFechasNoCuentaMinutosSegundo(Factura_Fecha_Inicio,Factura_Fecha_Fin,Viaje_Fecha) = 1 AND Viaje_Cliente_Id = Factura_Cliente_Id AND Factura_Nro = @facturaNro
+END
+
+
 IF(OBJECT_ID('SQLGROUP.integridadViajes') IS NOT NULL)
 	DROP TRIGGER SQLGROUP.integridadViajes
 GO
@@ -844,6 +883,31 @@ BEGIN
 	BEGIN
 		ROLLBACK;
 		RAISERROR('El cliente ya tiene un viaje en esta fecha.', 16,1);
+	END
+END
+GO
+
+IF(OBJECT_ID('SQLGROUP.integridadFacturas') IS NOT NULL)
+	DROP TRIGGER SQLGROUP.integridadFacturas
+GO
+
+CREATE TRIGGER SQLGROUP.integridadFacturas 
+ON SQLGROUP.Facturas INSTEAD OF INSERT
+AS
+BEGIN
+	IF((SELECT COUNT(*)
+		FROM inserted as i, Facturas as f
+		WHERE i.Factura_Cliente_Id = f.Factura_Cliente_Id 
+			AND (SQLGROUP.entreFechasNoCuentaMinutosSegundo(f.Factura_Fecha_Inicio,f.Factura_Fecha_Fin,i.Factura_Fecha_Inicio) = 1 
+			OR  SQLGROUP.entreFechasNoCuentaMinutosSegundo(f.Factura_Fecha_Inicio,f.Factura_Fecha_Fin,i.Factura_Fecha_Fin) = 1)) != 0)
+	BEGIN
+		RAISERROR('Ya hay una factura en esas fechas', 16,1);
+	END
+	ELSE
+	BEGIN
+		INSERT INTO Facturas
+		SELECT *
+		FROM inserted
 	END
 END
 GO
