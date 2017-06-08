@@ -869,8 +869,8 @@ BEGIN
 	IF((SELECT COUNT(*)
 	FROM inserted as i, SQLGROUP.Viajes as v
 	WHERE i.Viaje_Auto_Patente = v.Viaje_Auto_Patente 
-	AND  (i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin
-	OR i.Viaje_Fecha_Fin >= v.Viaje_Fecha_Fin AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin))>1)
+	AND  ((i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin)
+	OR (i.Viaje_Fecha_Fin >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin)))>1)
 	BEGIN
 		ROLLBACK;
 		RAISERROR('El auto ya tiene un viaje en este horario', 16,1);
@@ -878,8 +878,8 @@ BEGIN
 	IF((SELECT COUNT(*)
 	FROM inserted as i, SQLGROUP.Viajes as v
 	WHERE i.Viaje_Cliente_Id = v.Viaje_Cliente_Id
-	AND  (i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin
-	OR i.Viaje_Fecha_Fin >= v.Viaje_Fecha_Fin AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin))>1)
+	AND  ((i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin)
+	OR (i.Viaje_Fecha_Fin >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin)))>1)
 	BEGIN
 		ROLLBACK;
 		RAISERROR('El cliente ya tiene un viaje en esta fecha.', 16,1);
