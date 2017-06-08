@@ -59,6 +59,34 @@ namespace UberFrba.SQL
             }
         }
 
+        public List<Viaje> getViajes(DateTime fecha, Chofer chofer, Turno turno)
+        {
+            List<Viaje> viajes = new List<Viaje>();
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand query = new SqlCommand("SELECT Viaje_Id, Viaje_Cant_Kilometros, Viaje_Fecha_INIC, Viaje_Fecha_Fin, Viaje_Chofer_Id, Viaje_Auto_Patente, Viaje_Turno_Id, Viaje_Cliente_Id " +
+                                              " FROM SQLGROUP.Viajes WHERE Viaje_Chofer_Id = @id AND Viaje_Turno_Id = @turnoid AND DAY(@fecha)=DAY(Viaje_Fecha_INIC) AND MONTH(@fecha) = MONTH(Viaje_Fecha_INIC) AND YEAR(@fecha) = YEAR(Viaje_Fecha_INIC)", conexion);
+            query.Parameters.AddWithValue("@fecha", fecha);
+            query.Parameters.AddWithValue("@id", chofer.id);
+            query.Parameters.AddWithValue("@turnoid", turno.id);
+            conexion.Open();
+            try
+            {
+                SqlDataReader reader = query.ExecuteReader();
+                while (reader.Read())
+                {
+                    Viaje viaje = new Viaje(reader.GetInt32(0), (float)reader.GetDecimal(1), reader.GetDateTime(2), reader.GetDateTime(3), reader.GetString(5), reader.GetInt32(4), reader.GetInt32(6), reader.GetInt32(7));
+                    viajes.Add(viaje);
+                }
+                conexion.Close();
+                return viajes;
+            }
+            catch (Exception ex)
+            {
+                conexion.Close();
+                throw ex;
+            }
+        }
+
         public float getFacturacionViajes(DateTime fechaInicio, DateTime fechaFin, Cliente cliente)
         {
             SqlConnection conexion = SqlGeneral.nuevaConexion();
@@ -81,5 +109,6 @@ namespace UberFrba.SQL
                 throw ex;
             }
         }
+    
     }
 }

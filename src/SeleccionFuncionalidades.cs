@@ -14,6 +14,7 @@ using UberFrba.Abm_Turno;
 using UberFrba.Entidades;
 using UberFrba.Facturacion;
 using UberFrba.Registro_Viajes;
+using UberFrba.Rendicion_Viajes;
 
 namespace UberFrba
 {
@@ -57,6 +58,10 @@ namespace UberFrba
             else if (comboBoxFuncionalidades.Text.ToLower().Equals("facturar"))
             {
                 new Facturar().Show();
+            }
+            else if (comboBoxFuncionalidades.Text.ToLower().Equals("rendir viajes"))
+            {
+                new rendicionViaje().Show();
             }
         }
 

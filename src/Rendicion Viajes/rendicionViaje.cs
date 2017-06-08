@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using UberFrba.SQL;
+using UberFrba.Entidades;
 
 
 
@@ -16,80 +17,76 @@ namespace UberFrba.Rendicion_Viajes
 {
     public partial class rendicionViaje : Form
     {
-
-        private DateTime fecha;
-        private String chofer;
-        private String turno;
-        private Decimal rendicionTotal;
-
-        SqlDataReader dr;
-        SqlConnection conexion = SqlGeneral.nuevaConexion();
-
-
+        private Chofer choferSeleccionado;
+        private float total;
+        private Automovil auto;
 
         public rendicionViaje()
         {
             InitializeComponent();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void buttonGuardar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonCambiarChofer_Click(object sender, EventArgs e)
+        {
+            var form = new seleccionarChofer();
+            if (form.ShowDialog(this) == DialogResult.OK)
+            {
+                this.choferSeleccionado = form.cf;
+                this.labelChofer.Text = this.choferSeleccionado.nombre + " " + this.choferSeleccionado.apellido;
+                this.cbTurno.DisplayMember = "desc";
+                this.cbTurno.ValueMember = "this";
+                auto = new SqlChoferes().getAutoHabilitado(this.choferSeleccionado);
+                labelAuto.Text = "Marca: " + auto.marca + " Patente: " + auto.patente;
+                this.cbTurno.DataSource = auto.turnos;
+                this.actualizarTablaViajes();
+            }
+        }
+
+        private void buttonCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void actualizarTablaViajes()
         {
-            tbRendicionTotal.Clear();
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void rendicionViaje_Load(object sender, EventArgs e)
-        {
-            conexion.Open();
-            SqlCommand cmd = new SqlCommand("SELECT Chofer_Nombre FROM SQLGROUP.Choferes", conexion);
-            dr = cmd.ExecuteReader();
-            while (dr.Read())
+            if (choferSeleccionado != null)
             {
-                cbChoferes.Items.Add(dr["Nombre_Chofer"].ToString());
+                this.dataGridView1.DataSource = new BindingSource(new BindingList<Viaje>(new SqlViajes().getViajes(this.dateTimePicker1.Value,this.choferSeleccionado, this.cbTurno.SelectedValue as Turno)),null);
+                this.total = new SqlRendicion().calcularRendicion(this.dateTimePicker1.Value, this.choferSeleccionado, (this.cbTurno.SelectedValue as Turno));
+                this.actualizarTotal();
             }
-            dr.Close();
-            conexion.Close();
-        }
-
-        private void cbTurno_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            turno = cbTurno.SelectedItem.ToString();
-        }
-
-        private void cbChoferes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            chofer = cbChoferes.SelectedItem.ToString();
-            SqlCommand query = new SqlCommand("SELECT Turno_Descripcion FROM SQLGROUP.Turno ,SQLGROUP.Chofer_Turno, SQLGROUP.Choferes WHERE Chofer_Id = Ct_Chofer_Id AND Turno_Id = Ct_Turno_Id AND Chofer_Nombre LIKE @chofer Group BY Turno_Descripcion", conexion);
-            query.Parameters.AddWithValue("@chofer", chofer);
-            conexion.Open();
-            dr = query.ExecuteReader();
-            while (dr.Read())
-            {
-                cbTurno.Items.Add(dr["Turno_Descripcion"].ToString());
-            }
-            dr.Close();
-            conexion.Close();
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-            fecha = dateTimePicker1.Value;
+            this.actualizarTablaViajes();
         }
 
-        private void btnCalcularRendicion_Click(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            rendicionTotal = new SqlRendicion().calcularRendicion(fecha, chofer, turno);
-            tbRendicionTotal.Text = rendicionTotal.ToString();
+            this.actualizarTotal();
+        }
 
+        private void actualizarTotal()
+        {
+            try
+            {
+                this.labelTotal.Text = (float.Parse(this.textBoxPorcentaje.Text) / 100 * this.total).ToString();
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show("Compruebe el porcentaje");
+            }
+        }
+
+        private void cbTurno_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.actualizarTablaViajes();
         }
     }
 }
