@@ -321,6 +321,7 @@ BEGIN
 	GROUP BY Auto_Chofer
 	ORDER BY 1 DESC)>1) 
 	BEGIN
+		ROLLBACK;
 		RAISERROR('El chofer ya tiene mas de un auto habilitado', 16,1);
 	END
 END
@@ -342,6 +343,7 @@ BEGIN
 	AND  ((i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin)
 	OR (i.Viaje_Fecha_Fin >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin)))>1)
 	BEGIN
+		ROLLBACK;
 		RAISERROR('El auto ya tiene un viaje en este horario', 16,1);
 	END
 	IF((SELECT COUNT(*)
@@ -350,6 +352,7 @@ BEGIN
 	AND  ((i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin)
 	OR (i.Viaje_Fecha_Fin >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin)))>1)
 	BEGIN
+		ROLLBACK;
 		RAISERROR('El cliente ya tiene un viaje en esta fecha.', 16,1);
 	END
 END
@@ -370,6 +373,7 @@ BEGIN
 			AND (SQLGROUP.entreFechasNoCuentaMinutosSegundo(f.Factura_Fecha_Inicio,f.Factura_Fecha_Fin,i.Factura_Fecha_Inicio) = 1 
 			OR  SQLGROUP.entreFechasNoCuentaMinutosSegundo(f.Factura_Fecha_Inicio,f.Factura_Fecha_Fin,i.Factura_Fecha_Fin) = 1)) != 0)
 	BEGIN
+		ROLLBACK;
 		RAISERROR('Ya hay una factura en esas fechas', 16,1);
 	END
 	ELSE
