@@ -28,7 +28,14 @@ namespace UberFrba.Rendicion_Viajes
 
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                new SqlRendicion().guardarRendicion(this.dateTimePicker1.Value, this.choferSeleccionado, this.cbTurno.SelectedValue as Turno, float.Parse(this.textBoxPorcentaje.Text), float.Parse(this.labelTotal.Text));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void buttonCambiarChofer_Click(object sender, EventArgs e)

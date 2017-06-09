@@ -33,7 +33,30 @@ namespace UberFrba.SQL
                 conexion.Close();
                 throw ex;
             }
+        }
 
+        public void guardarRendicion(DateTime fecha, Chofer chofer, Turno turno, float porcentaje, float total)
+        {
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand newRendicion = new SqlCommand("SQLGROUP.rendirViajes", conexion);
+            newRendicion.CommandType = CommandType.StoredProcedure;
+
+            newRendicion.Parameters.AddWithValue("@fecha", fecha);
+            newRendicion.Parameters.AddWithValue("@importe", total);
+            newRendicion.Parameters.AddWithValue("@choferId", chofer.id);
+            newRendicion.Parameters.AddWithValue("@turnoId", turno.id);
+            newRendicion.Parameters.AddWithValue("@porcentaje", porcentaje/100);
+            try
+            {
+                conexion.Open();
+                newRendicion.ExecuteNonQuery();
+                conexion.Close();
+            }
+            catch (Exception ex)
+            {
+                conexion.Close();
+                throw ex;
+            }
         }
             
 

@@ -857,6 +857,24 @@ BEGIN
 	WHERE SQLGROUP.entreFechasNoCuentaMinutosSegundo(Factura_Fecha_Inicio,Factura_Fecha_Fin,Viaje_Fecha) = 1 AND Viaje_Cliente_Id = Factura_Cliente_Id AND Factura_Nro = @facturaNro
 END
 
+IF(OBJECT_ID('SQLGROUP.rendirViajes') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.rendirViajes;
+GO
+
+CREATE PROCEDURE SQLGROUP.rendirViajes @fecha DATETIME, @importe NUMERIC(18,2), @choferId INT, @turnoId INT, @porcentaje NUMERIC(18,2)
+AS
+BEGIN
+	DECLARE @rendicionNro NUMERIC(18,0);
+	SET @rendicionNro = (SELECT MAX(Rendicion_Nro)+1 FROM Rendiciones);	
+	INSERT INTO SQLGROUP.Rendiciones (Rendicion_Nro, Rendicion_Fecha, Rendicion_Importe, Rendicion_Chofer_Id, Rendicion_Turno_Id)
+	VALUES(@rendicionNro,@fecha,@importe,@choferId, @turnoId);
+
+	INSERT INTO SQLGROUP.Rendicion_Viaje (Rv_Rendicion_Nro, Rv_Importe, Rv_Viaje_Id)
+	SELECT @rendicionNro, (v.Viaje_Cant_Kilometros*t.Turno_Valor_Kilometro+t.Turno_Precio_Base)*@porcentaje, v.Viaje_Id
+	FROM SQLGROUP.Viajes as v, SQLGROUP.Turno as t
+	WHERE t.Turno_Id = @turnoId AND @choferId = v.Viaje_Chofer_Id AND DAY(@fecha) = DAY(Viaje_Fecha_INIC) AND MONTH(@fecha) = MONTH(Viaje_Fecha_INIC) AND YEAR(@fecha) = YEAR(Viaje_Fecha_INIC)
+END
+
 
 IF(OBJECT_ID('SQLGROUP.integridadViajes') IS NOT NULL)
 	DROP TRIGGER SQLGROUP.integridadViajes
