@@ -322,16 +322,16 @@ BEGIN
 	ORDER BY 1 DESC)>1) 
 	BEGIN
 		RAISERROR('El chofer ya tiene mas de un auto habilitado', 16,1);
-		ROLLBACK;
 	END
 END
 GO
-/*
+
 IF(OBJECT_ID('SQLGROUP.integridadViajes') IS NOT NULL)
 	DROP TRIGGER SQLGROUP.integridadViajes
 GO
 /*Este trigger se ocupa que no se registren viajes en el 
 mismo horario con el mismo auto o con el mismo cliente*/
+
 CREATE TRIGGER SQLGROUP.integridadViajes 
 ON SQLGROUP.Viajes AFTER INSERT
 AS
@@ -342,7 +342,6 @@ BEGIN
 	AND  ((i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin)
 	OR (i.Viaje_Fecha_Fin >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin)))>1)
 	BEGIN
-		ROLLBACK;
 		RAISERROR('El auto ya tiene un viaje en este horario', 16,1);
 	END
 	IF((SELECT COUNT(*)
@@ -351,12 +350,11 @@ BEGIN
 	AND  ((i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin)
 	OR (i.Viaje_Fecha_Fin >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin)))>1)
 	BEGIN
-		ROLLBACK;
 		RAISERROR('El cliente ya tiene un viaje en esta fecha.', 16,1);
 	END
 END
 GO
-*/
+
 IF(OBJECT_ID('SQLGROUP.integridadFacturas') IS NOT NULL)
 	DROP TRIGGER SQLGROUP.integridadFacturas
 GO
@@ -619,33 +617,32 @@ BEGIN
 	FROM gd_esquema.Maestra as m, SQLGROUP.Turno as t, SQLGROUP.Clientes as cl, SQLGROUP.Choferes as ch
 	WHERE t.Turno_Hora_Fin = m.Turno_Hora_Fin AND t.Turno_Hora_Inicio = m.Turno_Hora_Inicio AND ch.Chofer_Dni = m.Chofer_Dni AND m.Cliente_Dni = cl.Cliente_Dni
 	GROUP BY Chofer_Id,Viaje_Fecha,Viaje_Cant_Kilometros,Auto_Patente,Cliente_Id, Turno_Id
-	ORDER BY m.Auto_Patente, m.Viaje_Fecha
+	ORDER BY m.Viaje_Fecha, cl.Cliente_Id
 
 	/*Variable para el cursor*/
 	DECLARE @chofer_id NUMERIC(18,0), @viaje_fecha DATETIME, @viaje_cant_kilometros NUMERIC(18,0), @auto_patente VARCHAR(10), @cliente_id NUMERIC(18,0), @turno_id INTEGER;
 	/*Extras var*/
-	DECLARE @ultimo_horario DATETIME,@last_patente VARCHAR(10), @last_fecha DATETIME, @cantidad_iguales INTEGER;
+	DECLARE @ultimo_fecha DATETIME, @horario_poner DATETIME;
 
 	OPEN viajes_cursor;
 	FETCH NEXT FROM viajes_cursor INTO @chofer_id, @viaje_fecha,@viaje_cant_kilometros, @auto_patente, @cliente_id, @turno_id;
-
+	SET @ultimo_fecha = @viaje_fecha;
+	SET @horario_poner = @viaje_fecha;
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
-		IF(@last_fecha = @viaje_fecha AND @last_patente = @auto_patente)
+		IF(@ultimo_fecha != @viaje_fecha)
 		BEGIN
-			SET @cantidad_iguales = @cantidad_iguales + 1;
+			SET @ultimo_fecha = @viaje_fecha;
+			SET @horario_poner = @viaje_fecha;
 		END
-		ELSE
+		ELSE 
 		BEGIN
-			SET @cantidad_iguales = 0;
+			SET @horario_poner = DATEADD(MINUTE, 1, @horario_poner);
 		END
-		
+
 		INSERT INTO Viajes (Viaje_Cant_Kilometros,Viaje_Fecha,Viaje_Fecha_INIC,Viaje_Fecha_Fin,Viaje_Chofer_Id,Viaje_Auto_Patente,Viaje_Turno_Id,Viaje_Cliente_Id)
-		VALUES (@viaje_cant_kilometros,@viaje_fecha,DATEADD(minute,@cantidad_iguales*2,@viaje_fecha), DATEADD(minute,@cantidad_iguales*2+2,@viaje_fecha),@chofer_id,@auto_patente,@turno_id,@cliente_id)
-		
-		SET @last_patente = @auto_patente;
-		SET @last_fecha = @viaje_fecha;
-		
+		VALUES (@viaje_cant_kilometros,@viaje_fecha,DATEADD(second,5,@horario_poner), DATEADD(second,55,@horario_poner),@chofer_id,@auto_patente,@turno_id,@cliente_id)
+
 		FETCH NEXT FROM viajes_cursor INTO @chofer_id, @viaje_fecha,@viaje_cant_kilometros, @auto_patente, @cliente_id, @turno_id;
 	END
 
@@ -748,7 +745,11 @@ BEGIN
 	EXEC SQLGROUP.crear_funciones;
 	EXEC SQLGROUP.migrar_automoviles;	
 	EXEC SQLGROUP.migrar_autoxturno;
+	/*Deshabilitamos el trigger ya que sabemos que funciona bien, ademas hace lenta la migracion*/
+	ALTER TABLE SQLGROUP.Viajes DISABLE TRIGGER integridadViajes;
 	EXEC SQLGROUP.migrar_viajes;
+	/*Y lo volvemos a habilitar para la aplicacion*/
+	ALTER TABLE SQLGROUP.Viajes ENABLE TRIGGER integridadViajes;
 	EXEC SQLGROUP.migrar_factura 
 	EXEC SQLGROUP.migrar_viajes_factura;
 	EXEC SQLGROUP.migrar_rendiciones;
@@ -902,6 +903,7 @@ BEGIN
 	FROM SQLGROUP.Facturas, SQLGROUP.Viajes
 	WHERE SQLGROUP.entreFechasNoCuentaMinutosSegundo(Factura_Fecha_Inicio,Factura_Fecha_Fin,Viaje_Fecha) = 1 AND Viaje_Cliente_Id = Factura_Cliente_Id AND Factura_Nro = @facturaNro
 END
+GO
 
 IF(OBJECT_ID('SQLGROUP.rendirViajes') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.rendirViajes;
@@ -920,5 +922,5 @@ BEGIN
 	FROM SQLGROUP.Viajes as v, SQLGROUP.Turno as t
 	WHERE t.Turno_Id = @turnoId AND @choferId = v.Viaje_Chofer_Id AND DAY(@fecha) = DAY(Viaje_Fecha_INIC) AND MONTH(@fecha) = MONTH(Viaje_Fecha_INIC) AND YEAR(@fecha) = YEAR(Viaje_Fecha_INIC)
 END
-
+GO
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
