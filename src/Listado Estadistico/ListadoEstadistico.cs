@@ -22,16 +22,19 @@ namespace UberFrba.Listado_Estadistico
             InitializeComponent();
         }
 
-        private String anio;
-        private String trimestre;
+        private Int32 anio;
+        private Int32 trimestreElegido;
+        private Int32 mesInicial;
+        private Int32 mesFinal;
 
-        
+
+
         SqlDataAdapter da;
         DataTable dt;
 
         SqlConnection conexion = SqlGeneral.nuevaConexion();
-         
-        
+
+
 
         private void ListadoEstadistico_Load(object sender, EventArgs e)
         {
@@ -46,14 +49,15 @@ namespace UberFrba.Listado_Estadistico
             SqlCommand cmd = new SqlCommand("SQLGROUP.consultaChoferMayorRecaudacion", conexion);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@anio", anio));
-            cmd.Parameters.Add(new SqlParameter("@trimestre", trimestre));
+            cmd.Parameters.Add(new SqlParameter("@mesInicial", mesInicial));
+            cmd.Parameters.Add(new SqlParameter("@mesFinal", mesFinal));
             conexion.Open();
             da = new SqlDataAdapter(cmd);
             dt = new DataTable();
             da.Fill(dt);
             dgvResultados.DataSource = da;
             conexion.Close();
-        
+
         }
 
         private void btnChoferViajeMasLargo_Click(object sender, EventArgs e)
@@ -61,7 +65,8 @@ namespace UberFrba.Listado_Estadistico
             SqlCommand cmd = new SqlCommand("SQLGROUP.consultaChoferViajeMasLargo", conexion);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@anio", anio));
-            cmd.Parameters.Add(new SqlParameter("@trimestre", trimestre));
+            cmd.Parameters.Add(new SqlParameter("@mesInicial", mesInicial));
+            cmd.Parameters.Add(new SqlParameter("@mesFinal", mesFinal));
             conexion.Open();
             da = new SqlDataAdapter(cmd);
             dt = new DataTable();
@@ -75,7 +80,8 @@ namespace UberFrba.Listado_Estadistico
             SqlCommand cmd = new SqlCommand("SQLGROUP.consultaClienteMayorConsumo", conexion);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@anio", anio));
-            cmd.Parameters.Add(new SqlParameter("@trimestre", trimestre));
+            cmd.Parameters.Add(new SqlParameter("@mesInicial", mesInicial));
+            cmd.Parameters.Add(new SqlParameter("@mesFinal", mesFinal));
             conexion.Open();
             da = new SqlDataAdapter(cmd);
             dt = new DataTable();
@@ -89,7 +95,8 @@ namespace UberFrba.Listado_Estadistico
             SqlCommand cmd = new SqlCommand("SQLGROUP.consultaClienteMismoAuto", conexion);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@anio", anio));
-            cmd.Parameters.Add(new SqlParameter("@trimestre", trimestre));
+            cmd.Parameters.Add(new SqlParameter("@mesInicial", mesInicial));
+            cmd.Parameters.Add(new SqlParameter("@mesFinal", mesFinal));
             conexion.Open();
             da = new SqlDataAdapter(cmd);
             dt = new DataTable();
@@ -100,15 +107,30 @@ namespace UberFrba.Listado_Estadistico
 
         private void cbCuatrimestre_SelectedIndexChanged(object sender, EventArgs e)
         {
-            trimestre = cbCuatrimestre.SelectedItem.ToString();
-            anio = tbAño.Text;
-            
+            trimestreElegido = cbCuatrimestre.SelectedIndex;
+            switch (trimestreElegido)
+            {
+                case 0:
+                    mesInicial = 1;
+                    mesFinal = 3;
+                    break;
+                case 1:
+                    mesInicial = 4;
+                    mesFinal = 6;
+                    break;
+                case 2:
+                    mesInicial = 7;
+                    mesFinal = 9;
+                    break;
+                case 3:
+                    mesInicial = 10;
+                    mesFinal = 12;
+                    break;
+            }
+
+            anio = Convert.ToInt32(tbAño.Text);
+
         }
-
-
-
-
-
 
     }
 }

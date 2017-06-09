@@ -954,3 +954,18 @@ BEGIN
 END
 GO
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
+IF(OBJECT_ID('SQLGROUP.consultaChoferMayorRecaudacion') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.consultaChoferMayorRecaudacion;
+GO
+
+
+CREATE PROCEDURE SQLGROUP.consultaChoferMayorRecaudacion @anio INT , @mesInicial INT, @mesFinal INT
+AS
+BEGIN
+	SELECT TOP 5 Chofer_Nombre, Chofer_Apellido,SUM(Rendicion_Importe) AS Recaudacion
+	FROM SQLGROUP.Choferes c JOIN SQLGROUP.Rendiciones r ON c.Chofer_Id = r.Rendicion_Chofer_Id
+	WHERE YEAR(r.Rendicion_Fecha) = @anio AND MONTH(r.Rendicion_Fecha) BETWEEN @mesInicial AND @mesFinal
+	GROUP BY c.Chofer_Nombre, c.Chofer_Apellido
+	ORDER BY SUM(r.Rendicion_Importe) DESC
+END
+GO
