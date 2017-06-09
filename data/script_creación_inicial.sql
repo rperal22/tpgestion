@@ -384,6 +384,32 @@ BEGIN
 	END
 END
 GO
+
+IF(OBJECT_ID('SQLGROUP.integridadRendiciones') IS NOT NULL)
+	DROP TRIGGER SQLGROUP.integridadRendiciones
+GO
+/*Esto se ocupa de que no se guarden facturas con fechas superpuestas
+o iguales*/
+CREATE TRIGGER SQLGROUP.integridadRendiciones 
+ON SQLGROUP.Rendiciones INSTEAD OF INSERT
+AS
+BEGIN
+	IF((SELECT COUNT(*)
+		FROM inserted as i, SQLGROUP.Rendiciones as r
+		WHERE i.Rendicion_Chofer_Id = r.Rendicion_Chofer_Id
+			AND i.Rendicion_Fecha = r.Rendicion_Fecha)!=0)
+	BEGIN
+		ROLLBACK;
+		RAISERROR('El chofer ya realizo la rendicion diaria', 16,1);
+	END
+	ELSE
+	BEGIN
+		INSERT INTO Rendiciones
+		SELECT *
+		FROM inserted
+	END
+END
+GO
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
 
 

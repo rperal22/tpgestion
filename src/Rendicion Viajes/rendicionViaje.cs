@@ -30,9 +30,19 @@ namespace UberFrba.Rendicion_Viajes
         {
             try
             {
+                this.validar();
                 new SqlRendicion().guardarRendicion(this.dateTimePicker1.Value, this.choferSeleccionado, this.cbTurno.SelectedValue as Turno, float.Parse(this.textBoxPorcentaje.Text), float.Parse(this.labelTotal.Text));
+                MessageBox.Show("Rendicion guardada correctamente");
             }
-            catch (Exception ex)
+            catch (FormatException ex)
+            {
+                MessageBox.Show("Compruebe el porcentaje");
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (SystemException ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -94,6 +104,14 @@ namespace UberFrba.Rendicion_Viajes
         private void cbTurno_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.actualizarTablaViajes();
+        }
+
+        private void validar()
+        {
+            if (this.choferSeleccionado == null || this.cbTurno.SelectedValue == null || this.textBoxPorcentaje.TextLength == 0)
+            {
+                throw new SystemException("Complete los campos obligatorios");
+            }
         }
     }
 }
