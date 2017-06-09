@@ -241,11 +241,151 @@ BEGIN
 END
 GO
 
+--Ejecuto procedure que crea las tablas
 BEGIN
 	EXEC SQLGROUP.crear_tablas;
 END
 GO
 
+/*Creacion de funciones-------------------------------------------------------------------------------------------------------*/
+--Funciones usadas por triggers, procedures, migraciones, aplicacion, etc
+IF (OBJECT_ID('SQLGROUP.entreFechasNoCuentaMinutosSegundo') IS NOT NULL)
+	DROP FUNCTION SQLGROUP.entreFechasNoCuentaMinutosSegundo
+GO
+/*Esta funcion chequea que una fecha este entre dos fechas sin contar minutos ni segundos*/
+CREATE FUNCTION SQLGROUP.entreFechasNoCuentaMinutosSegundo (@fechamin DATETIME, @fechamax DATETIME, @fechaentre DATETIME)
+RETURNS int
+BEGIN
+	IF(YEAR(@fechaentre) >= YEAR(@fechamin) AND YEAR(@fechaentre) <= YEAR(@fechamax) AND MONTH(@fechaentre) >= MONTH(@fechamin) AND MONTH(@fechaentre) <= MONTH(@fechamax))
+	BEGIN
+		IF(MONTH(@fechaentre) = MONTH(@fechamax) AND DAY(@fechaentre) <= DAY(@fechamax))
+		BEGIN
+			RETURN 1;
+		END
+		IF(MONTH(@fechaentre) = MONTH(@fechamin) AND DAY(@fechaentre) >= DAY(@fechamin))
+		BEGIN
+			RETURN 1;
+		END
+	END
+	ELSE 
+	BEGIN
+		RETURN 0;
+	END
+	RETURN 0;
+END
+GO
+
+If (OBJECT_ID('SQLGROUP.cifrado_claves') IS NOT NULL)
+	DROP FUNCTION SQLGROUP.cifrado_claves
+GO
+/*Esta funcion al recibir un VARCHAR lo devuelve cifrado*/
+CREATE FUNCTION SQLGROUP.cifrado_claves(@password VARCHAR(64))
+RETURNS VARCHAR(64)
+AS
+BEGIN
+	RETURN CONVERT(CHAR(64),HASHBYTES('SHA2_256',@password),1);
+END
+GO
+
+/*----------------------------------------------------------------------------------------------------------------------------*/
+
+/*Creacion de triggers-------------------------------------------------------------------------------------------------------*/
+/*Creamos triggers sobre tablas anteriorermente creadas*/
+IF (OBJECT_ID('SQLGROUP.insert_password_cifrado') IS NOT NULL)
+	DROP TRIGGER SQLGROUP.insert_password_cifrado;
+GO
+
+/*Trigger que cifra la clave cada vez q se inserta un nuevo usuario
+Utiliza function SQLGROUP.cifrado_claves*/
+CREATE TRIGGER SQLGROUP.insert_password_cifrado
+ON SQLGROUP.Usuarios INSTEAD OF INSERT
+AS 
+BEGIN
+	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_DNI,Usuario_Password,Usuario_Intentos, Usuario_Estado)
+	SELECT i.Usuario_Id, i.Usuario_DNI,SQLGROUP.cifrado_claves(i.Usuario_Password), i.Usuario_Intentos,i.Usuario_Estado
+	FROM inserted as i
+END
+GO
+
+IF (OBJECT_ID('SQLGROUP.controlarAutosHabilitadosxChofer') IS NOT NULL)
+	DROP TRIGGER SQLGROUP.controlarAutosHabilitadosxChofer;
+GO
+/*Este trigger controla que un chofer solo pueda tener un auto habilitado*/
+CREATE TRIGGER SQLGROUP.controlarAutosHabilitadosxChofer
+ON SQLGROUP.Automoviles AFTER INSERT , UPDATE
+AS 
+BEGIN
+	IF((SELECT TOP 1 COUNT(*)
+	FROM SQLGROUP.Automoviles
+	WHERE Auto_Estado = 'Habilitado'
+	GROUP BY Auto_Chofer
+	ORDER BY 1 DESC)>1) 
+	BEGIN
+		RAISERROR('El chofer ya tiene mas de un auto habilitado', 16,1);
+		ROLLBACK;
+	END
+END
+GO
+/*
+IF(OBJECT_ID('SQLGROUP.integridadViajes') IS NOT NULL)
+	DROP TRIGGER SQLGROUP.integridadViajes
+GO
+/*Este trigger se ocupa que no se registren viajes en el 
+mismo horario con el mismo auto o con el mismo cliente*/
+CREATE TRIGGER SQLGROUP.integridadViajes 
+ON SQLGROUP.Viajes AFTER INSERT
+AS
+BEGIN
+	IF((SELECT COUNT(*)
+	FROM inserted as i, SQLGROUP.Viajes as v
+	WHERE i.Viaje_Auto_Patente = v.Viaje_Auto_Patente 
+	AND  ((i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin)
+	OR (i.Viaje_Fecha_Fin >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin)))>1)
+	BEGIN
+		ROLLBACK;
+		RAISERROR('El auto ya tiene un viaje en este horario', 16,1);
+	END
+	IF((SELECT COUNT(*)
+	FROM inserted as i, SQLGROUP.Viajes as v
+	WHERE i.Viaje_Cliente_Id = v.Viaje_Cliente_Id
+	AND  ((i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin)
+	OR (i.Viaje_Fecha_Fin >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin)))>1)
+	BEGIN
+		ROLLBACK;
+		RAISERROR('El cliente ya tiene un viaje en esta fecha.', 16,1);
+	END
+END
+GO
+*/
+IF(OBJECT_ID('SQLGROUP.integridadFacturas') IS NOT NULL)
+	DROP TRIGGER SQLGROUP.integridadFacturas
+GO
+/*Esto se ocupa de que no se guarden facturas con fechas superpuestas
+o iguales*/
+CREATE TRIGGER SQLGROUP.integridadFacturas 
+ON SQLGROUP.Facturas INSTEAD OF INSERT
+AS
+BEGIN
+	IF((SELECT COUNT(*)
+		FROM inserted as i, Facturas as f
+		WHERE i.Factura_Cliente_Id = f.Factura_Cliente_Id 
+			AND (SQLGROUP.entreFechasNoCuentaMinutosSegundo(f.Factura_Fecha_Inicio,f.Factura_Fecha_Fin,i.Factura_Fecha_Inicio) = 1 
+			OR  SQLGROUP.entreFechasNoCuentaMinutosSegundo(f.Factura_Fecha_Inicio,f.Factura_Fecha_Fin,i.Factura_Fecha_Fin) = 1)) != 0)
+	BEGIN
+		RAISERROR('Ya hay una factura en esas fechas', 16,1);
+	END
+	ELSE
+	BEGIN
+		INSERT INTO Facturas
+		SELECT *
+		FROM inserted
+	END
+END
+GO
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+/*Creacion de procedures de migraciones-----------------------------------------------------------------------------------------------------*/
 IF(OBJECT_ID('SQLGROUP.migrar_choferes') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_choferes
 GO
@@ -392,10 +532,6 @@ IF(OBJECT_ID('SQLGROUP.crear_usuarios') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.crear_usuarios
 GO
 
-/*Usuario: Nombre Password: Nombre, Falta hacer el trigger que cifra las pass*/
-/* Para llamar una fucion desde qualquier parte del SP debe hacer algo como esto
-select [SchemaName].[FunctionName] (Param1, Param2....); */
-
 CREATE PROCEDURE SQLGROUP.crear_usuarios
 AS
 BEGIN
@@ -471,7 +607,6 @@ BEGIN
 END
 GO
 
-
 IF (OBJECT_ID('SQLGROUP.migrar_viajes') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_viajes
 GO
@@ -516,32 +651,6 @@ BEGIN
 
 	CLOSE viajes_cursor;
 	DEALLOCATE viajes_cursor;
-END
-GO
-
-IF (OBJECT_ID('SQLGROUP.entreFechasNoCuentaMinutosSegundo') IS NOT NULL)
-	DROP FUNCTION SQLGROUP.entreFechasNoCuentaMinutosSegundo
-GO
-
-CREATE FUNCTION SQLGROUP.entreFechasNoCuentaMinutosSegundo (@fechamin DATETIME, @fechamax DATETIME, @fechaentre DATETIME)
-RETURNS int
-BEGIN
-	IF(YEAR(@fechaentre) >= YEAR(@fechamin) AND YEAR(@fechaentre) <= YEAR(@fechamax) AND MONTH(@fechaentre) >= MONTH(@fechamin) AND MONTH(@fechaentre) <= MONTH(@fechamax))
-	BEGIN
-		IF(MONTH(@fechaentre) = MONTH(@fechamax) AND DAY(@fechaentre) <= DAY(@fechamax))
-		BEGIN
-			RETURN 1;
-		END
-		IF(MONTH(@fechaentre) = MONTH(@fechamin) AND DAY(@fechaentre) >= DAY(@fechamin))
-		BEGIN
-			RETURN 1;
-		END
-	END
-	ELSE 
-	BEGIN
-		RETURN 0;
-	END
-	RETURN 0;
 END
 GO
 
@@ -626,55 +735,6 @@ BEGIN
 	GROUP BY m.Rendicion_Nro, m.Rendicion_Importe, v.Viaje_Id
 END
 GO
-/*---------------------------------CREACION DE TRIGGERS---------------------------------*/
-
-If (OBJECT_ID('SQLGROUP.cifrado_claves') IS NOT NULL)
-	DROP FUNCTION SQLGROUP.cifrado_claves
-GO
-
-CREATE FUNCTION SQLGROUP.cifrado_claves(@password VARCHAR(64))
-RETURNS VARCHAR(64)
-AS
-BEGIN
-	RETURN CONVERT(CHAR(64),HASHBYTES('SHA2_256',@password),1);
-END
-GO
-
-IF (OBJECT_ID('SQLGROUP.insert_password_cifrado') IS NOT NULL)
-	DROP TRIGGER SQLGROUP.insert_password_cifrado;
-GO
-
---Trigger que cifra la clave cada vez q se inserta un nuevo usuario
-CREATE TRIGGER SQLGROUP.insert_password_cifrado
-ON SQLGROUP.Usuarios INSTEAD OF INSERT
-AS 
-BEGIN
-	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_DNI,Usuario_Password,Usuario_Intentos, Usuario_Estado)
-	SELECT i.Usuario_Id, i.Usuario_DNI,SQLGROUP.cifrado_claves(i.Usuario_Password), i.Usuario_Intentos,i.Usuario_Estado
-	FROM inserted as i
-END
-GO
-
-IF (OBJECT_ID('SQLGROUP.controlarAutosHabilitadosxChofer') IS NOT NULL)
-	DROP TRIGGER SQLGROUP.controlarAutosHabilitadosxChofer;
-GO
-
---Trigger que cifra la clave cada vez q se inserta un nuevo usuario
-CREATE TRIGGER SQLGROUP.controlarAutosHabilitadosxChofer
-ON SQLGROUP.Automoviles AFTER INSERT , UPDATE
-AS 
-BEGIN
-	IF((SELECT TOP 1 COUNT(*)
-	FROM SQLGROUP.Automoviles
-	WHERE Auto_Estado = 'Habilitado'
-	GROUP BY Auto_Chofer
-	ORDER BY 1 DESC)>1) 
-	BEGIN
-		RAISERROR('El chofer ya tiene mas de un auto habilitado', 16,1);
-		ROLLBACK;
-	END
-END
-GO
 
 /*-----Aca se ejecutan todos los procedures de migracion de arriba------*/
 BEGIN
@@ -695,25 +755,11 @@ BEGIN
 	EXEC SQLGROUP.migrar_rendicionesxviajes;
 END
 GO
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
 
-/* --- Aca se crean los elementos de bases de datos que  resolveran las funcionalidades-----*/
+/*Procedures que usamos en la aplicacion----------------------------------------------------------------------------------------------------*/
 
-/* ---------1) ABM de rol ----------------*/
 
-/* ---------2) LOGIN ------------------------------------------------------------------------------------------------------*/
-/* deshabilitar un usuario por id */ 
-/* Convertir a trigger, un after update que se fije cant de intenteos = 3 entonces updatea el estado*/
-/*
-CREATE PROCEDURE SQLGROUP.DeshabilitarUsuario
-@ID_USER VARCHAR(255)
-AS
-	BEGIN
-		UPDATE SQLGROUP.Usuarios SET Usuario_Estado='Deshabilitado' WHERE Usuario_Id= @ID_USER;
-	END
-GO
-*/
-
----- STORED PROCEDURE LOGIN -----------------*/
 If (OBJECT_ID('SQLGROUP.login') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.login
 GO
@@ -875,57 +921,4 @@ BEGIN
 	WHERE t.Turno_Id = @turnoId AND @choferId = v.Viaje_Chofer_Id AND DAY(@fecha) = DAY(Viaje_Fecha_INIC) AND MONTH(@fecha) = MONTH(Viaje_Fecha_INIC) AND YEAR(@fecha) = YEAR(Viaje_Fecha_INIC)
 END
 
-
-IF(OBJECT_ID('SQLGROUP.integridadViajes') IS NOT NULL)
-	DROP TRIGGER SQLGROUP.integridadViajes
-GO
-
-CREATE TRIGGER SQLGROUP.integridadViajes 
-ON SQLGROUP.Viajes AFTER INSERT
-AS
-BEGIN
-	IF((SELECT COUNT(*)
-	FROM inserted as i, SQLGROUP.Viajes as v
-	WHERE i.Viaje_Auto_Patente = v.Viaje_Auto_Patente 
-	AND  ((i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin)
-	OR (i.Viaje_Fecha_Fin >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin)))>1)
-	BEGIN
-		ROLLBACK;
-		RAISERROR('El auto ya tiene un viaje en este horario', 16,1);
-	END
-	IF((SELECT COUNT(*)
-	FROM inserted as i, SQLGROUP.Viajes as v
-	WHERE i.Viaje_Cliente_Id = v.Viaje_Cliente_Id
-	AND  ((i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin)
-	OR (i.Viaje_Fecha_Fin >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin)))>1)
-	BEGIN
-		ROLLBACK;
-		RAISERROR('El cliente ya tiene un viaje en esta fecha.', 16,1);
-	END
-END
-GO
-
-IF(OBJECT_ID('SQLGROUP.integridadFacturas') IS NOT NULL)
-	DROP TRIGGER SQLGROUP.integridadFacturas
-GO
-
-CREATE TRIGGER SQLGROUP.integridadFacturas 
-ON SQLGROUP.Facturas INSTEAD OF INSERT
-AS
-BEGIN
-	IF((SELECT COUNT(*)
-		FROM inserted as i, Facturas as f
-		WHERE i.Factura_Cliente_Id = f.Factura_Cliente_Id 
-			AND (SQLGROUP.entreFechasNoCuentaMinutosSegundo(f.Factura_Fecha_Inicio,f.Factura_Fecha_Fin,i.Factura_Fecha_Inicio) = 1 
-			OR  SQLGROUP.entreFechasNoCuentaMinutosSegundo(f.Factura_Fecha_Inicio,f.Factura_Fecha_Fin,i.Factura_Fecha_Fin) = 1)) != 0)
-	BEGIN
-		RAISERROR('Ya hay una factura en esas fechas', 16,1);
-	END
-	ELSE
-	BEGIN
-		INSERT INTO Facturas
-		SELECT *
-		FROM inserted
-	END
-END
-GO
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
