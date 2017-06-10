@@ -969,3 +969,19 @@ BEGIN
 	ORDER BY SUM(r.Rendicion_Importe) DESC
 END
 GO
+
+
+IF(OBJECT_ID('SQLGROUP.SQLGROUP.consultaChoferConViajeMasLargo') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.SQLGROUP.consultaChoferConViajeMasLargo;
+GO
+
+
+CREATE PROCEDURE SQLGROUP.SQLGROUP.consultaChoferConViajeMasLargo @anio INT , @mesInicial INT, @mesFinal INT
+AS
+BEGIN
+	SELECT Chofer_Nombre,Chofer_Apellido,Viaje_Cant_Kilometros AS KilometrosRecorridos
+	FROM SQLGROUP.Choferes c INNER JOIN SQLGROUP.Viajes v ON c.Chofer_Id = v.Viaje_Chofer_Id
+	WHERE YEAR(v.Viaje_Fecha) = @anio AND MONTH(v.Viaje_Fecha) BETWEEN @mesInicial AND @mesFinal
+	ORDER BY v.Viaje_Cant_Kilometros DESC
+END
+GO
