@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UberFrba.Abm_Automovil;
 using UberFrba.ABM_Chofer;
+using UberFrba.Abm_Cliente;
 using UberFrba.Abm_Rol;
 using UberFrba.Abm_Turno;
 using UberFrba.Entidades;
@@ -51,6 +52,10 @@ namespace UberFrba
             else if (comboBoxFuncionalidades.Text.ToLower().Equals("abm de choferes"))
             {
                 new ABMChofer().Show();
+            }
+            else if (comboBoxFuncionalidades.Text.ToLower().Equals("abm de cliente"))
+            {
+                new ABMCliente().Show();
             }
             else if (comboBoxFuncionalidades.Text.ToLower().Equals("registrar viaje"))
             {

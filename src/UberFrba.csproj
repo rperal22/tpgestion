@@ -109,23 +109,11 @@
     <Compile Include="Abm Cliente\altaCliente.Designer.cs">
       <DependentUpon>altaCliente.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Cliente\formularioBajaCliente.cs">
+    <Compile Include="Abm Cliente\seleccionarCliente.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Cliente\formularioBajaCliente.Designer.cs">
-      <DependentUpon>formularioBajaCliente.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Cliente\listadoSeleccionModificar.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Cliente\listadoSeleccionModificar.Designer.cs">
-      <DependentUpon>listadoSeleccionModificar.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Cliente\modificacionCliente.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Cliente\modificacionCliente.Designer.cs">
-      <DependentUpon>modificacionCliente.cs</DependentUpon>
+    <Compile Include="Abm Cliente\seleccionarCliente.Designer.cs">
+      <DependentUpon>seleccionarCliente.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Rol\ABMRol.cs">
       <SubType>Form</SubType>
@@ -293,14 +281,8 @@
     <EmbeddedResource Include="Abm Cliente\altaCliente.resx">
       <DependentUpon>altaCliente.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Cliente\formularioBajaCliente.resx">
-      <DependentUpon>formularioBajaCliente.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Abm Cliente\listadoSeleccionModificar.resx">
-      <DependentUpon>listadoSeleccionModificar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Abm Cliente\modificacionCliente.resx">
-      <DependentUpon>modificacionCliente.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Cliente\seleccionarCliente.resx">
+      <DependentUpon>seleccionarCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Rol\ABMRol.resx">
       <DependentUpon>ABMRol.cs</DependentUpon>
