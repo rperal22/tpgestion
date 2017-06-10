@@ -987,8 +987,6 @@ END
 GO
 
 
-
-
 IF(OBJECT_ID('SQLGROUP.consultaClienteMayorConsumo') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.consultaClienteMayorConsumo;
 GO
@@ -1002,5 +1000,22 @@ BEGIN
 	WHERE YEAR(f.Factura_Fecha) = @anio AND MONTH(f.Factura_Fecha) BETWEEN @mesInicial AND @mesFinal
 	GROUP BY c.Cliente_Nombre, c.Cliente_Apellido
 	ORDER BY SUM(f.Factura_Total) DESC
+END
+GO
+
+
+IF(OBJECT_ID('SQLGROUP.consultaClienteMismoAuto') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.consultaClienteMismoAuto;
+GO
+
+
+CREATE PROCEDURE SQLGROUP.consultaClienteMismoAuto @anio INT , @mesInicial INT, @mesFinal INT
+AS
+BEGIN
+	SELECT TOP 5 Cliente_Nombre, Cliente_Apellido, COUNT(Viaje_Auto_Patente) AS CantVecesQueUsaElMismoAuto
+	FROM SQLGROUP.Clientes c INNER JOIN SQLGROUP.Viajes v ON c.Cliente_Id = v.Viaje_Cliente_Id
+	WHERE YEAR(v.Viaje_Fecha) = @anio AND MONTH(v.Viaje_Fecha) BETWEEN @mesInicial AND @mesFinal
+	GROUP BY c.Cliente_Nombre, c.Cliente_Apellido
+	ORDER BY COUNT(v.Viaje_Auto_Patente) DESC
 END
 GO
