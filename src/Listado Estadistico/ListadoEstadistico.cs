@@ -42,7 +42,7 @@ namespace UberFrba.Listado_Estadistico
         {
             this.setearParametrosDeBusqueda();
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand cmd = new SqlCommand("SELECT TOP 5 Chofer_Nombre, Chofer_Apellido,SUM(Rendicion_Importe) AS Recaudacion " +
+            SqlCommand cmd = new SqlCommand("SELECT TOP 5 Chofer_Nombre as 'Chofer Nombre', Chofer_Apellido as 'Chofer Apellido',SUM(Rendicion_Importe) AS 'Recaudacion' " +
 	                                        "FROM SQLGROUP.Choferes c JOIN SQLGROUP.Rendiciones r ON c.Chofer_Id = r.Rendicion_Chofer_Id " +
                                             "WHERE YEAR(r.Rendicion_Fecha) = @anio AND MONTH(r.Rendicion_Fecha) BETWEEN @mesInicial AND @mesFinal " +
 	                                        "GROUP BY c.Chofer_Nombre, c.Chofer_Apellido " +
@@ -62,7 +62,7 @@ namespace UberFrba.Listado_Estadistico
         {
             this.setearParametrosDeBusqueda();
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand cmd = new SqlCommand("SELECT TOP 5 Chofer_Nombre,Chofer_Apellido,Viaje_Cant_Kilometros AS KilometrosRecorridos " +
+            SqlCommand cmd = new SqlCommand("SELECT TOP 5 Chofer_Nombre as 'Chofer Nombre',Chofer_Apellido as 'Chofer Apellido',Viaje_Cant_Kilometros AS 'Kilometros Recorridos' " +
 	                                        " FROM SQLGROUP.Choferes c INNER JOIN SQLGROUP.Viajes v ON c.Chofer_Id = v.Viaje_Chofer_Id " +
 	                                        " WHERE YEAR(v.Viaje_Fecha) = @anio AND MONTH(v.Viaje_Fecha) BETWEEN @mesInicial AND @mesFinal " +
 	                                        " ORDER BY v.Viaje_Cant_Kilometros DESC", conexion);
@@ -81,7 +81,7 @@ namespace UberFrba.Listado_Estadistico
         {
             this.setearParametrosDeBusqueda();
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand cmd = new SqlCommand("	SELECT TOP 5 Cliente_Nombre ,Cliente_Apellido, SUM(Factura_Total) AS TotalConsumo " +
+            SqlCommand cmd = new SqlCommand("SELECT TOP 5 Cliente_Nombre as 'Cliente Nombre' ,Cliente_Apellido as 'Cliente Apellido', SUM(Factura_Total) AS 'Consumo total' " +
 	                                        " FROM SQLGROUP.Clientes c INNER JOIN SQLGROUP.Facturas f ON c.Cliente_Id = f.Factura_Cliente_Id " +
 	                                        " WHERE YEAR(f.Factura_Fecha) = @anio AND MONTH(f.Factura_Fecha) BETWEEN @mesInicial AND @mesFinal " +
 	                                        " GROUP BY c.Cliente_Nombre, c.Cliente_Apellido " +
@@ -101,10 +101,10 @@ namespace UberFrba.Listado_Estadistico
         {
             this.setearParametrosDeBusqueda();
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand cmd = new SqlCommand("SELECT TOP 5 Cliente_Nombre, Cliente_Apellido, COUNT(Viaje_Auto_Patente) AS CantVecesQueUsaElMismoAuto " +
+            SqlCommand cmd = new SqlCommand("SELECT TOP 5 Cliente_Nombre as 'Cliente Nombre', Cliente_Apellido as 'Cliente Apellido', Viaje_Auto_Patente as  'Automovil' ,COUNT(Viaje_Auto_Patente) AS 'Cantidad de viajes' " +
 	                                        " FROM SQLGROUP.Clientes c INNER JOIN SQLGROUP.Viajes v ON c.Cliente_Id = v.Viaje_Cliente_Id " +
 	                                        " WHERE YEAR(v.Viaje_Fecha) = @anio AND MONTH(v.Viaje_Fecha) BETWEEN @mesInicial AND @mesFinal " +
-	                                        " GROUP BY c.Cliente_Nombre, c.Cliente_Apellido " +
+                                            " GROUP BY c.Cliente_Nombre, c.Cliente_Apellido, v.Viaje_Auto_Patente " +
 	                                        " ORDER BY COUNT(v.Viaje_Auto_Patente) DESC", conexion);
             cmd.Parameters.Add(new SqlParameter("@anio", anio));
             cmd.Parameters.Add(new SqlParameter("@mesInicial", mesInicial));
