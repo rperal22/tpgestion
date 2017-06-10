@@ -13,6 +13,7 @@ using UberFrba.Abm_Rol;
 using UberFrba.Abm_Turno;
 using UberFrba.Entidades;
 using UberFrba.Facturacion;
+using UberFrba.Listado_Estadistico;
 using UberFrba.Registro_Viajes;
 using UberFrba.Rendicion_Viajes;
 
@@ -62,6 +63,10 @@ namespace UberFrba
             else if (comboBoxFuncionalidades.Text.ToLower().Equals("rendir viajes"))
             {
                 new rendicionViaje().Show();
+            }
+            else if (comboBoxFuncionalidades.Text.ToLower().Equals("ver estadisticas"))
+            {
+                new ListadoEstadistico().Show();
             }
         }
 
