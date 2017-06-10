@@ -971,17 +971,36 @@ END
 GO
 
 
-IF(OBJECT_ID('SQLGROUP.SQLGROUP.consultaChoferConViajeMasLargo') IS NOT NULL)
-	DROP PROCEDURE SQLGROUP.SQLGROUP.consultaChoferConViajeMasLargo;
+IF(OBJECT_ID('SQLGROUP.consultaChoferConViajeMasLargo') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.consultaChoferConViajeMasLargo;
 GO
 
 
-CREATE PROCEDURE SQLGROUP.SQLGROUP.consultaChoferConViajeMasLargo @anio INT , @mesInicial INT, @mesFinal INT
+CREATE PROCEDURE SQLGROUP.consultaChoferConViajeMasLargo @anio INT , @mesInicial INT, @mesFinal INT
 AS
 BEGIN
-	SELECT Chofer_Nombre,Chofer_Apellido,Viaje_Cant_Kilometros AS KilometrosRecorridos
+	SELECT TOP 5 Chofer_Nombre,Chofer_Apellido,Viaje_Cant_Kilometros AS KilometrosRecorridos
 	FROM SQLGROUP.Choferes c INNER JOIN SQLGROUP.Viajes v ON c.Chofer_Id = v.Viaje_Chofer_Id
 	WHERE YEAR(v.Viaje_Fecha) = @anio AND MONTH(v.Viaje_Fecha) BETWEEN @mesInicial AND @mesFinal
 	ORDER BY v.Viaje_Cant_Kilometros DESC
+END
+GO
+
+
+
+
+IF(OBJECT_ID('SQLGROUP.consultaClienteMayorConsumo') IS NOT NULL)
+	DROP PROCEDURE SQLGROUP.consultaClienteMayorConsumo;
+GO
+
+
+CREATE PROCEDURE SQLGROUP.consultaClienteMayorConsumo @anio INT , @mesInicial INT, @mesFinal INT
+AS
+BEGIN
+	SELECT TOP 5 Cliente_Nombre ,Cliente_Apellido, SUM(Factura_Total) AS TotalConsumo
+	FROM SQLGROUP.Clientes c INNER JOIN SQLGROUP.Facturas f ON c.Cliente_Id = f.Factura_Cliente_Id
+	WHERE YEAR(f.Factura_Fecha) = @anio AND MONTH(f.Factura_Fecha) BETWEEN @mesInicial AND @mesFinal
+	GROUP BY c.Cliente_Nombre, c.Cliente_Apellido
+	ORDER BY SUM(f.Factura_Total) DESC
 END
 GO
