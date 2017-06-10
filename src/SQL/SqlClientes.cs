@@ -40,7 +40,7 @@ namespace UberFrba.SQL
         public void actualizarCliente(Cliente clienteNuevo, int clienteId)
         {
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand query = new SqlCommand("UPDATE SQLGROUP.Clientes SET Cliente_Nombre = @nombre, Cliente_Apellido = @apellido, Cliente_Direccion = @direccion, Cliente_Dni = @dni, Cliente_Telefono = @telefono, Cliente_Mail = @mail, Cliente_Fecha_Nac = @nacimiento, Cliente_Estado = @estado", conexion);
+            SqlCommand query = new SqlCommand("UPDATE SQLGROUP.Clientes SET Cliente_Nombre = @nombre, Cliente_Apellido = @apellido, Cliente_Direccion = @direccion, Cliente_Dni = @dni, Cliente_Telefono = @telefono, Cliente_Mail = @mail, Cliente_Fecha_Nac = @nacimiento, Cliente_Estado = @estado WHERE Cliente_Id = @id", conexion);
             query.Parameters.AddWithValue("@nombre", clienteNuevo.nombre);
             query.Parameters.AddWithValue("@apellido", clienteNuevo.apellido);
             query.Parameters.AddWithValue("@direccion", clienteNuevo.direccion);
@@ -49,6 +49,7 @@ namespace UberFrba.SQL
             query.Parameters.AddWithValue("@mail", clienteNuevo.mail);
             query.Parameters.AddWithValue("@nacimiento", clienteNuevo.fechaNacimiento);
             query.Parameters.AddWithValue("@estado", clienteNuevo.estado);
+            query.Parameters.AddWithValue("@id", clienteId);
             try
             {
                 conexion.Open();

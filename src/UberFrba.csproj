@@ -109,6 +109,12 @@
     <Compile Include="Abm Cliente\altaCliente.Designer.cs">
       <DependentUpon>altaCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Cliente\modifCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Cliente\modifCliente.Designer.cs">
+      <DependentUpon>modifCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Cliente\seleccionarCliente.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -280,6 +286,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Cliente\altaCliente.resx">
       <DependentUpon>altaCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Cliente\modifCliente.resx">
+      <DependentUpon>modifCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Cliente\seleccionarCliente.resx">
       <DependentUpon>seleccionarCliente.cs</DependentUpon>

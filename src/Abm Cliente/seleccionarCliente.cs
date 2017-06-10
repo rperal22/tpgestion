@@ -70,7 +70,7 @@ namespace UberFrba.Abm_Cliente
         private void seleccionChofer(object sender, EventArgs e)
         {
             cli = this.dataGridView1.SelectedRows[0].DataBoundItem as Cliente;
-            this.DialogResult = DialogResult.OK;
+            new modifCliente(cli).Show();
             this.Close();
         }
     }

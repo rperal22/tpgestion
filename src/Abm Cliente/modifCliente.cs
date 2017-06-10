@@ -13,12 +13,23 @@ using UberFrba.SQL;
 
 namespace UberFrba.Abm_Cliente
 {
-    public partial class altaCliente : Form
+    public partial class modifCliente : Form
     {
-        public altaCliente()
+        private Cliente clienteAModificar;
+        public modifCliente(Cliente clienteAModificar)
         {
             InitializeComponent();
             this.comboBoxEstado.SelectedIndex = 0;
+            this.clienteAModificar = clienteAModificar;
+            this.textBoxNombre.Text = clienteAModificar.nombre;
+            this.textBoxApellido.Text = this.clienteAModificar.apellido;
+            this.textBoxDni.Text = this.clienteAModificar.dni.ToString();
+            this.textBoxDireccion.Text = this.clienteAModificar.direccion; 
+            this.textBoxTel.Text = this.clienteAModificar.telefono.ToString();
+            this.textBoxMail.Text = this.clienteAModificar.mail;
+            this.dateTimePickerNacimiento.Value = this.clienteAModificar.fechaNacimiento;
+            this.comboBoxEstado.Text = this.clienteAModificar.estado;
+            
         }
 
         private void buttonGuardar_Click(object sender, EventArgs e)
@@ -26,8 +37,8 @@ namespace UberFrba.Abm_Cliente
             try
             {
                 this.validar();
-                new SqlClientes().guardarCliente(new Cliente(this.textBoxNombre.Text, this.textBoxApellido.Text, Int32.Parse(this.textBoxDni.Text), this.textBoxDireccion.Text, Int32.Parse(this.textBoxTel.Text), this.textBoxMail.Text, this.dateTimePickerNacimiento.Value, this.comboBoxEstado.Text));
-                MessageBox.Show("Cliente guardado con exito");
+                new SqlClientes().actualizarCliente(new Cliente(this.textBoxNombre.Text, this.textBoxApellido.Text, Int32.Parse(this.textBoxDni.Text), this.textBoxDireccion.Text, Int32.Parse(this.textBoxTel.Text), this.textBoxMail.Text, this.dateTimePickerNacimiento.Value, this.comboBoxEstado.Text),this.clienteAModificar.id);
+                MessageBox.Show("Cliente modificado con exito");
             }
             catch (FormatException ex)
             {
@@ -47,6 +58,7 @@ namespace UberFrba.Abm_Cliente
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
+            new seleccionarCliente().Show();
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
