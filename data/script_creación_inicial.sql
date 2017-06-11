@@ -627,12 +627,6 @@ BEGIN
 	VALUES ('ABM de Choferes','Administrador')
 
 	INSERT INTO SQLGROUP.Funcionalidades (Func_Nombre)
-	VALUES ('ABM de Clientes');
-
-	INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Func_Nombre,RF_Rol_Nombre)
-	VALUES ('ABM de Clientes','Administrador')
-
-	INSERT INTO SQLGROUP.Funcionalidades (Func_Nombre)
 	VALUES ('Registrar Viaje');
 
 	INSERT INTO SQLGROUP.Rol_Funcionalidad (RF_Func_Nombre,RF_Rol_Nombre)
