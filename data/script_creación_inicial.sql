@@ -46,7 +46,7 @@ BEGIN
 		DROP TABLE SQLGROUP.Clientes
 
 	
-	 
+	--Sentencia crea tabla administradores 
 	CREATE TABLE SQLGROUP.Administradores (
 		Admin_Id INTEGER IDENTITY(1,1) PRIMARY KEY,
 		Admin_Dni NUMERIC(18,0) UNIQUE,
@@ -57,6 +57,7 @@ BEGIN
 		Admin_Mail VARCHAR(255) NOT NULL
 	);
 
+	--Sentencia crea tabla choferes
 	CREATE TABLE SQLGROUP.Choferes (
 		Chofer_Id INTEGER IDENTITY(1,1) PRIMARY KEY,
 		Chofer_Nombre VARCHAR(255) NOT NULL,
@@ -69,6 +70,7 @@ BEGIN
 		Chofer_Estado VARCHAR(20) NOT NULL DEFAULT 'Habilitado'
 	);
 
+	--Sentencia crea tabla clientes
 	CREATE TABLE SQLGROUP.Clientes (
 		Cliente_Id INTEGER IDENTITY(1,1) PRIMARY KEY,
 		Cliente_Dni NUMERIC(18,0) NOT NULL UNIQUE,
@@ -82,7 +84,7 @@ BEGIN
 		Cliente_Codigo_Postal VARCHAR(20) NOT NULL DEFAULT 'Desconocido'
 	);
 
-
+	--Sentencia crea tabla automoviles
 	CREATE TABLE SQLGROUP.Automoviles (
 		Auto_Id INTEGER IDENTITY(1,1) PRIMARY KEY,
 		Auto_Patente VARCHAR(10) NOT NULL,
@@ -94,6 +96,7 @@ BEGIN
 		Auto_Chofer INTEGER
 	);
 
+	--Sentencia crea tabla viajes
 	CREATE TABLE SQLGROUP.Viajes (
 		Viaje_Id INTEGER IDENTITY(1,1) PRIMARY KEY,
 		Viaje_Cant_Kilometros NUMERIC(18,2) NOT NULL,
@@ -106,6 +109,7 @@ BEGIN
 		Viaje_Cliente_Id INTEGER NOT NULL
 	);
 
+	--Sentencia crea tabla rendiciones
 	CREATE TABLE SQLGROUP.Rendiciones (
 		Rendicion_Nro NUMERIC(18,0) PRIMARY KEY,
 		Rendicion_Fecha DATETIME NOT NULL,
@@ -114,6 +118,7 @@ BEGIN
 		Rendicion_Turno_Id INTEGER NOT NULL
 	);
 
+	--Sentencia crea tabla turno
 	CREATE TABLE SQLGROUP.Turno (
 		Turno_Id INTEGER IDENTITY(1,1) PRIMARY KEY,
 		Turno_Hora_Inicio NUMERIC(18,0),
@@ -124,6 +129,7 @@ BEGIN
 		Turno_Estado VARCHAR(20) DEFAULT 'Habilitado'
 	);
 
+	--Sentencia crea tabla facturas
 	CREATE TABLE SQLGROUP.Facturas (
 		Factura_Nro NUMERIC(18,0) PRIMARY KEY,
 		Factura_Fecha_Inicio DATETIME NOT NULL,
@@ -134,17 +140,20 @@ BEGIN
 		Factura_Cliente_Id INTEGER NOT NULL
 	);
 
+	--Sentencia crea tabla roles
 	CREATE TABLE SQLGROUP.Roles (
 		Rol_Nombre VARCHAR(30) PRIMARY KEY,
 		Rol_Descripcion VARCHAR(255) NOT NULL,
 		Rol_Estado VARCHAR(20) NOT NULL DEFAULT 'Habilitado'
 	);
 
+	--Sentencia crea tabla funcionalidades
 	CREATE TABLE SQLGROUP.Funcionalidades (
 		Func_Nombre VARCHAR(30) PRIMARY KEY,
 		Func_Descripcion VARCHAR(255) DEFAULT 'No hay descripcion'
 	);
 
+	--Sentencia crea tabla usuarios
 	CREATE TABLE SQLGROUP.Usuarios (
 		Usuario_Id VARCHAR(255) PRIMARY KEY,
 		Usuario_Password VARCHAR(64) NOT NULL,
@@ -153,24 +162,28 @@ BEGIN
 		Usuario_Estado VARCHAR(20) NOT NULL DEFAULT 'Habilitado'
 	);
 
+	--Sentencia crea tabla rol_funcionalidad
 	CREATE TABLE SQLGROUP.Rol_Funcionalidad(
 		RF_Rol_Nombre VARCHAR(30),
 		RF_Func_Nombre VARCHAR(30),
 		CONSTRAINT pk_rolxfuncionalidad PRIMARY KEY(RF_Rol_Nombre,RF_Func_Nombre)
 	);
 
+	--Sentencia crea tabla usuarios_rol
 	CREATE TABLE SQLGROUP.Usuarios_Rol (
 		UR_Rol_Nombre VARCHAR(30),
 		UR_Usuario_Id VARCHAR(255),
 		CONSTRAINT pk_usuarioxrol PRIMARY KEY(UR_Rol_Nombre,UR_Usuario_Id)
 	);
 
+	--Sentencia crea tabla factura_viajes
 	CREATE TABLE SQLGROUP.Factura_Viaje (
 		Fv_Viaje_Id INTEGER,
 		Fv_Factura_Nro NUMERIC(18,0),
 		CONSTRAINT pk_facturaxviaje PRIMARY KEY(Fv_Viaje_Id,Fv_Factura_Nro) 
 	);
 
+	--Sentencia crea tabla rendicion_viaje
 	CREATE TABLE SQLGROUP.Rendicion_Viaje (
 		Rv_Viaje_Id INTEGER,
 		Rv_Rendicion_Nro NUMERIC(18,0),
@@ -178,13 +191,14 @@ BEGIN
 		CONSTRAINT pk_rendicionxviaje PRIMARY KEY(Rv_Viaje_Id,Rv_Rendicion_Nro) 
 	);
 
+	--Sentencia crea tabla auto_turno
 	CREATE TABLE SQLGROUP.Auto_Turno (
 		AT_Auto_Id INTEGER,
 		AT_Turno_Id INTEGER,
 		CONSTRAINT pk_autoxturno PRIMARY KEY (AT_Auto_Id,AT_Turno_ID)
 	);
 
-	/*----Aca crear foreign keys------*/
+	/*----Aca creamos foreign keys------*/
 	ALTER TABLE SQLGROUP.Automoviles ADD
 	CONSTRAINT fk_automovil_chofer FOREIGN KEY (Auto_Chofer) REFERENCES SQLGROUP.Choferes(Chofer_Id)
 	ON DELETE NO ACTION ON UPDATE CASCADE;
@@ -243,7 +257,7 @@ BEGIN
 END
 GO
 
---Ejecuto procedure que crea las tablas
+--Ejecuto procedure creado anteriormente que crea las tablas
 BEGIN
 	EXEC SQLGROUP.crear_tablas;
 END
@@ -320,6 +334,7 @@ IF (OBJECT_ID('SQLGROUP.integridadUsuarios') IS NOT NULL)
 GO
 
 /*Trigger que cifra la clave cada vez q se inserta un nuevo usuario
+Y ademas se fija que el dni exista ya sea en tablas clientes o choferes o administradores
 Utiliza function SQLGROUP.cifrado_claves*/
 CREATE TRIGGER SQLGROUP.integridadUsuarios
 ON SQLGROUP.Usuarios INSTEAD OF INSERT
@@ -346,7 +361,7 @@ GO
 IF (OBJECT_ID('SQLGROUP.controlarAutosHabilitadosxChofer') IS NOT NULL)
 	DROP TRIGGER SQLGROUP.controlarAutosHabilitadosxChofer;
 GO
-/*Este trigger controla que un chofer solo pueda tener un auto habilitado*/
+/*Este trigger controla que un chofer solo pueda tener un auto habilitado o si un auto se inserta con patente duplicada*/
 CREATE TRIGGER SQLGROUP.controlarAutosHabilitadosxChofer
 ON SQLGROUP.Automoviles AFTER INSERT , UPDATE
 AS 
@@ -430,8 +445,7 @@ GO
 IF(OBJECT_ID('SQLGROUP.integridadRendiciones') IS NOT NULL)
 	DROP TRIGGER SQLGROUP.integridadRendiciones
 GO
-/*Esto se ocupa de que no se guarden facturas con fechas superpuestas
-o iguales*/
+/*Esto se ocupa de que no se guarden rendiciones con mismo dia*/
 CREATE TRIGGER SQLGROUP.integridadRendiciones 
 ON SQLGROUP.Rendiciones INSTEAD OF INSERT
 AS
@@ -439,7 +453,7 @@ BEGIN
 	IF((SELECT COUNT(*)
 		FROM inserted as i, SQLGROUP.Rendiciones as r
 		WHERE i.Rendicion_Chofer_Id = r.Rendicion_Chofer_Id
-			AND i.Rendicion_Fecha = r.Rendicion_Fecha)!=0)
+			AND YEAR(i.Rendicion_Fecha) = YEAR(r.Rendicion_Fecha) AND MONTH(i.Rendicion_Fecha) = MONTH(r.Rendicion_Fecha) AND DAY(i.Rendicion_Fecha) = DAY(r.Rendicion_Fecha))!=0)
 	BEGIN
 		ROLLBACK;
 		RAISERROR('El chofer ya realizo la rendicion diaria', 16,1);
@@ -504,7 +518,7 @@ GO
 IF(OBJECT_ID('SQLGROUP.deshabilitarUsuario') IS NOT NULL)
 	DROP TRIGGER SQLGROUP.deshabilitarUsuario
 GO
-/*Borra el rol deshabilitado de usuarios*/
+/*Deshabilitael usuario al llegar a los 3 intentos*/
 CREATE TRIGGER SQLGROUP.deshabilitarUsuario 
 ON SQLGROUP.Usuarios AFTER UPDATE
 AS
@@ -520,6 +534,7 @@ IF(OBJECT_ID('SQLGROUP.migrar_choferes') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_choferes
 GO
 
+--Este procedure se encarga de migrar los choferes
 CREATE PROCEDURE SQLGROUP.migrar_choferes
 AS
 BEGIN
@@ -534,6 +549,7 @@ IF(OBJECT_ID('SQLGROUP.migrar_automoviles') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_automoviles
 GO
 
+--Este procedure se encarga de migrar los automoviles
 CREATE PROCEDURE SQLGROUP.migrar_automoviles
 AS
 BEGIN
@@ -548,6 +564,7 @@ IF(OBJECT_ID('SQLGROUP.migrar_clientes') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_clientes
 GO
 
+--Este procedure se encarga de migrar los clientes
 CREATE PROCEDURE SQLGROUP.migrar_clientes
 AS
 BEGIN
@@ -562,6 +579,7 @@ IF(OBJECT_ID('SQLGROUP.crear_administradores') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.crear_administradores
 GO
 
+--Este procedure se encarga de crear el administrador admin que pide el tp
 CREATE PROCEDURE SQLGROUP.crear_administradores
 AS
 BEGIN
@@ -574,6 +592,7 @@ IF(OBJECT_ID('SQLGROUP.crear_roles') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.crear_roles
 GO
 
+--Este procedure se encarga de crear los reles que pide el tp
 CREATE PROCEDURE SQLGROUP.crear_roles
 AS
 BEGIN
@@ -590,6 +609,7 @@ IF(OBJECT_ID('SQLGROUP.crear_funciones') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.crear_funciones
 GO
 
+--Este procedure se encarga de crear funcionalidades del tp
 CREATE PROCEDURE SQLGROUP.crear_funciones
 AS
 BEGIN
@@ -656,6 +676,10 @@ IF(OBJECT_ID('SQLGROUP.crear_usuarios') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.crear_usuarios
 GO
 
+/*Este procedure se encarga de crear usuarios desde clientes , choferes y administradores
+Usuario: NOMBRE_Apellido
+Pass: NOMBRE
+*/
 CREATE PROCEDURE SQLGROUP.crear_usuarios
 AS
 BEGIN
@@ -680,6 +704,7 @@ IF(OBJECT_ID('SQLGROUP.migrar_rolesxusuario') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_rolesxusuario
 GO
 
+--Este procedure se encarga de asignar roles a los usuarios anteriormente creados
 CREATE PROCEDURE SQLGROUP.migrar_rolesxusuario
 AS
 BEGIN
@@ -707,6 +732,7 @@ IF(OBJECT_ID('SQLGROUP.migrar_turnos') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_turnos
 GO
 
+--Este procedure se encarga de migrar turnos
 CREATE PROCEDURE SQLGROUP.migrar_turnos
 AS
 BEGIN
@@ -721,6 +747,7 @@ IF (OBJECT_ID('SQLGROUP.migrar_autoxturno') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_autoxturno
 GO
 
+--Este procedure se encarga de migrar los turnos de los autos
 CREATE PROCEDURE SQLGROUP.migrar_autoxturno
 AS
 BEGIN
@@ -736,6 +763,11 @@ IF (OBJECT_ID('SQLGROUP.migrar_viajes') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_viajes
 GO
 
+/*Este procedure se encarga de migrar viajes
+Nosotros creamos hora de inicio y hora de fin ya que esta informacion no la aportaba la tabla maestra
+Le sumamos un minuto a cada viaje y los subdividimos por hora.
+Testeamos que en una hora no haya mas de 60 viajes en la tabla maestra por hora asi no tira error 
+*/
 CREATE PROCEDURE SQLGROUP.migrar_viajes
 AS
 BEGIN
@@ -782,6 +814,7 @@ IF (OBJECT_ID('SQLGROUP.migrar_factura') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_factura
 GO
 
+--Este procedure se encarga de migrar facturas
 CREATE PROCEDURE SQLGROUP.migrar_factura 
 AS
 BEGIN
@@ -820,6 +853,7 @@ IF (OBJECT_ID('SQLGROUP.migrar_viajes_factura') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_viajes_factura
 GO
 
+--Este procedure se encarga de migrar los viajes de cada factura
 CREATE PROCEDURE SQLGROUP.migrar_viajes_factura 
 AS
 BEGIN
@@ -834,6 +868,7 @@ IF (OBJECT_ID('SQLGROUP.migrar_rendiciones') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_rendiciones
 GO
 
+--Este procedure se encarga de migrar rendiciones
 CREATE PROCEDURE SQLGROUP.migrar_rendiciones 
 AS
 BEGIN
@@ -849,6 +884,7 @@ IF (OBJECT_ID('SQLGROUP.migrar_rendicionesxviajes') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.migrar_rendicionesxviajes
 GO
 
+--Este procedure se encarga de migrar los viajes de las rendiciones
 CREATE PROCEDURE SQLGROUP.migrar_rendicionesxviajes
 AS
 BEGIN
@@ -890,6 +926,7 @@ If (OBJECT_ID('SQLGROUP.login') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.login
 GO
 
+--Este procedure se encarga de comprobar la password, el estado del usuario y devuelve el resultado
 CREATE PROCEDURE SQLGROUP.login @usuario varchar(20), @password varchar(64), @resultado int OUTPUT
 AS
 BEGIN
@@ -926,6 +963,7 @@ IF(OBJECT_ID('SQLGROUP.crearUsuario') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.crearUsuario
 GO
 
+--Este procedure se encarga de crear un usuario y es llamado desde la aplicacion
 CREATE PROCEDURE SQLGROUP.crearUsuario @username varchar(20), @password varchar(64), @dni int ,@flagRolChofer int, @flagRolCliente int, @resultado int OUTPUT
 AS
 BEGIN
@@ -956,6 +994,8 @@ IF(OBJECT_ID('SQLGROUP.crearTurno') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.crearTurno
 GO
 
+--Este procedure se encarga de crear un turno y es llamado desde la aplicacion
+--Tambien se encarga de que los turnos habilitados no se superpongan
 CREATE PROCEDURE SQLGROUP.crearTurno @t_hi NUMERIC(18,0), @t_hf NUMERIC(18,0), @t_desc VARCHAR(255), @t_vk NUMERIC(18,2), @t_pb NUMERIC(18,2), @t_estado VARCHAR(20)
 AS
 BEGIN
@@ -981,6 +1021,8 @@ IF(OBJECT_ID('SQLGROUP.updatearTurno') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.updatearTurno
 GO
 
+--Este procedure se encarga de actualizar el turno y es llamado desde la app
+--Tambien se encarga de que los turnos habilitados no se superpongan
 CREATE PROCEDURE SQLGROUP.updatearTurno @t_id INT, @t_hi NUMERIC(18,0), @t_hf NUMERIC(18,0), @t_desc VARCHAR(255), @t_vk NUMERIC(18,2), @t_pb NUMERIC(18,2), @t_estado VARCHAR(20)
 AS
 BEGIN
@@ -1007,6 +1049,7 @@ IF(OBJECT_ID('SQLGROUP.facturar') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.facturar;
 GO
 
+--Este procedure se encarga de facturar y es llamado desde la app
 CREATE PROCEDURE SQLGROUP.facturar @fechaInicio DATETIME, @fechaFin DATETIME, @clienteId INT, @fechaFacturar DATETIME
 AS
 BEGIN
@@ -1032,6 +1075,7 @@ IF(OBJECT_ID('SQLGROUP.rendirViajes') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.rendirViajes;
 GO
 
+--Este procedure se encarga de rendir los viajes de los choferes y es llamado desde la app
 CREATE PROCEDURE SQLGROUP.rendirViajes @fecha DATETIME, @importe NUMERIC(18,2), @choferId INT, @turnoId INT, @porcentaje NUMERIC(18,2)
 AS
 BEGIN
