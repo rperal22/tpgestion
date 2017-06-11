@@ -22,7 +22,7 @@ namespace UberFrba.SQL
             newFactura.Parameters.AddWithValue("@fechaInicio", fechaInicio);
             newFactura.Parameters.AddWithValue("@fechaFin", fechaFin);
             newFactura.Parameters.AddWithValue("@clienteId", cliente.id);
-            newFactura.Parameters.AddWithValue("@fechaFacturar", fechaInicio);
+            newFactura.Parameters.AddWithValue("@fechaFacturar", Program.dia);
             try
             {
                 conexion.Open();
