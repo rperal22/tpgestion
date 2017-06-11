@@ -118,7 +118,7 @@ namespace UberFrba.SQL
             conexion.Open();
             SqlDataReader reader = query.ExecuteReader();
             reader.Read();
-            auto = new Automovil(reader.GetInt32(7),reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3), new SqlAutomoviles().getTurnosAuto(reader.GetString(0)), reader.GetString(4), reader.GetString(5), reader.GetString(6));
+            auto = new Automovil(reader.GetInt32(7),reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3), new SqlAutomoviles().getTurnosAuto(reader.GetString(0),"Habilitado"), reader.GetString(4), reader.GetString(5), reader.GetString(6));
             conexion.Close();
             return auto;
         }

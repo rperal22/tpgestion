@@ -25,7 +25,8 @@ namespace UberFrba.Abm_Automovil
             this.comboBox1.DisplayMember = "desc";
             this.comboBox1.ValueMember = "this";
             this.comboBox1.DataSource = this.turnos;
-            this.auto.turnos = new SqlAutomoviles().getTurnosAuto(this.auto.patente);
+            this.auto.turnos = new SqlAutomoviles().getTurnosAuto(this.auto.patente,"Habilitado");
+            this.auto.turnos.Concat(new SqlAutomoviles().getTurnosAuto(this.auto.patente, "Deshabilitado"));
             this.actualizarTextBox();
             this.textBoxChofer.Text = this.auto.chofer.ToString();
             this.textBoxLicencia.Text = this.auto.licencia;

@@ -56,9 +56,10 @@ namespace UberFrba.Facturacion
             busqueda = busqueda.Trim();
             if (busqueda.Equals(""))
             {
-                MessageBox.Show("Ningun campo completado");
+                this.buttonLimpiar_Click(null, null);
                 return;
             }
+            busqueda += " AND Cliente_Estado = 'Habilitado'";
             this.dataGridView1.DataSource = new BindingSource(new BindingList<Cliente>(new SqlClientes().getClientes(busqueda)), null);
         }
 

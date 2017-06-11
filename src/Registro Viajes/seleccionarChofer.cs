@@ -56,9 +56,10 @@ namespace UberFrba.Registro_Viajes
             busqueda = busqueda.Trim();
             if (busqueda.Equals(""))
             {
-                MessageBox.Show("Ningun campo completado");
+                this.buttonLimpiar_Click(null, null);
                 return;
             }
+            busqueda += " AND Chofer_Estado = 'Habilitado'";
             this.dataGridView1.DataSource = new BindingSource(new BindingList<Chofer>(new SqlChoferes().getChoferes(busqueda)), null);
         }
 
