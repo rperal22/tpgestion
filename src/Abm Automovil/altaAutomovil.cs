@@ -26,6 +26,7 @@ namespace UberFrba.Abm_Automovil
             this.comboBox1.ValueMember = "this";
             this.comboBox1.DataSource = this.turnos;
             this.comboBoxEstado.SelectedIndex = 0;
+            this.comboBoxMarca.Items.AddRange(new SqlAutomoviles().getMarcas().ToArray());
         }
 
         private void buttonRemover_Click(object sender, EventArgs e)
@@ -51,7 +52,7 @@ namespace UberFrba.Abm_Automovil
             try
             {
                 this.validar();
-                Automovil autoNuevo = new Automovil(-1,this.textBoxPatente.Text, this.textBoxMarca.Text, this.textBoxModelo.Text, Int32.Parse(this.textBoxChofer.Text), this.turnosElegidos, this.textBoxLicencia.Text, this.textBoxRodado.Text, this.comboBoxEstado.Text);
+                Automovil autoNuevo = new Automovil(-1,this.textBoxPatente.Text, this.comboBoxMarca.Text, this.textBoxModelo.Text, Int32.Parse(this.textBoxChofer.Text), this.turnosElegidos, this.textBoxLicencia.Text, this.textBoxRodado.Text, this.comboBoxEstado.Text);
                 new SqlAutomoviles().guardarAutomovil(autoNuevo);
             }
             catch(FormatException ex) {
@@ -63,7 +64,8 @@ namespace UberFrba.Abm_Automovil
 
         private void validar()
         {
-            if(!(this.textBoxPatente.Text.Length > 0 && this.textBoxMarca.Text.Length > 0 && this.textBoxModelo.Text.Length > 0)) {
+            if (!(this.textBoxPatente.Text.Length > 0 && this.comboBoxMarca.Text.Length > 0 && this.textBoxModelo.Text.Length > 0))
+            {
                 MessageBox.Show("Completar los campos obligatorios");
                 throw new NotImplementedException();
             }

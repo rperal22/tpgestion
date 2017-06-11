@@ -13,7 +13,7 @@ namespace UberFrba.SQL
         public void guardarCliente(Cliente cliente)
         {
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand query = new SqlCommand("INSERT INTO SQLGROUP.Clientes (Cliente_Nombre, Cliente_Apellido, Cliente_Direccion, Cliente_Dni, Cliente_Telefono, Cliente_Mail, Cliente_Fecha_Nac, Cliente_Estado) " +
+            SqlCommand query = new SqlCommand("INSERT INTO SQLGROUP.Clientes (Cliente_Nombre, Cliente_Apellido, Cliente_Direccion, Cliente_Dni, Cliente_Telefono, Cliente_Mail, Cliente_Fecha_Nac, Cliente_Estado,Cliente_Codigo_Postal) " +
                                                 " VALUES(@nombre,@apellido,@direccion,@dni,@telefono,@mail,@nacimiento,@estado,@codigopostal)", conexion);
             query.Parameters.AddWithValue("@nombre",cliente.nombre);
             query.Parameters.AddWithValue("@apellido", cliente.apellido);
@@ -41,7 +41,7 @@ namespace UberFrba.SQL
         public void actualizarCliente(Cliente clienteNuevo, int clienteId)
         {
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand query = new SqlCommand("UPDATE SQLGROUP.Clientes SET Cliente_Nombre = @nombre, Cliente_Apellido = @apellido, Cliente_Direccion = @direccion, Cliente_Dni = @dni, Cliente_Telefono = @telefono, Cliente_Mail = @mail, Cliente_Fecha_Nac = @nacimiento, Cliente_Estado = @estado, Cliente_Codigo_Postal = @codpostal WHERE Cliente_Id = @id", conexion);
+            SqlCommand query = new SqlCommand("UPDATE SQLGROUP.Clientes SET Cliente_Nombre = @nombre, Cliente_Apellido = @apellido, Cliente_Direccion = @direccion, Cliente_Dni = @dni, Cliente_Telefono = @telefono, Cliente_Mail = @mail, Cliente_Fecha_Nac = @nacimiento, Cliente_Estado = @estado, Cliente_Codigo_Postal = @codigopostal WHERE Cliente_Id = @id", conexion);
             query.Parameters.AddWithValue("@nombre", clienteNuevo.nombre);
             query.Parameters.AddWithValue("@apellido", clienteNuevo.apellido);
             query.Parameters.AddWithValue("@direccion", clienteNuevo.direccion);

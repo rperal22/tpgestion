@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonResetMarcas = new System.Windows.Forms.Button();
+            this.comboBoxMarcas = new System.Windows.Forms.ComboBox();
             this.textBoxChofer = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxPatente = new System.Windows.Forms.TextBox();
@@ -40,18 +41,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.dataGridViewAutos = new System.Windows.Forms.DataGridView();
-            this.patenteDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.marcaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.modeloDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.licenciaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rodadoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.choferDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.automovilBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.comboBoxMarcas = new System.Windows.Forms.ComboBox();
-            this.buttonResetMarcas = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAutos)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.automovilBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -73,6 +64,25 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filtro de Búsqueda";
+            // 
+            // buttonResetMarcas
+            // 
+            this.buttonResetMarcas.Location = new System.Drawing.Point(530, 57);
+            this.buttonResetMarcas.Name = "buttonResetMarcas";
+            this.buttonResetMarcas.Size = new System.Drawing.Size(256, 29);
+            this.buttonResetMarcas.TabIndex = 8;
+            this.buttonResetMarcas.Text = "Cualquier Marca";
+            this.buttonResetMarcas.UseVisualStyleBackColor = true;
+            this.buttonResetMarcas.Click += new System.EventHandler(this.buttonResetMarcas_Click);
+            // 
+            // comboBoxMarcas
+            // 
+            this.comboBoxMarcas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxMarcas.FormattingEnabled = true;
+            this.comboBoxMarcas.Location = new System.Drawing.Point(333, 59);
+            this.comboBoxMarcas.Name = "comboBoxMarcas";
+            this.comboBoxMarcas.Size = new System.Drawing.Size(182, 24);
+            this.comboBoxMarcas.TabIndex = 7;
             // 
             // textBoxChofer
             // 
@@ -166,17 +176,8 @@
             this.dataGridViewAutos.AllowUserToDeleteRows = false;
             this.dataGridViewAutos.AllowUserToResizeColumns = false;
             this.dataGridViewAutos.AllowUserToResizeRows = false;
-            this.dataGridViewAutos.AutoGenerateColumns = false;
             this.dataGridViewAutos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewAutos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dataGridViewAutos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.patenteDataGridViewTextBoxColumn,
-            this.marcaDataGridViewTextBoxColumn,
-            this.modeloDataGridViewTextBoxColumn,
-            this.licenciaDataGridViewTextBoxColumn,
-            this.rodadoDataGridViewTextBoxColumn,
-            this.choferDataGridViewTextBoxColumn});
-            this.dataGridViewAutos.DataSource = this.automovilBindingSource;
             this.dataGridViewAutos.Location = new System.Drawing.Point(12, 184);
             this.dataGridViewAutos.Name = "dataGridViewAutos";
             this.dataGridViewAutos.ReadOnly = true;
@@ -185,71 +186,6 @@
             this.dataGridViewAutos.Size = new System.Drawing.Size(971, 238);
             this.dataGridViewAutos.TabIndex = 3;
             this.dataGridViewAutos.DoubleClick += new System.EventHandler(this.editarAuto);
-            // 
-            // patenteDataGridViewTextBoxColumn
-            // 
-            this.patenteDataGridViewTextBoxColumn.DataPropertyName = "patente";
-            this.patenteDataGridViewTextBoxColumn.HeaderText = "patente";
-            this.patenteDataGridViewTextBoxColumn.Name = "patenteDataGridViewTextBoxColumn";
-            this.patenteDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // marcaDataGridViewTextBoxColumn
-            // 
-            this.marcaDataGridViewTextBoxColumn.DataPropertyName = "marca";
-            this.marcaDataGridViewTextBoxColumn.HeaderText = "marca";
-            this.marcaDataGridViewTextBoxColumn.Name = "marcaDataGridViewTextBoxColumn";
-            this.marcaDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // modeloDataGridViewTextBoxColumn
-            // 
-            this.modeloDataGridViewTextBoxColumn.DataPropertyName = "modelo";
-            this.modeloDataGridViewTextBoxColumn.HeaderText = "modelo";
-            this.modeloDataGridViewTextBoxColumn.Name = "modeloDataGridViewTextBoxColumn";
-            this.modeloDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // licenciaDataGridViewTextBoxColumn
-            // 
-            this.licenciaDataGridViewTextBoxColumn.DataPropertyName = "licencia";
-            this.licenciaDataGridViewTextBoxColumn.HeaderText = "licencia";
-            this.licenciaDataGridViewTextBoxColumn.Name = "licenciaDataGridViewTextBoxColumn";
-            this.licenciaDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // rodadoDataGridViewTextBoxColumn
-            // 
-            this.rodadoDataGridViewTextBoxColumn.DataPropertyName = "rodado";
-            this.rodadoDataGridViewTextBoxColumn.HeaderText = "rodado";
-            this.rodadoDataGridViewTextBoxColumn.Name = "rodadoDataGridViewTextBoxColumn";
-            this.rodadoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // choferDataGridViewTextBoxColumn
-            // 
-            this.choferDataGridViewTextBoxColumn.DataPropertyName = "chofer";
-            this.choferDataGridViewTextBoxColumn.HeaderText = "chofer";
-            this.choferDataGridViewTextBoxColumn.Name = "choferDataGridViewTextBoxColumn";
-            this.choferDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // automovilBindingSource
-            // 
-            this.automovilBindingSource.DataSource = typeof(UberFrba.Entidades.Automovil);
-            // 
-            // comboBoxMarcas
-            // 
-            this.comboBoxMarcas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxMarcas.FormattingEnabled = true;
-            this.comboBoxMarcas.Location = new System.Drawing.Point(333, 59);
-            this.comboBoxMarcas.Name = "comboBoxMarcas";
-            this.comboBoxMarcas.Size = new System.Drawing.Size(182, 24);
-            this.comboBoxMarcas.TabIndex = 7;
-            // 
-            // buttonResetMarcas
-            // 
-            this.buttonResetMarcas.Location = new System.Drawing.Point(530, 57);
-            this.buttonResetMarcas.Name = "buttonResetMarcas";
-            this.buttonResetMarcas.Size = new System.Drawing.Size(256, 29);
-            this.buttonResetMarcas.TabIndex = 8;
-            this.buttonResetMarcas.Text = "Cualquier Marca";
-            this.buttonResetMarcas.UseVisualStyleBackColor = true;
-            this.buttonResetMarcas.Click += new System.EventHandler(this.buttonResetMarcas_Click);
             // 
             // buscadorAutomovil
             // 
@@ -266,7 +202,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAutos)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.automovilBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -284,13 +219,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataGridView dataGridViewAutos;
-        private System.Windows.Forms.DataGridViewTextBoxColumn patenteDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn marcaDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn modeloDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn licenciaDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn rodadoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn choferDataGridViewTextBoxColumn;
-        private System.Windows.Forms.BindingSource automovilBindingSource;
         private System.Windows.Forms.ComboBox comboBoxMarcas;
         private System.Windows.Forms.Button buttonResetMarcas;
     }

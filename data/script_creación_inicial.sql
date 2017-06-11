@@ -343,10 +343,16 @@ BEGIN
 	FROM SQLGROUP.Automoviles
 	WHERE Auto_Estado = 'Habilitado'
 	GROUP BY Auto_Chofer
-	ORDER BY 1 DESC)>1) 
+	ORDER BY COUNT(*) DESC)>1) 
 	BEGIN
 		ROLLBACK;
 		RAISERROR('El chofer ya tiene mas de un auto habilitado', 16,1);
+	END
+
+	IF((SELECT TOP 1 COUNT(*) FROM Automoviles GROUP BY Auto_Patente ORDER BY COUNT(*) DESC) > 1)
+	BEGIN
+		ROLLBACK;
+		RAISERROR('Patente duplicada, revisar', 16,1);
 	END
 END
 GO
@@ -700,7 +706,7 @@ CREATE PROCEDURE SQLGROUP.migrar_autoxturno
 AS
 BEGIN
 	INSERT SQLGROUP.Auto_Turno
-	SELECT SQLGROUP.getId(Auto_Patente), Turno_Id
+	SELECT SQLGROUP.getAutoId(Auto_Patente), Turno_Id
 	FROM gd_esquema.Maestra as m, SQLGROUP.Turno as t
 	WHERE t.Turno_Hora_Inicio = m.Turno_Hora_Inicio AND t.Turno_Hora_Fin = m.Turno_Hora_Fin
 	GROUP BY m.Auto_Patente, t.Turno_Id
@@ -715,7 +721,7 @@ CREATE PROCEDURE SQLGROUP.migrar_viajes
 AS
 BEGIN
 	DECLARE viajes_cursor CURSOR FOR
-	SELECT Chofer_Id,Viaje_Fecha,Viaje_Cant_Kilometros,SQLGROUP.getId(Auto_Patente),Cliente_Id, Turno_Id
+	SELECT Chofer_Id,Viaje_Fecha,Viaje_Cant_Kilometros,SQLGROUP.getAutoId(Auto_Patente),Cliente_Id, Turno_Id
 	FROM gd_esquema.Maestra as m, SQLGROUP.Turno as t, SQLGROUP.Clientes as cl, SQLGROUP.Choferes as ch
 	WHERE t.Turno_Hora_Fin = m.Turno_Hora_Fin AND t.Turno_Hora_Inicio = m.Turno_Hora_Inicio AND ch.Chofer_Dni = m.Chofer_Dni AND m.Cliente_Dni = cl.Cliente_Dni
 	GROUP BY Chofer_Id,Viaje_Fecha,Viaje_Cant_Kilometros,Auto_Patente,Cliente_Id, Turno_Id

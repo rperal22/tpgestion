@@ -107,6 +107,28 @@ namespace UberFrba.SQL
             return turnos;
         }
 
+        public List<Turno> getTurnosAuto(String patente)
+        {
+            List<Turno> turnos = new List<Turno>();
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand query = new SqlCommand("SELECT Turno_Id, Turno_Hora_Inicio, Turno_Hora_Fin, Turno_Descripcion, Turno_Valor_Kilometro, Turno_Precio_Base " +
+                                                  " FROM SQLGROUP.Turno, SQLGROUP.Auto_Turno  WHERE Turno_Estado='Habilitado' AND AT_Auto_Id = SQLGROUP.getAutoId(@patente) AND AT_Turno_Id = Turno_Id", conexion);
+            query.Parameters.AddWithValue("@patente", patente);
+            conexion.Open();
+            SqlDataReader resultado = query.ExecuteReader();
+            while (resultado.Read())
+            {
+                turnos.Add(new Turno(resultado.GetInt32(0),
+                    (int)resultado.GetDecimal(1),
+                    (int)resultado.GetDecimal(2),
+                    resultado.GetString(3),
+                    (float)resultado.GetDecimal(4),
+                    (float)resultado.GetDecimal(5)));
+            }
+            conexion.Close();
+            return turnos;
+        }
+
         public void actualizarAutomovil(Automovil auto, int idAuto)
         {
             SqlConnection conexion = SqlGeneral.nuevaConexion();

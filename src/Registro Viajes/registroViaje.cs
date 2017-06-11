@@ -85,17 +85,26 @@ namespace UberFrba.Registro_Viajes
 
         private void actualizarAutomovil()
         {
-            auto = new SqlChoferes().getAutoHabilitado(this.choferSeleccionado);
-            lbAutoxChofer.Text = "Marca: " + auto.marca + " Patente: " + auto.patente;
-            this.cbTurno.DisplayMember = "desc";
-            this.cbTurno.ValueMember = "this";
-            this.cbTurno.DataSource = auto.turnos;
+            try
+            {
+                auto = new SqlChoferes().getAutoHabilitado(this.choferSeleccionado);
+                lbAutoxChofer.Text = "Marca: " + auto.marca + " Patente: " + auto.patente;
+                this.cbTurno.DisplayMember = "desc";
+                this.cbTurno.ValueMember = "this";
+                this.cbTurno.DataSource = auto.turnos;
+            }
+            catch (SystemException ex)
+            {
+                this.choferSeleccionado = null;
+                this.labelChofer.Text = "Seleccione algun chofer";
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void validar()
         {
             Turno turno = (this.cbTurno.SelectedValue as Turno);
-            if (choferSeleccionado == null && clienteSeleccionado == null && auto == null)
+            if (choferSeleccionado == null || clienteSeleccionado == null || auto == null)
             {
                 throw new SystemException("Completar datos obligatorios");
             }

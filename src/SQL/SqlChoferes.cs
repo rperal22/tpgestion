@@ -117,7 +117,10 @@ namespace UberFrba.SQL
             query.Parameters.AddWithValue("@id",chofer.id);
             conexion.Open();
             SqlDataReader reader = query.ExecuteReader();
-            reader.Read();
+            if (!reader.Read())
+            {
+                throw new SystemException("Este chofer no tiene auto habilitado");
+            }
             auto = new Automovil(reader.GetInt32(7),reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3), new SqlAutomoviles().getTurnosAuto(reader.GetString(0),"Habilitado"), reader.GetString(4), reader.GetString(5), reader.GetString(6));
             conexion.Close();
             return auto;

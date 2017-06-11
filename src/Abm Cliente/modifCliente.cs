@@ -29,6 +29,7 @@ namespace UberFrba.Abm_Cliente
             this.textBoxMail.Text = this.clienteAModificar.mail;
             this.dateTimePickerNacimiento.Value = this.clienteAModificar.fechaNacimiento;
             this.comboBoxEstado.Text = this.clienteAModificar.estado;
+            this.textBoxCodPos.Text = this.clienteAModificar.codigoPostal;
             
         }
 

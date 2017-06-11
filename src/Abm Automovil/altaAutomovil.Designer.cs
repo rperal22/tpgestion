@@ -40,8 +40,8 @@
             this.textBoxLicencia = new System.Windows.Forms.TextBox();
             this.Licencia = new System.Windows.Forms.Label();
             this.textBoxChofer = new System.Windows.Forms.TextBox();
+            this.textBoxPatente = new System.Windows.Forms.TextBox();
             this.textBoxModelo = new System.Windows.Forms.TextBox();
-            this.textBoxMarca = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -53,13 +53,14 @@
             this.buttonRemover = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBoxTurnos = new System.Windows.Forms.TextBox();
-            this.textBoxPatente = new System.Windows.Forms.TextBox();
+            this.comboBoxMarca = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.comboBoxMarca);
             this.groupBox1.Controls.Add(this.comboBoxEstado);
             this.groupBox1.Controls.Add(this.labelEstado);
             this.groupBox1.Controls.Add(this.label9);
@@ -73,7 +74,6 @@
             this.groupBox1.Controls.Add(this.textBoxChofer);
             this.groupBox1.Controls.Add(this.textBoxPatente);
             this.groupBox1.Controls.Add(this.textBoxModelo);
-            this.groupBox1.Controls.Add(this.textBoxMarca);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
@@ -187,6 +187,14 @@
             this.textBoxChofer.Size = new System.Drawing.Size(132, 22);
             this.textBoxChofer.TabIndex = 4;
             // 
+            // textBoxPatente
+            // 
+            this.textBoxPatente.Location = new System.Drawing.Point(133, 113);
+            this.textBoxPatente.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxPatente.Name = "textBoxPatente";
+            this.textBoxPatente.Size = new System.Drawing.Size(132, 22);
+            this.textBoxPatente.TabIndex = 3;
+            // 
             // textBoxModelo
             // 
             this.textBoxModelo.Location = new System.Drawing.Point(133, 81);
@@ -194,14 +202,6 @@
             this.textBoxModelo.Name = "textBoxModelo";
             this.textBoxModelo.Size = new System.Drawing.Size(132, 22);
             this.textBoxModelo.TabIndex = 2;
-            // 
-            // textBoxMarca
-            // 
-            this.textBoxMarca.Location = new System.Drawing.Point(133, 49);
-            this.textBoxMarca.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxMarca.Name = "textBoxMarca";
-            this.textBoxMarca.Size = new System.Drawing.Size(132, 22);
-            this.textBoxMarca.TabIndex = 1;
             // 
             // label5
             // 
@@ -315,13 +315,14 @@
             this.textBoxTurnos.Size = new System.Drawing.Size(259, 157);
             this.textBoxTurnos.TabIndex = 5;
             // 
-            // textBoxPatente
+            // comboBoxMarca
             // 
-            this.textBoxPatente.Location = new System.Drawing.Point(133, 113);
-            this.textBoxPatente.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxPatente.Name = "textBoxPatente";
-            this.textBoxPatente.Size = new System.Drawing.Size(132, 22);
-            this.textBoxPatente.TabIndex = 3;
+            this.comboBoxMarca.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxMarca.FormattingEnabled = true;
+            this.comboBoxMarca.Location = new System.Drawing.Point(133, 49);
+            this.comboBoxMarca.Name = "comboBoxMarca";
+            this.comboBoxMarca.Size = new System.Drawing.Size(132, 24);
+            this.comboBoxMarca.TabIndex = 18;
             // 
             // altaAutomovil
             // 
@@ -349,7 +350,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox textBoxChofer;
         private System.Windows.Forms.TextBox textBoxModelo;
-        private System.Windows.Forms.TextBox textBoxMarca;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
@@ -373,6 +373,7 @@
         private System.Windows.Forms.ComboBox comboBoxEstado;
         private System.Windows.Forms.Label labelEstado;
         private System.Windows.Forms.TextBox textBoxPatente;
+        private System.Windows.Forms.ComboBox comboBoxMarca;
 
 
     }
