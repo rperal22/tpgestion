@@ -101,11 +101,11 @@ namespace UberFrba.Listado_Estadistico
         {
             this.setearParametrosDeBusqueda();
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand cmd = new SqlCommand("SELECT TOP 5 Cliente_Nombre as 'Cliente Nombre', Cliente_Apellido as 'Cliente Apellido', Viaje_Auto_Patente as  'Automovil' ,COUNT(Viaje_Auto_Patente) AS 'Cantidad de viajes' " +
+            SqlCommand cmd = new SqlCommand("SELECT TOP 5 Cliente_Nombre as 'Cliente Nombre', Cliente_Apellido as 'Cliente Apellido', SQLGROUP.getAutoPatente(Viaje_Auto_Id) as  'Automovil' ,COUNT(Viaje_Auto_Id) AS 'Cantidad de viajes' " +
 	                                        " FROM SQLGROUP.Clientes c INNER JOIN SQLGROUP.Viajes v ON c.Cliente_Id = v.Viaje_Cliente_Id " +
 	                                        " WHERE YEAR(v.Viaje_Fecha) = @anio AND MONTH(v.Viaje_Fecha) BETWEEN @mesInicial AND @mesFinal " +
-                                            " GROUP BY c.Cliente_Nombre, c.Cliente_Apellido, v.Viaje_Auto_Patente " +
-	                                        " ORDER BY COUNT(v.Viaje_Auto_Patente) DESC", conexion);
+                                            " GROUP BY c.Cliente_Nombre, c.Cliente_Apellido, v.Viaje_Auto_Id " +
+                                            " ORDER BY COUNT(v.Viaje_Auto_Id) DESC", conexion);
             cmd.Parameters.Add(new SqlParameter("@anio", anio));
             cmd.Parameters.Add(new SqlParameter("@mesInicial", mesInicial));
             cmd.Parameters.Add(new SqlParameter("@mesFinal", mesFinal));
