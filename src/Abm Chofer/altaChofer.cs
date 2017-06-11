@@ -38,6 +38,7 @@ namespace UberFrba.ABM_Chofer
                 this.validar();
                 Chofer cf = new Chofer(this.textBoxNombre.Text, this.textBoxApellido.Text, Int32.Parse(this.textBoxDNI.Text), this.textBoxDireccion.Text, Int32.Parse(this.textBoxTel.Text), this.textBoxMail.Text, this.dateTimePickerNacimiento.Value, this.comboBox1.Text);
                 new SqlChoferes().guardarChofer(cf);
+                MessageBox.Show("Chofer guardado correctamente");
             }
             catch (FormatException ex)
             {

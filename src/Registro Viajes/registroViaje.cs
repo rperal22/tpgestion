@@ -50,7 +50,7 @@ namespace UberFrba.Registro_Viajes
             }
             catch (FormatException ex)
             {
-                MessageBox.Show("Compruebe el campo kilometros.");
+                MessageBox.Show("Compruebe el campo kilometros. Debe ser mayor a 0");
             }
             catch (SqlException ex)
             {
@@ -115,6 +115,10 @@ namespace UberFrba.Registro_Viajes
             else if (!(dtpHoraInicio.Value.Hour > turno.hi && dtpHoraFin.Value.Hour < turno.hf))
             {
                 throw new SystemException("Comprobar horarios dentro del limite del turno");
+            }
+            else if(!(float.Parse(this.tbKM.Text)>0))
+            {
+                throw new SystemException("Cantidad de kilometros debe ser mayor a 0");
             }
         }
 
