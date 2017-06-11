@@ -31,11 +31,20 @@ namespace UberFrba.SQL
             cmd.Parameters.Add(new SqlParameter("@flagRolCliente", flagRolCliente));
             cmd.Parameters.Add(VariableRetorno);
 
-            conexion.Open();
-            cmd.ExecuteNonQuery(); // aca se abre la conexion y se ejecuta el SP de login
-            int resultado = (int)cmd.Parameters["@resultado"].Value;
-            conexion.Close();
-            return resultado;
+            try
+            {
+                conexion.Open();
+                cmd.ExecuteNonQuery(); // aca se abre la conexion y se ejecuta el SP de login
+                int resultado = (int)cmd.Parameters["@resultado"].Value;
+                conexion.Close();
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                conexion.Close();
+                throw ex;
+            }
+            
         }
 
 

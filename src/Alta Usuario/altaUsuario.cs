@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -20,49 +21,11 @@ namespace UberFrba.Alta_Usuario
         private int flagRolChofer;
         private int flagRolCliente;
 
-
-
-
         public altaUsuario()
         {
             InitializeComponent();
         }
 
-        /*
-        private void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void btnCancelar_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void btnAceptar_Click(object sender, EventArgs e)
-        {
-            if (tbNombreUsuario != null && tbContraseña != null && maskedTextBox1 != null)
-            {
-                username = tbNombreUsuario.Text;
-                password = tbContraseña.Text;
-                dni = Convert.ToInt32(maskedTextBox1);
-
-                int resultado = new SqlAltaUsuario().crearUsuario(username, password, dni);
-                switch (resultado)
-                {
-                    case 0:
-                        MessageBox.Show("El nombre de usuario ya existe");
-                        break;
-                    case 1:
-                        MessageBox.Show("Usuario creado correctamente");
-                        break;
-
-                }
-
-            }
-
-        }
-        */
         private void btnLimpiar_Click_1(object sender, EventArgs e)
         {
             tbNombreUsuario.Clear();
@@ -72,7 +35,7 @@ namespace UberFrba.Alta_Usuario
 
         private void btnAceptar_Click_1(object sender, EventArgs e)
         {
-            if (cbChofer.Checked == false && cbCliente.Checked == false)
+            if (!cbChofer.Checked  && !cbCliente.Checked)
             {
                 MessageBox.Show("Debe elegir al menos un rol para crear su usuario");
             }
@@ -82,8 +45,18 @@ namespace UberFrba.Alta_Usuario
                 {
                     username = tbNombreUsuario.Text;
                     password = tbContraseña.Text;
-                    dni = Convert.ToInt32(tbDni.Text);
-
+                    if(username.Length ==  0 && password.Length == 0 )
+                    {
+                        MessageBox.Show("Completar todos los campos");
+                    }
+                    try
+                    {
+                        dni = Convert.ToInt32(tbDni.Text);
+                    }
+                    catch (FormatException ex)
+                    {
+                        MessageBox.Show("El dni acepta solo numero, comprobar.");
+                    }
                     if (cbChofer.Checked == true)
                     {
                         flagRolChofer = 1;
@@ -101,17 +74,23 @@ namespace UberFrba.Alta_Usuario
                     {
                         flagRolCliente = 0;
                     }
-                    
 
-                    int resultado = new SqlAltaUsuario().crearUsuario(username, password, dni, flagRolChofer, flagRolCliente);
-                    switch (resultado)
+                    try
                     {
-                        case 0:
-                            MessageBox.Show("El nombre de usuario ya existe");
-                            break;
-                        case 1:
-                            MessageBox.Show("Usuario creado correctamente");
-                            break;
+                        int resultado = new SqlAltaUsuario().crearUsuario(username, password, dni, flagRolChofer, flagRolCliente);
+                        switch (resultado)
+                        {
+                            case 0:
+                                MessageBox.Show("El nombre de usuario ya existe");
+                                break;
+                            case 1:
+                                MessageBox.Show("Usuario creado correctamente");
+                                break;
+                        }
+                    }
+                    catch (SqlException ex)
+                    {
+                        MessageBox.Show(ex.Message);
                     }
 
                 }

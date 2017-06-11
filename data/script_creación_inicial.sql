@@ -928,7 +928,6 @@ BEGIN
 END
 GO 
 
-/* ----------- STORED PRUCEDURE ALTA USUARIOS ----------------------- */
 IF(OBJECT_ID('SQLGROUP.crearUsuario') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.crearUsuario
 GO
@@ -959,7 +958,6 @@ ELSE
 END	
 GO
 
-/* ----------- STORED PRUCEDURE ALTA TURNOS ----------------------- */
 IF(OBJECT_ID('SQLGROUP.crearTurno') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.crearTurno
 GO
