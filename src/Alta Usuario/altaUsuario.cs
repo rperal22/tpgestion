@@ -48,6 +48,7 @@ namespace UberFrba.Alta_Usuario
                     if(username.Length ==  0 && password.Length == 0 )
                     {
                         MessageBox.Show("Completar todos los campos");
+                        return;
                     }
                     try
                     {
@@ -56,6 +57,7 @@ namespace UberFrba.Alta_Usuario
                     catch (FormatException ex)
                     {
                         MessageBox.Show("El dni acepta solo numero, comprobar.");
+                        return;
                     }
                     if (cbChofer.Checked == true)
                     {
