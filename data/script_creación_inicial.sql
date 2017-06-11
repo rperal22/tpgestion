@@ -315,21 +315,33 @@ GO
 
 /*Creacion de triggers-------------------------------------------------------------------------------------------------------*/
 /*Creamos triggers sobre tablas anteriorermente creadas*/
-IF (OBJECT_ID('SQLGROUP.insert_password_cifrado') IS NOT NULL)
-	DROP TRIGGER SQLGROUP.insert_password_cifrado;
+IF (OBJECT_ID('SQLGROUP.integridadUsuarios') IS NOT NULL)
+	DROP TRIGGER SQLGROUP.integridadUsuarios;
 GO
 
 /*Trigger que cifra la clave cada vez q se inserta un nuevo usuario
 Utiliza function SQLGROUP.cifrado_claves*/
-CREATE TRIGGER SQLGROUP.insert_password_cifrado
+CREATE TRIGGER SQLGROUP.integridadUsuarios
 ON SQLGROUP.Usuarios INSTEAD OF INSERT
 AS 
 BEGIN
-	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_DNI,Usuario_Password,Usuario_Intentos, Usuario_Estado)
-	SELECT i.Usuario_Id, i.Usuario_DNI,SQLGROUP.cifrado_claves(i.Usuario_Password), i.Usuario_Intentos,i.Usuario_Estado
-	FROM inserted as i
+	IF((SELECT COUNT(*) FROM inserted i WHERE i.Usuario_DNI NOT IN (SELECT Cliente_Dni FROM Clientes) 
+										AND i.Usuario_DNI NOT IN (SELECT Chofer_Dni FROM Choferes)
+										AND i.Usuario_DNI NOT IN (SELECT Admin_Dni FROM Administradores))=0)
+	BEGIN
+		INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_DNI,Usuario_Password,Usuario_Intentos, Usuario_Estado)
+		SELECT i.Usuario_Id, i.Usuario_DNI,SQLGROUP.cifrado_claves(i.Usuario_Password), i.Usuario_Intentos,i.Usuario_Estado
+		FROM inserted as i
+	END
+	ELSE
+	BEGIN
+		ROLLBACK;
+		RAISERROR('No hay cliente o chofer con ese dni', 16,1);
+	END
 END
 GO
+
+
 
 IF (OBJECT_ID('SQLGROUP.controlarAutosHabilitadosxChofer') IS NOT NULL)
 	DROP TRIGGER SQLGROUP.controlarAutosHabilitadosxChofer;
@@ -488,6 +500,18 @@ BEGIN
 	DEALLOCATE rolesdeshabilitados;
 END
 GO
+
+IF(OBJECT_ID('SQLGROUP.deshabilitarUsuario') IS NOT NULL)
+	DROP TRIGGER SQLGROUP.deshabilitarUsuario
+GO
+/*Borra el rol deshabilitado de usuarios*/
+CREATE TRIGGER SQLGROUP.deshabilitarUsuario 
+ON SQLGROUP.Usuarios AFTER UPDATE
+AS
+BEGIN
+	UPDATE Usuarios SET Usuario_Estado = 'Deshabilitado' WHERE Usuario_Intentos = 3;
+END
+GO
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
@@ -542,7 +566,7 @@ CREATE PROCEDURE SQLGROUP.crear_administradores
 AS
 BEGIN
 	INSERT INTO SQLGROUP.Administradores (Admin_Dni,Admin_Nombre,Admin_Apellido,Admin_Telefono,Admin_Direccion,Admin_Mail)
-	VALUES(1569877,'admin','admin',1512345678,'admin','admin@admin.com')
+	VALUES(12345678,'admin','admin',1512345678,'admin','admin@admin.com')
 END
 GO
 
@@ -644,12 +668,13 @@ BEGIN
 	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_Password,Usuario_DNI) -- se agrega funcion de cifrado de claves
 	SELECT Chofer_Nombre + '_' + Chofer_Apellido,Chofer_Nombre,Chofer_Dni 
 	FROM SQLGROUP.Choferes
+	GROUP BY  Chofer_Nombre + '_' + Chofer_Apellido,Chofer_Nombre,Chofer_Dni
 
 	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_Password,Usuario_DNI)
 	SELECT Cliente_Nombre + '_' + Cliente_Apellido,Cliente_Nombre,Cliente_Dni
 	FROM SQLGROUP.Clientes
 	WHERE Cliente_Dni NOT IN (SELECT Usuario_DNI FROM Usuarios)
-	GROUP BY Cliente_Nombre,Cliente_Nombre,Cliente_Dni,Cliente_Apellido
+	GROUP BY Cliente_Nombre + '_' + Cliente_Apellido,Cliente_Nombre,Cliente_Dni
 
 	INSERT INTO SQLGROUP.Usuarios (Usuario_Id,Usuario_Password,Usuario_DNI)
 	VALUES ('admin','w23e',12345678)
@@ -867,8 +892,6 @@ GO
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
 
 /*Procedures que usamos en la aplicacion----------------------------------------------------------------------------------------------------*/
-
-
 If (OBJECT_ID('SQLGROUP.login') IS NOT NULL)
 	DROP PROCEDURE SQLGROUP.login
 GO
