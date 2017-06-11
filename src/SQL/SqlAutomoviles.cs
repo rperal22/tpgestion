@@ -39,8 +39,8 @@ namespace UberFrba.SQL
                 insertDatosAuto.ExecuteNonQuery();
                 int i = 0;
                 foreach(Turno tur in auto.turnos) {
-                    insertTurnosAuto.CommandText = "INSERT INTO SQLGROUP.Auto_Turno (AT_Auto_Patente,AT_Turno_Id) " +
-                                                   " VALUES(@au_patente"+ i + ",@tu_id"+i+")";
+                    insertTurnosAuto.CommandText = "INSERT INTO SQLGROUP.Auto_Turno (AT_Auto_Id,AT_Turno_Id) " +
+                                                   " VALUES(SQLGROUP.getAutoId(@au_patente"+i+"),@tu_id"+i+")";
                     insertTurnosAuto.Parameters.AddWithValue("@au_patente"+i, auto.patente);
                     insertTurnosAuto.Parameters.AddWithValue("@tu_id"+i, tur.id);
                     i++;
@@ -61,11 +61,11 @@ namespace UberFrba.SQL
         {
             List<Automovil> autos = new List<Automovil>();
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand comando = new SqlCommand("SELECT TOP " +cantidad+ " Auto_Patente, Auto_Marca, Auto_Modelo, Auto_Chofer, Auto_Licencia, Auto_Rodado, Auto_Estado FROM SQLGROUP.automoviles", conexion);
+            SqlCommand comando = new SqlCommand("SELECT TOP " +cantidad+ " Auto_Patente, Auto_Marca, Auto_Modelo, Auto_Chofer, Auto_Licencia, Auto_Rodado, Auto_Estado, Auto_Id FROM SQLGROUP.automoviles", conexion);
             conexion.Open();
             SqlDataReader resultado = comando.ExecuteReader();
             while(resultado.Read()) {
-                autos.Add(new Automovil(resultado.GetString(0),resultado.GetString(1),resultado.GetString(2),resultado.GetInt32(3),null,resultado.GetString(4),resultado.GetString(5),resultado.GetString(6)));
+                autos.Add(new Automovil(resultado.GetInt32(7),resultado.GetString(0),resultado.GetString(1),resultado.GetString(2),resultado.GetInt32(3),null,resultado.GetString(4),resultado.GetString(5),resultado.GetString(6)));
             }
             return autos;
         }
@@ -74,12 +74,12 @@ namespace UberFrba.SQL
         {
             List<Automovil> autos = new List<Automovil>();
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand comando = new SqlCommand("SELECT Auto_Patente, Auto_Marca, Auto_Modelo, Auto_Chofer, Auto_Licencia, Auto_Rodado, Auto_Estado FROM SQLGROUP.automoviles WHERE " + busqueda, conexion);
+            SqlCommand comando = new SqlCommand("SELECT Auto_Patente, Auto_Marca, Auto_Modelo, Auto_Chofer, Auto_Licencia, Auto_Rodado, Auto_Estado, Auto_Id FROM SQLGROUP.automoviles WHERE " + busqueda, conexion);
             conexion.Open();
             SqlDataReader resultado = comando.ExecuteReader();
             while (resultado.Read())
             {
-                autos.Add(new Automovil(resultado.GetString(0), resultado.GetString(1), resultado.GetString(2), resultado.GetInt32(3), null, resultado.GetString(4), resultado.GetString(5), resultado.GetString(6)));
+                autos.Add(new Automovil(resultado.GetInt32(7),resultado.GetString(0), resultado.GetString(1), resultado.GetString(2), resultado.GetInt32(3), null, resultado.GetString(4), resultado.GetString(5), resultado.GetString(6)));
             }
             return autos;
         }
@@ -89,7 +89,7 @@ namespace UberFrba.SQL
             List<Turno> turnos = new List<Turno>();
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             SqlCommand query = new SqlCommand("SELECT Turno_Id, Turno_Hora_Inicio, Turno_Hora_Fin, Turno_Descripcion, Turno_Valor_Kilometro, Turno_Precio_Base " +
-                                                  " FROM SQLGROUP.Turno, SQLGROUP.Auto_Turno  WHERE Turno_Estado='Habilitado' AND AT_Auto_Patente = @patente AND AT_Turno_Id = Turno_Id",conexion);
+                                                  " FROM SQLGROUP.Turno, SQLGROUP.Auto_Turno  WHERE Turno_Estado='Habilitado' AND AT_Auto_Id = SQLGROUP.getAutoId(@patente) AND AT_Turno_Id = Turno_Id",conexion);
             query.Parameters.AddWithValue("@patente",patente);
             conexion.Open();
             SqlDataReader resultado = query.ExecuteReader();
@@ -106,7 +106,7 @@ namespace UberFrba.SQL
             return turnos;
         }
 
-        public void actualizarAutomovil(Automovil auto, String patenteAnterior)
+        public void actualizarAutomovil(Automovil auto, int idAuto)
         {
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             conexion.Open();
@@ -120,14 +120,14 @@ namespace UberFrba.SQL
             insertTurnosAuto.Connection = conexion;
             insertTurnosAuto.Transaction = transaction;
 
-            SqlCommand borrarTurnosAuto = new SqlCommand("DELETE FROM SQLGROUP.Auto_Turno WHERE AT_Auto_Patente = @patenteAnterior", conexion, transaction);
+            SqlCommand borrarTurnosAuto = new SqlCommand("DELETE FROM SQLGROUP.Auto_Turno WHERE AT_Auto_Id = @patenteAnterior", conexion, transaction);
 
             try
             {
-                borrarTurnosAuto.Parameters.AddWithValue("@patenteAnterior", patenteAnterior);
+                borrarTurnosAuto.Parameters.AddWithValue("@patenteAnterior", idAuto);
                 borrarTurnosAuto.ExecuteNonQuery();
 
-                insertDatosAuto.CommandText = "UPDATE SQLGROUP.Automoviles SET Auto_Patente = @patente, Auto_Marca = @marca, Auto_Modelo = @modelo, Auto_Licencia = @licencia, Auto_Rodado = @rodado, Auto_Chofer =  @chofer, Auto_Estado = @estado WHERE Auto_Patente = @patenteVieja";
+                insertDatosAuto.CommandText = "UPDATE SQLGROUP.Automoviles SET Auto_Patente = @patente, Auto_Marca = @marca, Auto_Modelo = @modelo, Auto_Licencia = @licencia, Auto_Rodado = @rodado, Auto_Chofer =  @chofer, Auto_Estado = @estado WHERE Auto_Id = @id";
                 insertDatosAuto.Parameters.AddWithValue("@patente", auto.patente);
                 insertDatosAuto.Parameters.AddWithValue("@marca", auto.marca);
                 insertDatosAuto.Parameters.AddWithValue("@modelo", auto.modelo);
@@ -135,14 +135,14 @@ namespace UberFrba.SQL
                 insertDatosAuto.Parameters.AddWithValue("@rodado", auto.rodado);
                 insertDatosAuto.Parameters.AddWithValue("@chofer", auto.chofer);
                 insertDatosAuto.Parameters.AddWithValue("@estado", auto.estado);
-                insertDatosAuto.Parameters.AddWithValue("@patenteVieja", patenteAnterior);
+                insertDatosAuto.Parameters.AddWithValue("@id", idAuto);
                 insertDatosAuto.ExecuteNonQuery();
                 int i = 0;
                 foreach (Turno tur in auto.turnos)
                 {
-                    insertTurnosAuto.CommandText = "INSERT INTO SQLGROUP.Auto_Turno (AT_Auto_Patente,AT_Turno_Id) " +
-                                                   " VALUES(@au_patente" + i + ",@tu_id" + i + ")";
-                    insertTurnosAuto.Parameters.AddWithValue("@au_patente" + i, auto.patente);
+                    insertTurnosAuto.CommandText = "INSERT INTO SQLGROUP.Auto_Turno (AT_Auto_Id,AT_Turno_Id) " +
+                                                   " VALUES(@au_id" + i + ",@tu_id" + i + ")";
+                    insertTurnosAuto.Parameters.AddWithValue("@au_id" + i, idAuto);
                     insertTurnosAuto.Parameters.AddWithValue("@tu_id" + i, tur.id);
                     i++;
                     insertTurnosAuto.ExecuteNonQuery();
@@ -157,6 +157,20 @@ namespace UberFrba.SQL
                 transaction.Rollback();
             }
             conexion.Close();
+        }
+
+        public List<String> getMarcas()
+        {
+            List<String> marcas = new List<String>();
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand comando = new SqlCommand("SELECT Auto_Marca FROM SQLGROUP.automoviles GROUP BY Auto_Marca", conexion);
+            conexion.Open();
+            SqlDataReader resultado = comando.ExecuteReader();
+            while (resultado.Read())
+            {
+                marcas.Add(resultado.GetString(0));
+            }
+            return marcas;
         }
     }
 }

@@ -78,12 +78,14 @@ BEGIN
 		Cliente_Direccion VARCHAR(255) NOT NULL,
 		Cliente_Mail VARCHAR(255),
 		Cliente_Fecha_Nac DATETIME NOT NULL,
-		Cliente_Estado VARCHAR(20) NOT NULL DEFAULT 'Habilitado'
+		Cliente_Estado VARCHAR(20) NOT NULL DEFAULT 'Habilitado',
+		Cliente_Codigo_Postal VARCHAR(20) NOT NULL DEFAULT 'Desconocido'
 	);
 
 
 	CREATE TABLE SQLGROUP.Automoviles (
-		Auto_Patente VARCHAR(10) PRIMARY KEY,
+		Auto_Id INTEGER IDENTITY(1,1) PRIMARY KEY,
+		Auto_Patente VARCHAR(10) NOT NULL,
 		Auto_Marca VARCHAR(255) NOT NULL,
 		Auto_Modelo VARCHAR(255) NOT NULL,
 		Auto_Licencia VARCHAR(26),
@@ -99,7 +101,7 @@ BEGIN
 		Viaje_Fecha_INIC DATETIME NOT NULL,
 		Viaje_Fecha_Fin DATETIME NOT NULL,
 		Viaje_Chofer_Id INTEGER NOT NULL,
-		Viaje_Auto_Patente VARCHAR(10) NOT NULL,
+		Viaje_Auto_Id INTEGER NOT NULL,
 		Viaje_Turno_Id INTEGER NOT NULL,
 		Viaje_Cliente_Id INTEGER NOT NULL
 	);
@@ -177,9 +179,9 @@ BEGIN
 	);
 
 	CREATE TABLE SQLGROUP.Auto_Turno (
-		AT_Auto_Patente VARCHAR(10),
+		AT_Auto_Id INTEGER,
 		AT_Turno_Id INTEGER,
-		CONSTRAINT pk_autoxturno PRIMARY KEY (AT_Auto_Patente,AT_Turno_ID)
+		CONSTRAINT pk_autoxturno PRIMARY KEY (AT_Auto_Id,AT_Turno_ID)
 	);
 
 	/*----Aca crear foreign keys------*/
@@ -190,7 +192,7 @@ BEGIN
 	ALTER TABLE SQLGROUP.Viajes ADD
 	CONSTRAINT fk_viajes_chofer FOREIGN KEY (Viaje_Chofer_Id) REFERENCES SQLGROUP.Choferes(Chofer_Id)
 	ON DELETE NO ACTION ON UPDATE CASCADE,
-	CONSTRAINT fk_viajes_automovil FOREIGN KEY (Viaje_Auto_Patente) REFERENCES SQLGROUP.Automoviles(Auto_Patente)
+	CONSTRAINT fk_viajes_automovil FOREIGN KEY (Viaje_Auto_Id) REFERENCES SQLGROUP.Automoviles(Auto_Id)
 	ON DELETE NO ACTION ON UPDATE NO ACTION,
 	CONSTRAINT fk_viajes_turno FOREIGN KEY (Viaje_Turno_Id) REFERENCES SQLGROUP.Turno(Turno_Id)
 	ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -226,7 +228,7 @@ BEGIN
 	ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 	ALTER TABLE SQLGROUP.Auto_Turno ADD
-	CONSTRAINT fk_autoturno_auto FOREIGN KEY (AT_Auto_Patente) REFERENCES SQLGROUP.Automoviles(Auto_Patente)
+	CONSTRAINT fk_autoturno_auto FOREIGN KEY (AT_Auto_Id) REFERENCES SQLGROUP.Automoviles(Auto_Id)
 	ON DELETE NO ACTION ON UPDATE CASCADE,
 	CONSTRAINT fk_autoturno_turno FOREIGN KEY (At_Turno_Id) REFERENCES SQLGROUP.Turno(Turno_Id)
 	ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -272,6 +274,28 @@ BEGIN
 		RETURN 0;
 	END
 	RETURN 0;
+END
+GO
+
+IF (OBJECT_ID('SQLGROUP.getAutoPatente') IS NOT NULL)
+	DROP FUNCTION SQLGROUP.getAutoPatente
+GO
+/*Obtiene patente desde auto id*/
+CREATE FUNCTION SQLGROUP.getAutoPatente (@id INT)
+RETURNS VARCHAR(10)
+BEGIN
+	RETURN (SELECT Auto_Patente FROM SQLGROUP.Automoviles WHERE Auto_Id = @id)
+END
+GO
+
+IF (OBJECT_ID('SQLGROUP.getAutoId') IS NOT NULL)
+	DROP FUNCTION SQLGROUP.getAutoId
+GO
+/*Obtiene auto id desde patente*/
+CREATE FUNCTION SQLGROUP.getAutoId (@patente VARCHAR(10))
+RETURNS INT
+BEGIN
+	RETURN (SELECT Auto_Id FROM SQLGROUP.Automoviles WHERE Auto_Patente = @patente)
 END
 GO
 
@@ -339,7 +363,7 @@ AS
 BEGIN
 	IF((SELECT COUNT(*)
 	FROM inserted as i, SQLGROUP.Viajes as v
-	WHERE i.Viaje_Auto_Patente = v.Viaje_Auto_Patente 
+	WHERE i.Viaje_Auto_Id = v.Viaje_Auto_Id
 	AND  ((i.Viaje_Fecha_INIC >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_INIC <= v.Viaje_Fecha_Fin)
 	OR (i.Viaje_Fecha_Fin >= v.Viaje_Fecha_INIC AND i.Viaje_Fecha_Fin <= v.Viaje_Fecha_Fin)))>1)
 	BEGIN
@@ -408,6 +432,54 @@ BEGIN
 		SELECT *
 		FROM inserted
 	END
+END
+GO
+
+IF(OBJECT_ID('SQLGROUP.integridadClientes') IS NOT NULL)
+	DROP TRIGGER SQLGROUP.integridadClientes
+GO
+/*Esto se ocupa de que no se guarden clientes con el mismo telefono*/
+CREATE TRIGGER SQLGROUP.integridadClientes 
+ON SQLGROUP.Clientes AFTER INSERT, UPDATE
+AS
+BEGIN
+	IF((SELECT TOP 1 COUNT(*)
+		FROM SQLGROUP.Clientes as cli
+		GROUP BY cli.Cliente_Telefono
+		ORDER BY COUNT(*) DESC)>1)
+	BEGIN
+		ROLLBACK;
+		RAISERROR('Ya existe un usuario con ese numero de telefono', 16,1);
+	END
+END
+GO
+
+IF(OBJECT_ID('SQLGROUP.deleteRolFromUsuario') IS NOT NULL)
+	DROP TRIGGER SQLGROUP.deleteRolFromUsuario
+GO
+/*Borra el rol deshabilitado de usuarios*/
+CREATE TRIGGER SQLGROUP.deleteRolFromUsuario 
+ON SQLGROUP.Roles AFTER INSERT, UPDATE
+AS
+BEGIN
+	DECLARE @nombre VARCHAR(30);
+	
+	DECLARE rolesdeshabilitados CURSOR FOR
+	SELECT i.Rol_Nombre
+	FROM inserted i
+	WHERE i.Rol_Estado = 'Deshabilitado'
+
+	OPEN rolesdeshabilitados;
+	FETCH NEXT FROM rolesdeshabilitados INTO @nombre;
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		DELETE FROM SQLGROUP.Usuarios_Rol WHERE UR_Rol_Nombre = @nombre;
+		FETCH NEXT FROM rolesdeshabilitados INTO @nombre;
+	END
+
+	CLOSE rolesdeshabilitados;
+	DEALLOCATE rolesdeshabilitados;
 END
 GO
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -628,7 +700,7 @@ CREATE PROCEDURE SQLGROUP.migrar_autoxturno
 AS
 BEGIN
 	INSERT SQLGROUP.Auto_Turno
-	SELECT Auto_Patente, Turno_Id
+	SELECT SQLGROUP.getId(Auto_Patente), Turno_Id
 	FROM gd_esquema.Maestra as m, SQLGROUP.Turno as t
 	WHERE t.Turno_Hora_Inicio = m.Turno_Hora_Inicio AND t.Turno_Hora_Fin = m.Turno_Hora_Fin
 	GROUP BY m.Auto_Patente, t.Turno_Id
@@ -643,19 +715,19 @@ CREATE PROCEDURE SQLGROUP.migrar_viajes
 AS
 BEGIN
 	DECLARE viajes_cursor CURSOR FOR
-	SELECT Chofer_Id,Viaje_Fecha,Viaje_Cant_Kilometros,Auto_Patente,Cliente_Id, Turno_Id
+	SELECT Chofer_Id,Viaje_Fecha,Viaje_Cant_Kilometros,SQLGROUP.getId(Auto_Patente),Cliente_Id, Turno_Id
 	FROM gd_esquema.Maestra as m, SQLGROUP.Turno as t, SQLGROUP.Clientes as cl, SQLGROUP.Choferes as ch
 	WHERE t.Turno_Hora_Fin = m.Turno_Hora_Fin AND t.Turno_Hora_Inicio = m.Turno_Hora_Inicio AND ch.Chofer_Dni = m.Chofer_Dni AND m.Cliente_Dni = cl.Cliente_Dni
 	GROUP BY Chofer_Id,Viaje_Fecha,Viaje_Cant_Kilometros,Auto_Patente,Cliente_Id, Turno_Id
 	ORDER BY m.Viaje_Fecha, cl.Cliente_Id
 
 	/*Variable para el cursor*/
-	DECLARE @chofer_id NUMERIC(18,0), @viaje_fecha DATETIME, @viaje_cant_kilometros NUMERIC(18,0), @auto_patente VARCHAR(10), @cliente_id NUMERIC(18,0), @turno_id INTEGER;
+	DECLARE @chofer_id NUMERIC(18,0), @viaje_fecha DATETIME, @viaje_cant_kilometros NUMERIC(18,0), @auto_id INT, @cliente_id NUMERIC(18,0), @turno_id INTEGER;
 	/*Extras var*/
 	DECLARE @ultimo_fecha DATETIME, @horario_poner DATETIME;
 
 	OPEN viajes_cursor;
-	FETCH NEXT FROM viajes_cursor INTO @chofer_id, @viaje_fecha,@viaje_cant_kilometros, @auto_patente, @cliente_id, @turno_id;
+	FETCH NEXT FROM viajes_cursor INTO @chofer_id, @viaje_fecha,@viaje_cant_kilometros, @auto_id, @cliente_id, @turno_id;
 	SET @ultimo_fecha = @viaje_fecha;
 	SET @horario_poner = @viaje_fecha;
 	WHILE @@FETCH_STATUS = 0
@@ -670,10 +742,10 @@ BEGIN
 			SET @horario_poner = DATEADD(MINUTE, 1, @horario_poner);
 		END
 
-		INSERT INTO Viajes (Viaje_Cant_Kilometros,Viaje_Fecha,Viaje_Fecha_INIC,Viaje_Fecha_Fin,Viaje_Chofer_Id,Viaje_Auto_Patente,Viaje_Turno_Id,Viaje_Cliente_Id)
-		VALUES (@viaje_cant_kilometros,@viaje_fecha,DATEADD(second,5,@horario_poner), DATEADD(second,55,@horario_poner),@chofer_id,@auto_patente,@turno_id,@cliente_id)
+		INSERT INTO Viajes (Viaje_Cant_Kilometros,Viaje_Fecha,Viaje_Fecha_INIC,Viaje_Fecha_Fin,Viaje_Chofer_Id,Viaje_Auto_Id,Viaje_Turno_Id,Viaje_Cliente_Id)
+		VALUES (@viaje_cant_kilometros,@viaje_fecha,DATEADD(second,5,@horario_poner), DATEADD(second,55,@horario_poner),@chofer_id,@auto_id,@turno_id,@cliente_id)
 
-		FETCH NEXT FROM viajes_cursor INTO @chofer_id, @viaje_fecha,@viaje_cant_kilometros, @auto_patente, @cliente_id, @turno_id;
+		FETCH NEXT FROM viajes_cursor INTO @chofer_id, @viaje_fecha,@viaje_cant_kilometros, @auto_id, @cliente_id, @turno_id;
 	END
 
 	CLOSE viajes_cursor;
@@ -954,68 +1026,4 @@ BEGIN
 END
 GO
 /*------------------------------------------------------------------------------------------------------------------------------------------*/
-IF(OBJECT_ID('SQLGROUP.consultaChoferMayorRecaudacion') IS NOT NULL)
-	DROP PROCEDURE SQLGROUP.consultaChoferMayorRecaudacion;
-GO
 
-
-CREATE PROCEDURE SQLGROUP.consultaChoferMayorRecaudacion @anio INT , @mesInicial INT, @mesFinal INT
-AS
-BEGIN
-	SELECT TOP 5 Chofer_Nombre, Chofer_Apellido,SUM(Rendicion_Importe) AS Recaudacion
-	FROM SQLGROUP.Choferes c JOIN SQLGROUP.Rendiciones r ON c.Chofer_Id = r.Rendicion_Chofer_Id
-	WHERE YEAR(r.Rendicion_Fecha) = @anio AND MONTH(r.Rendicion_Fecha) BETWEEN @mesInicial AND @mesFinal
-	GROUP BY c.Chofer_Nombre, c.Chofer_Apellido
-	ORDER BY SUM(r.Rendicion_Importe) DESC
-END
-GO
-
-
-IF(OBJECT_ID('SQLGROUP.consultaChoferConViajeMasLargo') IS NOT NULL)
-	DROP PROCEDURE SQLGROUP.consultaChoferConViajeMasLargo;
-GO
-
-
-CREATE PROCEDURE SQLGROUP.consultaChoferConViajeMasLargo @anio INT , @mesInicial INT, @mesFinal INT
-AS
-BEGIN
-	SELECT TOP 5 Chofer_Nombre,Chofer_Apellido,Viaje_Cant_Kilometros AS KilometrosRecorridos
-	FROM SQLGROUP.Choferes c INNER JOIN SQLGROUP.Viajes v ON c.Chofer_Id = v.Viaje_Chofer_Id
-	WHERE YEAR(v.Viaje_Fecha) = @anio AND MONTH(v.Viaje_Fecha) BETWEEN @mesInicial AND @mesFinal
-	ORDER BY v.Viaje_Cant_Kilometros DESC
-END
-GO
-
-
-IF(OBJECT_ID('SQLGROUP.consultaClienteMayorConsumo') IS NOT NULL)
-	DROP PROCEDURE SQLGROUP.consultaClienteMayorConsumo;
-GO
-
-
-CREATE PROCEDURE SQLGROUP.consultaClienteMayorConsumo @anio INT , @mesInicial INT, @mesFinal INT
-AS
-BEGIN
-	SELECT TOP 5 Cliente_Nombre ,Cliente_Apellido, SUM(Factura_Total) AS TotalConsumo
-	FROM SQLGROUP.Clientes c INNER JOIN SQLGROUP.Facturas f ON c.Cliente_Id = f.Factura_Cliente_Id
-	WHERE YEAR(f.Factura_Fecha) = @anio AND MONTH(f.Factura_Fecha) BETWEEN @mesInicial AND @mesFinal
-	GROUP BY c.Cliente_Nombre, c.Cliente_Apellido
-	ORDER BY SUM(f.Factura_Total) DESC
-END
-GO
-
-
-IF(OBJECT_ID('SQLGROUP.consultaClienteMismoAuto') IS NOT NULL)
-	DROP PROCEDURE SQLGROUP.consultaClienteMismoAuto;
-GO
-
-
-CREATE PROCEDURE SQLGROUP.consultaClienteMismoAuto @anio INT , @mesInicial INT, @mesFinal INT
-AS
-BEGIN
-	SELECT TOP 5 Cliente_Nombre, Cliente_Apellido, COUNT(Viaje_Auto_Patente) AS CantVecesQueUsaElMismoAuto
-	FROM SQLGROUP.Clientes c INNER JOIN SQLGROUP.Viajes v ON c.Cliente_Id = v.Viaje_Cliente_Id
-	WHERE YEAR(v.Viaje_Fecha) = @anio AND MONTH(v.Viaje_Fecha) BETWEEN @mesInicial AND @mesFinal
-	GROUP BY c.Cliente_Nombre, c.Cliente_Apellido
-	ORDER BY COUNT(v.Viaje_Auto_Patente) DESC
-END
-GO

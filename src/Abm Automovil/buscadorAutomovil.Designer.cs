@@ -36,7 +36,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxModelo = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBoxMarca = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -48,6 +47,8 @@
             this.rodadoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.choferDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.automovilBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.comboBoxMarcas = new System.Windows.Forms.ComboBox();
+            this.buttonResetMarcas = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAutos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.automovilBindingSource)).BeginInit();
@@ -55,26 +56,27 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.buttonResetMarcas);
+            this.groupBox1.Controls.Add(this.comboBoxMarcas);
             this.groupBox1.Controls.Add(this.textBoxChofer);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.textBoxPatente);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.textBoxModelo);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.textBoxMarca);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(13, 31);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(637, 96);
+            this.groupBox1.Size = new System.Drawing.Size(793, 96);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filtro de Búsqueda";
             // 
             // textBoxChofer
             // 
-            this.textBoxChofer.Location = new System.Drawing.Point(333, 59);
+            this.textBoxChofer.Location = new System.Drawing.Point(88, 27);
             this.textBoxChofer.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxChofer.Name = "textBoxChofer";
             this.textBoxChofer.Size = new System.Drawing.Size(132, 22);
@@ -83,7 +85,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(271, 63);
+            this.label4.Location = new System.Drawing.Point(9, 27);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(50, 17);
@@ -95,7 +97,7 @@
             this.textBoxPatente.Location = new System.Drawing.Point(333, 27);
             this.textBoxPatente.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxPatente.Name = "textBoxPatente";
-            this.textBoxPatente.Size = new System.Drawing.Size(132, 22);
+            this.textBoxPatente.Size = new System.Drawing.Size(182, 22);
             this.textBoxPatente.TabIndex = 2;
             // 
             // label3
@@ -126,18 +128,10 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Modelo";
             // 
-            // textBoxMarca
-            // 
-            this.textBoxMarca.Location = new System.Drawing.Point(88, 30);
-            this.textBoxMarca.Margin = new System.Windows.Forms.Padding(4);
-            this.textBoxMarca.Name = "textBoxMarca";
-            this.textBoxMarca.Size = new System.Drawing.Size(132, 22);
-            this.textBoxMarca.TabIndex = 1;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 33);
+            this.label1.Location = new System.Drawing.Point(267, 66);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(47, 17);
@@ -238,6 +232,25 @@
             // 
             this.automovilBindingSource.DataSource = typeof(UberFrba.Entidades.Automovil);
             // 
+            // comboBoxMarcas
+            // 
+            this.comboBoxMarcas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxMarcas.FormattingEnabled = true;
+            this.comboBoxMarcas.Location = new System.Drawing.Point(333, 59);
+            this.comboBoxMarcas.Name = "comboBoxMarcas";
+            this.comboBoxMarcas.Size = new System.Drawing.Size(182, 24);
+            this.comboBoxMarcas.TabIndex = 7;
+            // 
+            // buttonResetMarcas
+            // 
+            this.buttonResetMarcas.Location = new System.Drawing.Point(530, 57);
+            this.buttonResetMarcas.Name = "buttonResetMarcas";
+            this.buttonResetMarcas.Size = new System.Drawing.Size(256, 29);
+            this.buttonResetMarcas.TabIndex = 8;
+            this.buttonResetMarcas.Text = "Cualquier Marca";
+            this.buttonResetMarcas.UseVisualStyleBackColor = true;
+            this.buttonResetMarcas.Click += new System.EventHandler(this.buttonResetMarcas_Click);
+            // 
             // buscadorAutomovil
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -267,7 +280,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxModelo;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBoxMarca;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
@@ -279,5 +291,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn rodadoDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn choferDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource automovilBindingSource;
+        private System.Windows.Forms.ComboBox comboBoxMarcas;
+        private System.Windows.Forms.Button buttonResetMarcas;
     }
 }

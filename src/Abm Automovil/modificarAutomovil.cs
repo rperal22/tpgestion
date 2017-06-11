@@ -32,7 +32,7 @@ namespace UberFrba.Abm_Automovil
             this.textBoxMarca.Text = this.auto.marca;
             this.textBoxModelo.Text = this.auto.modelo;
             this.textBoxRodado.Text = this.auto.rodado;
-            this.labelPatente.Text = this.auto.patente;
+            this.textBoxPatente.Text = this.auto.patente;
             this.comboBoxEstado.Text = this.auto.estado;
         }
 
@@ -57,7 +57,7 @@ namespace UberFrba.Abm_Automovil
             try
             {
                 this.validar();//No actualiza por ahora
-                new SqlAutomoviles().actualizarAutomovil(new Automovil(this.labelPatente.Text, this.textBoxMarca.Text, this.textBoxModelo.Text, Int32.Parse(this.textBoxChofer.Text), this.auto.turnos, this.textBoxLicencia.Text, this.textBoxRodado.Text, this.comboBoxEstado.Text),this.auto.patente);
+                new SqlAutomoviles().actualizarAutomovil(new Automovil(-1,this.textBoxPatente.Text, this.textBoxMarca.Text, this.textBoxModelo.Text, Int32.Parse(this.textBoxChofer.Text), this.auto.turnos, this.textBoxLicencia.Text, this.textBoxRodado.Text, this.comboBoxEstado.Text),this.auto.id);
                 new buscadorAutomovil().Show();
                 this.Close();
             }
@@ -72,7 +72,7 @@ namespace UberFrba.Abm_Automovil
 
         private void validar()
         {
-            if (!(this.labelPatente.Text.Length > 0 && this.textBoxMarca.Text.Length > 0 && this.textBoxModelo.Text.Length > 0))
+            if (!(this.textBoxPatente.Text.Length > 0 && this.textBoxMarca.Text.Length > 0 && this.textBoxModelo.Text.Length > 0))
             {
                 MessageBox.Show("Completar los campos obligatorios");
                 throw new NotImplementedException();

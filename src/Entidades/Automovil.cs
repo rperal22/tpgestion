@@ -8,6 +8,7 @@ namespace UberFrba.Entidades
 {
     public class Automovil
     {
+        public int id { get; set; }
         public String patente {get; set;}
         public String marca {get; set;}
         public String modelo { get; set; }
@@ -17,8 +18,9 @@ namespace UberFrba.Entidades
         public List<Turno> turnos { get; set; }
         public String estado { get; set; }
 
-        public Automovil(String patente, String marca, String modelo, int chofer, List<Turno> turnos, String licencia, String rodado, String estado)
+        public Automovil(int id, String patente, String marca, String modelo, int chofer, List<Turno> turnos, String licencia, String rodado, String estado)
         {
+            this.id = id;
             this.patente = patente;
             this.marca = marca;
             this.modelo = modelo;

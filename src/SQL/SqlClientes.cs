@@ -14,7 +14,7 @@ namespace UberFrba.SQL
         {
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             SqlCommand query = new SqlCommand("INSERT INTO SQLGROUP.Clientes (Cliente_Nombre, Cliente_Apellido, Cliente_Direccion, Cliente_Dni, Cliente_Telefono, Cliente_Mail, Cliente_Fecha_Nac, Cliente_Estado) " +
-                                                " VALUES(@nombre,@apellido,@direccion,@dni,@telefono,@mail,@nacimiento,@estado)", conexion);
+                                                " VALUES(@nombre,@apellido,@direccion,@dni,@telefono,@mail,@nacimiento,@estado,@codigopostal)", conexion);
             query.Parameters.AddWithValue("@nombre",cliente.nombre);
             query.Parameters.AddWithValue("@apellido", cliente.apellido);
             query.Parameters.AddWithValue("@direccion", cliente.direccion);
@@ -23,6 +23,7 @@ namespace UberFrba.SQL
             query.Parameters.AddWithValue("@mail", cliente.mail);
             query.Parameters.AddWithValue("@nacimiento", cliente.fechaNacimiento);
             query.Parameters.AddWithValue("@estado",cliente.estado);
+            query.Parameters.AddWithValue("@codigopostal",cliente.codigoPostal);
             try
             {
                 conexion.Open();
@@ -40,7 +41,7 @@ namespace UberFrba.SQL
         public void actualizarCliente(Cliente clienteNuevo, int clienteId)
         {
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand query = new SqlCommand("UPDATE SQLGROUP.Clientes SET Cliente_Nombre = @nombre, Cliente_Apellido = @apellido, Cliente_Direccion = @direccion, Cliente_Dni = @dni, Cliente_Telefono = @telefono, Cliente_Mail = @mail, Cliente_Fecha_Nac = @nacimiento, Cliente_Estado = @estado WHERE Cliente_Id = @id", conexion);
+            SqlCommand query = new SqlCommand("UPDATE SQLGROUP.Clientes SET Cliente_Nombre = @nombre, Cliente_Apellido = @apellido, Cliente_Direccion = @direccion, Cliente_Dni = @dni, Cliente_Telefono = @telefono, Cliente_Mail = @mail, Cliente_Fecha_Nac = @nacimiento, Cliente_Estado = @estado, Cliente_Codigo_Postal = @codpostal WHERE Cliente_Id = @id", conexion);
             query.Parameters.AddWithValue("@nombre", clienteNuevo.nombre);
             query.Parameters.AddWithValue("@apellido", clienteNuevo.apellido);
             query.Parameters.AddWithValue("@direccion", clienteNuevo.direccion);
@@ -50,6 +51,7 @@ namespace UberFrba.SQL
             query.Parameters.AddWithValue("@nacimiento", clienteNuevo.fechaNacimiento);
             query.Parameters.AddWithValue("@estado", clienteNuevo.estado);
             query.Parameters.AddWithValue("@id", clienteId);
+            query.Parameters.AddWithValue("@codigopostal", clienteNuevo.codigoPostal);
             try
             {
                 conexion.Open();
@@ -66,14 +68,14 @@ namespace UberFrba.SQL
         {
             List<Cliente> clientes = new List<Cliente>();
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand query = new SqlCommand("SELECT TOP " + limit + " Cliente_Id, Cliente_Nombre, Cliente_Apellido, Cliente_Direccion, Cliente_Dni, Cliente_Telefono, Cliente_Mail, Cliente_Fecha_Nac, Cliente_Estado FROM SQLGROUP.Clientes", conexion);
+            SqlCommand query = new SqlCommand("SELECT TOP " + limit + " Cliente_Id, Cliente_Nombre, Cliente_Apellido, Cliente_Direccion, Cliente_Dni, Cliente_Telefono, Cliente_Mail, Cliente_Fecha_Nac, Cliente_Estado, Cliente_Codigo_Postal FROM SQLGROUP.Clientes", conexion);
             conexion.Open();
             try
             {
                 SqlDataReader resultado = query.ExecuteReader();
                 while (resultado.Read())
                 {
-                    Cliente cf = new Cliente(resultado.GetString(1), resultado.GetString(2), (int)resultado.GetDecimal(4), resultado.GetString(3), (int)resultado.GetDecimal(5), resultado.GetString(6), resultado.GetDateTime(7), resultado.GetString(8));
+                    Cliente cf = new Cliente(resultado.GetString(1), resultado.GetString(2), (int)resultado.GetDecimal(4), resultado.GetString(3), (int)resultado.GetDecimal(5), resultado.GetString(6), resultado.GetDateTime(7), resultado.GetString(8), resultado.GetString(9));
                     cf.id = resultado.GetInt32(0);
                     clientes.Add(cf);
                 }
@@ -90,14 +92,14 @@ namespace UberFrba.SQL
         {
             List<Cliente> clientes = new List<Cliente>();
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand query = new SqlCommand("SELECT Cliente_Id, Cliente_Nombre, Cliente_Apellido, Cliente_Direccion, Cliente_Dni, Cliente_Telefono, Cliente_Mail, Cliente_Fecha_Nac, Cliente_Estado FROM SQLGROUP.Clientes WHERE " + condicion, conexion);
+            SqlCommand query = new SqlCommand("SELECT Cliente_Id, Cliente_Nombre, Cliente_Apellido, Cliente_Direccion, Cliente_Dni, Cliente_Telefono, Cliente_Mail, Cliente_Fecha_Nac, Cliente_Estado, Cliente_Codigo_Postal FROM SQLGROUP.Clientes WHERE " + condicion, conexion);
             conexion.Open();
             try
             {
                 SqlDataReader resultado = query.ExecuteReader();
                 while (resultado.Read())
                 {
-                    Cliente cf = new Cliente(resultado.GetString(1), resultado.GetString(2), (int)resultado.GetDecimal(4), resultado.GetString(3), (int)resultado.GetDecimal(5), resultado.GetString(6), resultado.GetDateTime(7), resultado.GetString(8));
+                    Cliente cf = new Cliente(resultado.GetString(1), resultado.GetString(2), (int)resultado.GetDecimal(4), resultado.GetString(3), (int)resultado.GetDecimal(5), resultado.GetString(6), resultado.GetDateTime(7), resultado.GetString(8), resultado.GetString(9));
                     cf.id = resultado.GetInt32(0);
                     clientes.Add(cf);
                 }

@@ -20,6 +20,7 @@ namespace UberFrba.Abm_Automovil
         {
             InitializeComponent();
             this.buttonLimpiar_Click(null, null);
+            this.comboBoxMarcas.Items.AddRange(new SqlAutomoviles().getMarcas().ToArray());
         }
 
         private void buttonBuscar_Click(object sender, EventArgs e)
@@ -28,12 +29,12 @@ namespace UberFrba.Abm_Automovil
             if(textBoxChofer.TextLength > 0 ) {
                 busqueda = busqueda + "Auto_Chofer LIKE '%" + textBoxChofer.Text + "%'";
             }
-            if(textBoxMarca.TextLength > 0)
+            if( this.comboBoxMarcas.SelectedIndex != -1)
             {
                 if(!busqueda.Equals("")) {
                     busqueda = busqueda + " AND ";
                 }   
-                busqueda = busqueda + "Auto_Marca LIKE '%" + textBoxMarca.Text + "%'";
+                busqueda = busqueda + "Auto_Marca LIKE '%" + this.comboBoxMarcas.Text + "%'";
             }
 
             if(textBoxModelo.TextLength > 0)
@@ -52,7 +53,7 @@ namespace UberFrba.Abm_Automovil
             }
             busqueda = busqueda.Trim();
             if(busqueda.Equals("")) {
-                MessageBox.Show("Ningun campo completado");
+                this.buttonLimpiar_Click(null, null);
                 return;
             }
             autos = new BindingList<Automovil>(new SqlAutomoviles().getAutomoviles(busqueda));
@@ -63,7 +64,7 @@ namespace UberFrba.Abm_Automovil
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
             this.textBoxChofer.Clear();
-            this.textBoxMarca.Clear();
+            this.comboBoxMarcas.SelectedIndex = -1;
             this.textBoxModelo.Clear();
             this.textBoxPatente.Clear();
             autos = new BindingList<Automovil>(new SqlAutomoviles().getAutomoviles(15));
@@ -74,6 +75,11 @@ namespace UberFrba.Abm_Automovil
         {
             new modificarAutomovil(this.dataGridViewAutos.SelectedRows[0].DataBoundItem as Automovil).Show();
             this.Close();
+        }
+
+        private void buttonResetMarcas_Click(object sender, EventArgs e)
+        {
+            this.comboBoxMarcas.SelectedIndex = -1;
         }
 
     }

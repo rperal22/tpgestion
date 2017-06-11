@@ -62,16 +62,28 @@ namespace UberFrba
 
         private void habilitarSeleccionDeRoles()
         {
-            this.textBoxPassword.Enabled = false;
-            this.textBoxUsuario.Enabled = false;
-            this.labelRol.Visible = true;
-            this.labelRol.Enabled = true;
-            this.comboBoxRoles.Visible = true;
-            this.comboBoxRoles.Enabled = true;
-            this.comboBoxRoles.Items.AddRange(new SqlUsuarios().getRolesUsuario(username).ToArray());
-            this.comboBoxRoles.SelectedIndex = 0;
-            this.buttonListo.Visible = true;
-            this.buttonListo.Enabled = true;
+            List<String> roles = new SqlUsuarios().getRolesUsuario(username);
+            if (roles.Count == 0)
+            {
+                MessageBox.Show("No tienes ningun rol asignado");
+            }
+            else if (roles.Count == 1)
+            {
+                new SeleccionFuncionalidades(new Usuario(username, new SqlRoles().getRol(roles[0]))).Show();
+            }
+            else if (roles.Count > 1)
+            {
+                this.textBoxPassword.Enabled = false;
+                this.textBoxUsuario.Enabled = false;
+                this.labelRol.Visible = true;
+                this.labelRol.Enabled = true;
+                this.comboBoxRoles.Visible = true;
+                this.comboBoxRoles.Enabled = true;
+                this.comboBoxRoles.Items.AddRange(roles.ToArray());
+                this.comboBoxRoles.SelectedIndex = 0;
+                this.buttonListo.Visible = true;
+                this.buttonListo.Enabled = true;
+            }
         }
 
         private void login_Load(object sender, EventArgs e)

@@ -113,12 +113,12 @@ namespace UberFrba.SQL
         {
             Automovil auto;
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand query = new SqlCommand("SELECT Auto_Patente, Auto_Marca, Auto_Modelo, Auto_Chofer, Auto_Licencia, Auto_Rodado, Auto_Estado FROM SQLGROUP.automoviles WHERE Auto_Estado='Habilitado' AND Auto_Chofer=@id",conexion);
+            SqlCommand query = new SqlCommand("SELECT Auto_Patente, Auto_Marca, Auto_Modelo, Auto_Chofer, Auto_Licencia, Auto_Rodado, Auto_Estado, Auto_Id FROM SQLGROUP.automoviles WHERE Auto_Estado='Habilitado' AND Auto_Chofer=@id",conexion);
             query.Parameters.AddWithValue("@id",chofer.id);
             conexion.Open();
             SqlDataReader reader = query.ExecuteReader();
             reader.Read();
-            auto = new Automovil(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3), new SqlAutomoviles().getTurnosAuto(reader.GetString(0)), reader.GetString(4), reader.GetString(5), reader.GetString(6));
+            auto = new Automovil(reader.GetInt32(7),reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3), new SqlAutomoviles().getTurnosAuto(reader.GetString(0)), reader.GetString(4), reader.GetString(5), reader.GetString(6));
             conexion.Close();
             return auto;
         }

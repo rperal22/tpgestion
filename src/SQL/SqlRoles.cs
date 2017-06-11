@@ -64,33 +64,6 @@ namespace UberFrba.SQL
             return roles;
         }
 
-        public Boolean rolHabilitado(String rol)
-        {
-            SqlConnection conexion = SqlGeneral.nuevaConexion();
-            Boolean aDevlover;
-            try
-            {
-                SqlCommand consulta = new SqlCommand("SELECT CASE WHEN Rol_Estado = 'Habilitado' THEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END FROM dbo.rol WHERE Rol_Tipo = @rol", conexion);
-                consulta.Parameters.Add("rol", SqlDbType.VarChar).Value = rol;
-                conexion.Open();
-                SqlDataReader rolEstado = consulta.ExecuteReader();
-                if (rolEstado.Read())
-                    aDevlover = rolEstado.GetBoolean(0);
-                else
-                    aDevlover = false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                throw ex;
-            }
-            finally
-            {
-                conexion.Close();
-            }
-            return aDevlover;
-        }
-
         public List<Funcionalidad> getFuncionesRol(String nombreRol)
         {
             List<Funcionalidad> funcionalidades = new List<Funcionalidad>();

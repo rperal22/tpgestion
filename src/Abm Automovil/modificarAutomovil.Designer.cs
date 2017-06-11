@@ -53,14 +53,14 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.buttonCerrar = new System.Windows.Forms.Button();
             this.buttonGuardar = new System.Windows.Forms.Button();
-            this.labelPatente = new System.Windows.Forms.Label();
+            this.textBoxPatente = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.labelPatente);
+            this.groupBox1.Controls.Add(this.textBoxPatente);
             this.groupBox1.Controls.Add(this.comboBoxEstado);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.label9);
@@ -315,15 +315,13 @@
             this.buttonGuardar.UseVisualStyleBackColor = true;
             this.buttonGuardar.Click += new System.EventHandler(this.buttonGuardar_Click);
             // 
-            // labelPatente
+            // textBoxPatente
             // 
-            this.labelPatente.AutoSize = true;
-            this.labelPatente.Location = new System.Drawing.Point(130, 117);
-            this.labelPatente.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelPatente.Name = "labelPatente";
-            this.labelPatente.Size = new System.Drawing.Size(57, 17);
-            this.labelPatente.TabIndex = 20;
-            this.labelPatente.Text = "Patente";
+            this.textBoxPatente.Location = new System.Drawing.Point(133, 111);
+            this.textBoxPatente.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxPatente.Name = "textBoxPatente";
+            this.textBoxPatente.Size = new System.Drawing.Size(132, 22);
+            this.textBoxPatente.TabIndex = 20;
             // 
             // modificarAutomovil
             // 
@@ -372,6 +370,6 @@
         private System.Windows.Forms.Button buttonGuardar;
         private System.Windows.Forms.ComboBox comboBoxEstado;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label labelPatente;
+        private System.Windows.Forms.TextBox textBoxPatente;
     }
 }

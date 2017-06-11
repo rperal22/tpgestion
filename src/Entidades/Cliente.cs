@@ -26,8 +26,10 @@ namespace UberFrba.Entidades
         public String estado { get; set; }
         [System.ComponentModel.Browsable(false)]
         public int id { get; set; }
+        [System.ComponentModel.DisplayName("Codigo Postal")]
+        public String codigoPostal { get; set; }
 
-        public Cliente(String nombre, String apellido, int dni, String direccion, int telefono, String mail, DateTime fechaNacimiento, String estado)
+        public Cliente(String nombre, String apellido, int dni, String direccion, int telefono, String mail, DateTime fechaNacimiento, String estado, String cp)
         {
             this.nombre = nombre;
             this.apellido = apellido;
@@ -37,6 +39,7 @@ namespace UberFrba.Entidades
             this.mail = mail;
             this.fechaNacimiento = fechaNacimiento;
             this.estado = estado;
+            this.codigoPostal = cp;
         }
 
     }

@@ -93,11 +93,6 @@ namespace UberFrba.Abm_Rol
 
         private void validar()
         {
-            if (this.funcSeleccionadas.Count <= 0)
-            {
-                SystemException ex = new SystemException("Debes seleccionar al menos una funcionalidad");
-                throw ex;
-            }
             if (this.textBoxNombre.TextLength <= 0)
             {
                 SystemException ex = new SystemException("Debes ponerle un nombre");

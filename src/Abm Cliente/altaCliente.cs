@@ -26,7 +26,7 @@ namespace UberFrba.Abm_Cliente
             try
             {
                 this.validar();
-                new SqlClientes().guardarCliente(new Cliente(this.textBoxNombre.Text, this.textBoxApellido.Text, Int32.Parse(this.textBoxDni.Text), this.textBoxDireccion.Text, Int32.Parse(this.textBoxTel.Text), this.textBoxMail.Text, this.dateTimePickerNacimiento.Value, this.comboBoxEstado.Text));
+                new SqlClientes().guardarCliente(new Cliente(this.textBoxNombre.Text, this.textBoxApellido.Text, Int32.Parse(this.textBoxDni.Text), this.textBoxDireccion.Text, Int32.Parse(this.textBoxTel.Text), this.textBoxMail.Text, this.dateTimePickerNacimiento.Value, this.comboBoxEstado.Text,this.textBoxCodPos.Text));
                 MessageBox.Show("Cliente guardado con exito");
             }
             catch (FormatException ex)
