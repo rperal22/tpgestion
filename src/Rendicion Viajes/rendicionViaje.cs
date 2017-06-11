@@ -24,6 +24,7 @@ namespace UberFrba.Rendicion_Viajes
         public rendicionViaje()
         {
             InitializeComponent();
+            this.dateTimePicker1.Value = Program.dia;
         }
 
         private void buttonGuardar_Click(object sender, EventArgs e)

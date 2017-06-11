@@ -24,6 +24,7 @@ namespace UberFrba.Registro_Viajes
         public registroViaje()
         {
             InitializeComponent();
+            this.inicializarFecha();
             this.dtpHoraFin.Format = DateTimePickerFormat.Time;
             this.dtpHoraInicio.Format = DateTimePickerFormat.Time;
             this.dtpHoraFin.ShowUpDown = true;
@@ -144,6 +145,25 @@ namespace UberFrba.Registro_Viajes
         {
             Turno turno = (this.cbTurno.SelectedValue as Turno);
             this.labelInfoTurno.Text = "Hora Min: " + turno.hi + " Hora Max (no inclusive): " + turno.hf;
+        }
+
+        private void inicializarFecha()
+        {
+            this.dayPicker.Value = Program.dia;
+            DateTime nueva = this.dayPicker.Value;
+            nueva = nueva.AddMinutes(-nueva.Minute);
+            nueva = nueva.AddHours(-nueva.Hour);
+            int horasInicio = this.dtpHoraInicio.Value.Hour;
+            int horasFin = this.dtpHoraFin.Value.Hour;
+            int minutosInicio = this.dtpHoraInicio.Value.Minute;
+            int minutosFin = this.dtpHoraFin.Value.Minute;
+
+            this.dtpHoraInicio.Value = nueva;
+            this.dtpHoraInicio.Value = this.dtpHoraInicio.Value.AddHours(horasInicio);
+            this.dtpHoraInicio.Value = this.dtpHoraInicio.Value.AddMinutes(minutosInicio);
+            this.dtpHoraFin.Value = nueva;
+            this.dtpHoraFin.Value = this.dtpHoraFin.Value.AddHours(horasFin);
+            this.dtpHoraFin.Value = this.dtpHoraFin.Value.AddMinutes(horasInicio);
         }
 
 

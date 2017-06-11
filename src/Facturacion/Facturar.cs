@@ -20,7 +20,8 @@ namespace UberFrba.Facturacion
         public Facturar()
         {
             InitializeComponent();
-            this.dateTimePickerInicio.Value = this.dateTimePickerInicio.Value.AddMonths(1);
+            this.dateTimePickerInicio.Value = Program.dia;
+            this.dateTimePickerFin.Value = this.dateTimePickerInicio.Value.AddMonths(1).AddDays(-1);
             this.clienteSeleccionado = null;
         }
 
