@@ -73,7 +73,7 @@ namespace UberFrba.Rendicion_Viajes
         {
             if (choferSeleccionado != null)
             {
-                this.dataGridView1.DataSource = new BindingSource(new BindingList<Viaje>(new SqlViajes().getViajes(this.dateTimePicker1.Value,this.choferSeleccionado, this.cbTurno.SelectedValue as Turno)),null);
+                this.dataGridView1.DataSource = new SqlViajes().getViajes(this.dateTimePicker1.Value, this.choferSeleccionado, this.cbTurno.SelectedValue as Turno);
                 this.total = new SqlRendicion().calcularRendicion(this.dateTimePicker1.Value, this.choferSeleccionado, (this.cbTurno.SelectedValue as Turno));
                 this.actualizarTotal();
             }

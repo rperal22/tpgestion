@@ -46,7 +46,7 @@ namespace UberFrba.Facturacion
         {
             if (this.clienteSeleccionado != null)
             {
-                dgvListaViajes.DataSource = new BindingSource(new BindingList<Viaje>(new SqlViajes().getViajes(this.dateTimePickerInicio.Value, this.dateTimePickerFin.Value, clienteSeleccionado)), null);
+                dgvListaViajes.DataSource = new SqlViajes().getViajes(this.dateTimePickerInicio.Value, this.dateTimePickerFin.Value, clienteSeleccionado);
                 this.labelCantidadViajes.Text = dgvListaViajes.Rows.Count.ToString();
                 this.labelTotalFactura.Text = new SqlViajes().getFacturacionViajes(this.dateTimePickerInicio.Value, this.dateTimePickerFin.Value, clienteSeleccionado).ToString() ;
             }
